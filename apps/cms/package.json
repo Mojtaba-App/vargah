@@ -1,0 +1,31 @@
+{
+  "name": "@vargah/cms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:prod": "node dist/main.js",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.0.1",
+    "@nestjs/core": "^12.0.1",
+    "@nestjs/platform-express": "^12.0.1",
+    "@vargah/database": "workspace:*",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^12.0.0",
+    "@nestjs/schematics": "^12.0.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "catalog:",
+    "@vargah/eslint-config": "workspace:*",
+    "@vargah/typescript-config": "workspace:*",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}

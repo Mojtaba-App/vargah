@@ -1,0 +1,1172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  SUPER_ADMIN
+  PUBLISHER
+  MANAGING_DIRECTOR
+  EDITOR_IN_CHIEF
+  COPY_EDITOR
+  WRITER
+  AD_MANAGER
+  SUBSCRIBER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum ArticleStatus {
+  DRAFT
+  SUBMITTED
+  IN_REVIEW
+  APPROVED
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum WorkflowStage {
+  WRITER
+  COPY_EDITOR
+  EDITOR_IN_CHIEF
+  PUBLISHED
+}
+
+enum IssueStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum SubscriptionStatus {
+  NONE
+  ACTIVE
+  EXPIRED
+  PENDING_PAYMENT
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentType {
+  SUBSCRIPTION
+  ADVERTISEMENT
+  OTHER
+}
+
+enum DiscountCodeType {
+  PERCENT
+  FIXED
+}
+
+enum DiscountCodeScope {
+  ALL
+  SELECTED
+}
+
+enum MessageType {
+  CONTACT
+  COLLABORATION
+  ADVERTISEMENT
+  INTERNAL
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  SUBMITTED
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum ContributorType {
+  WRITER
+  JOURNALIST
+  DESIGNER
+  PHOTOGRAPHER
+}
+
+enum AdCampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  PUBLISH
+  APPROVE
+  REJECT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCustomerType {
+  SUBSCRIBER
+  ADVERTISER
+  GUEST
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum CommissionStatus {
+  TOPIC_DEFINED
+  ASSIGNED
+  IN_WRITING
+  SUBMITTED
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WEBHOOK
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum WebhookProvider {
+  TELEGRAM
+  EITAA
+  BALE
+  SLACK
+  DISCORD
+  GENERIC
+}
+
+enum ReminderType {
+  SUBSCRIPTION_EXPIRY_7D
+  SUBSCRIPTION_EXPIRY_1D
+  COMMISSION_DEADLINE
+}
+
+enum BulkCampaignStatus {
+  DRAFT
+  QUEUED
+  SENDING
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum NewsletterStatus {
+  PENDING
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+enum BackgroundJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  DEAD
+}
+
+enum DataDeletionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum ChatConversationStatus {
+  WAITING
+  OPEN
+  CLOSED
+}
+
+enum ChatSenderType {
+  GUEST
+  AGENT
+  SYSTEM
+}
+
+// ─── Users & Auth ────────────────────────────────────────────────────────────
+
+model User {
+  id               String     @id @default(cuid())
+  email            String?    @unique
+  username         String?    @unique
+  phone            String?    @unique
+  name             String?
+  passwordHash     String?
+  role             UserRole   @default(SUBSCRIBER)
+  status           UserStatus @default(ACTIVE)
+  avatar           String?
+  twoFactorEnabled Boolean    @default(false)
+  twoFactorSecret  String?
+  lastLoginAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  articles         Article[]           @relation("ArticleAuthor")
+  articleVersions  ArticleVersion[]
+  auditLogs        AuditLog[]
+  sessions         UserSession[]
+  loginAttempts    LoginAttempt[]
+  assignedMessages Message[]           @relation("MessageAssignee")
+  assignedTasks    ContributorTask[]   @relation("TaskAssignee")
+  createdTasks     ContributorTask[]   @relation("TaskCreator")
+  calendarItems    EditorialCalendar[]
+  contributor      Contributor?
+  assignedTickets  Ticket[]            @relation("TicketAssignee")
+  createdCommissions ArticleCommission[] @relation("CommissionCreator")
+  assignedCommissions ArticleCommission[] @relation("CommissionAssignee")
+  contributorRatings ContributorRating[] @relation("RatingAuthor")
+  ticketReplies    TicketReply[]
+  messageReplies   MessageReply[]
+  refreshTokens    RefreshToken[]
+  rolePermissionUpdates RolePermissionConfig[] @relation("RolePermissionUpdates")
+  adminAlertAcks   AdminAlertAck[]
+  bulkCampaigns    BulkCampaign[]      @relation("BulkCampaignCreator")
+  assignedChats    ChatConversation[]  @relation("ChatAssignee")
+  chatMessages     ChatMessage[]       @relation("ChatMessageAgent")
+
+  @@map("users")
+}
+
+model AdminAlertAck {
+  id        String   @id @default(cuid())
+  userId    String
+  alertKey  String
+  seenCount Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, alertKey])
+  @@index([userId])
+  @@map("admin_alert_acks")
+}
+
+model RolePermissionConfig {
+  role        UserRole @id
+  permissions String[]
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+  updatedBy   User?    @relation("RolePermissionUpdates", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@map("role_permission_configs")
+}
+
+model OtpCode {
+  id           String   @id @default(cuid())
+  phone        String
+  code         String
+  expiresAt    DateTime
+  used         Boolean  @default(false)
+  attemptCount Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([phone, used])
+  @@map("otp_codes")
+}
+
+model UserSession {
+  id           String    @id @default(cuid())
+  userId       String
+  sessionToken String    @unique
+  userAgent    String?
+  ipAddress    String?
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_sessions")
+}
+
+model CustomerSession {
+  id           String    @id @default(cuid())
+  subscriberId String
+  tokenHash    String    @unique
+  userAgent    String?
+  ipAddress    String?
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  subscriber Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  @@index([subscriberId])
+  @@index([expiresAt])
+  @@map("customer_sessions")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  familyId  String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, familyId])
+  @@map("refresh_tokens")
+}
+
+model RateLimitBucket {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime
+
+  @@map("rate_limit_buckets")
+}
+
+model DataDeletionRequest {
+  id          String             @id @default(cuid())
+  email       String
+  reason      String?
+  status      DataDeletionStatus @default(PENDING)
+  requestedAt DateTime           @default(now())
+  processedAt DateTime?
+
+  @@index([email, status])
+  @@map("data_deletion_requests")
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  userId    String?
+  email     String?
+  ipAddress String?
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([email, createdAt])
+  @@map("login_attempts")
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ─── Content ─────────────────────────────────────────────────────────────────
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  parentId    String?
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
+  articles Article[]
+
+  @@map("categories")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+model Article {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  excerpt         String?
+  content         String        @db.Text
+  coverImage      String?
+  status          ArticleStatus @default(DRAFT)
+  workflowStage   WorkflowStage @default(WRITER)
+  authorId        String
+  categoryId      String?
+  issueId         String?
+  readingTime     Int           @default(5)
+  isFeatured      Boolean       @default(false)
+  isEditorsPick   Boolean       @default(false)
+  metaTitle       String?
+  metaDescription String?
+  ogImage         String?
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  author   User            @relation("ArticleAuthor", fields: [authorId], references: [id])
+  category Category?       @relation(fields: [categoryId], references: [id])
+  issue    Issue?          @relation(fields: [issueId], references: [id])
+  tags     ArticleTag[]
+  versions ArticleVersion[]
+  pageViews PageView[]
+  comments ArticleComment[]
+
+  @@index([status, publishedAt])
+  @@index([authorId])
+  @@map("articles")
+}
+
+model ArticleComment {
+  id          String        @id @default(cuid())
+  articleId   String
+  authorName  String
+  content     String        @db.Text
+  status      CommentStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId, status])
+  @@map("article_comments")
+}
+
+model ArticleTag {
+  articleId String
+  tagId     String
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("article_tags")
+}
+
+model ArticleVersion {
+  id        String   @id @default(cuid())
+  articleId String
+  title     String
+  content   String   @db.Text
+  version   Int
+  note      String?
+  createdBy String
+  createdAt DateTime @default(now())
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  author  User    @relation(fields: [createdBy], references: [id])
+
+  @@index([articleId, version])
+  @@map("article_versions")
+}
+
+model Issue {
+  id          String      @id @default(cuid())
+  number      Int         @unique
+  title       String
+  slug        String      @unique
+  description String?
+  coverImage  String?
+  pdfUrl      String?
+  tableOfContents Json?
+  pageCount   Int         @default(0)
+  status      IssueStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  articles Article[]
+  tasks    ContributorTask[]
+
+  @@map("issues")
+}
+
+model MediaAsset {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  alt          String?
+  tags         String[] @default([])
+  uploadedBy   String?
+  createdAt    DateTime @default(now())
+
+  @@index([mimeType])
+  @@map("media_assets")
+}
+
+// ─── Geo (Iran cities) ───────────────────────────────────────────────────────
+
+model IranCity {
+  id       String @id
+  province String
+  name     String
+  lat      Float
+  lng      Float
+
+  subscribers Subscriber[]
+  advertisers Advertiser[]
+  messages    Message[]
+  geoStats    GeoStatsDaily[]
+
+  @@unique([province, name])
+  @@index([province])
+  @@map("iran_cities")
+}
+
+model GeoStatsDaily {
+  id                String   @id @default(cuid())
+  date              DateTime @db.Date
+  cityId            String
+  province          String
+  subscribersActive Int      @default(0)
+  subscribersNew    Int      @default(0)
+  subscribersTotal  Int      @default(0)
+  createdAt         DateTime @default(now())
+
+  cityRef IranCity @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@unique([date, cityId])
+  @@index([date])
+  @@index([province, date])
+  @@map("geo_stats_daily")
+}
+
+// ─── CRM ─────────────────────────────────────────────────────────────────────
+
+model Subscriber {
+  id        String             @id @default(cuid())
+  name      String
+  email         String             @unique
+  phone         String?
+  deliveryPhone String?
+  province      String?
+  city          String?
+  cityId        String?
+  address       String?
+  status        SubscriptionStatus @default(NONE)
+  planType  String?
+  expiresAt DateTime?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  cityRef   IranCity? @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  payments Payment[]
+  tickets  Ticket[]
+  sessions CustomerSession[]
+  campaignRecipients BulkCampaignRecipient[]
+
+  @@index([cityId])
+  @@index([status, cityId])
+  @@map("subscribers")
+}
+
+model Advertiser {
+  id          String   @id @default(cuid())
+  companyName String
+  contactName String
+  email       String
+  phone       String?
+  province    String?
+  city        String?
+  cityId      String?
+  address     String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cityRef   IranCity? @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  campaigns AdCampaign[]
+  payments  Payment[]
+  tickets   Ticket[]
+
+  @@index([cityId])
+  @@map("advertisers")
+}
+
+model AdCampaign {
+  id           String           @id @default(cuid())
+  advertiserId String
+  title        String
+  type         String
+  tariff       Decimal          @db.Decimal(12, 0)
+  startDate    DateTime
+  endDate      DateTime
+  status       AdCampaignStatus @default(DRAFT)
+  notes        String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  advertiser Advertiser @relation(fields: [advertiserId], references: [id], onDelete: Cascade)
+  payments   Payment[]
+
+  @@map("ad_campaigns")
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  amount          Decimal       @db.Decimal(12, 0)
+  type            PaymentType
+  status          PaymentStatus @default(PENDING)
+  gateway         String?
+  transactionId   String?       /// شناسه درگاه — هرگز شماره کارت ذخیره نمی‌شود
+  description     String?
+  discountCode    String?
+  discountAmount  Decimal?      @db.Decimal(12, 0)
+  subtotalAmount  Decimal?      @db.Decimal(12, 0)
+  subscriberId    String?
+  advertiserId    String?
+  campaignId      String?
+  paidAt          DateTime?
+  createdAt       DateTime      @default(now())
+
+  subscriber Subscriber?  @relation(fields: [subscriberId], references: [id])
+  advertiser Advertiser?  @relation(fields: [advertiserId], references: [id])
+  campaign   AdCampaign?  @relation(fields: [campaignId], references: [id])
+  discountRedemption DiscountRedemption?
+
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model DiscountCode {
+  id             String            @id @default(cuid())
+  code           String            @unique
+  title          String
+  description    String?
+  type           DiscountCodeType
+  value          Int
+  scope          DiscountCodeScope @default(ALL)
+  planSlugs      String[]
+  maxUses        Int?
+  usedCount      Int               @default(0)
+  maxUsesPerUser Int?              @default(1)
+  minSubtotal    Int?
+  startsAt       DateTime?
+  endsAt         DateTime?
+  isActive       Boolean           @default(true)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  redemptions DiscountRedemption[]
+
+  @@index([isActive, endsAt])
+  @@map("discount_codes")
+}
+
+model DiscountRedemption {
+  id             String   @id @default(cuid())
+  discountCodeId String
+  paymentId      String   @unique
+  subscriberId   String
+  codeSnapshot   String
+  amountOff      Int
+  createdAt      DateTime @default(now())
+
+  discountCode DiscountCode @relation(fields: [discountCodeId], references: [id], onDelete: Cascade)
+  payment      Payment      @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([subscriberId, discountCodeId])
+  @@map("discount_redemptions")
+}
+
+// ─── Contributors ────────────────────────────────────────────────────────────
+
+model Contributor {
+  id          String          @id @default(cuid())
+  userId      String          @unique
+  type        ContributorType
+  bio         String?
+  feePerWord  Decimal?        @db.Decimal(10, 0)
+  bankInfo    String?
+  joinedAt    DateTime        @default(now())
+
+  user  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks ContributorTask[]
+  commissions ArticleCommission[]
+  ratings ContributorRating[]
+
+  @@map("contributors")
+}
+
+model ContributorTask {
+  id            String     @id @default(cuid())
+  contributorId String
+  issueId       String?
+  title         String
+  description   String?
+  status        TaskStatus @default(TODO)
+  dueDate       DateTime?
+  assignedToId  String
+  createdById   String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  contributor Contributor @relation(fields: [contributorId], references: [id], onDelete: Cascade)
+  issue       Issue?      @relation(fields: [issueId], references: [id])
+  assignedTo  User        @relation("TaskAssignee", fields: [assignedToId], references: [id])
+  createdBy   User        @relation("TaskCreator", fields: [createdById], references: [id])
+
+  @@index([status, dueDate])
+  @@map("contributor_tasks")
+}
+
+model EditorialCalendar {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime
+  userId      String
+  issueId     String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([dueDate])
+  @@map("editorial_calendar")
+}
+
+// ─── Communication Layer (Phase 4) ───────────────────────────────────────────
+
+model Ticket {
+  id           String             @id @default(cuid())
+  subject      String
+  body         String             @db.Text
+  status       TicketStatus       @default(OPEN)
+  priority     TicketPriority     @default(NORMAL)
+  customerType TicketCustomerType @default(GUEST)
+  customerName String
+  customerEmail String?
+  customerPhone String?
+  subscriberId String?
+  advertiserId String?
+  assignedToId String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  resolvedAt   DateTime?
+
+  subscriber Subscriber? @relation(fields: [subscriberId], references: [id], onDelete: SetNull)
+  advertiser Advertiser? @relation(fields: [advertiserId], references: [id], onDelete: SetNull)
+  assignedTo User?       @relation("TicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  replies    TicketReply[]
+  surveys    SatisfactionSurvey[]
+
+  @@index([status, priority])
+  @@map("tickets")
+}
+
+model TicketReply {
+  id         String   @id @default(cuid())
+  ticketId   String
+  authorId   String?
+  body       String   @db.Text
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User?  @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId])
+  @@map("ticket_replies")
+}
+
+model SatisfactionSurvey {
+  id           String   @id @default(cuid())
+  ticketId     String?
+  score        Int
+  comment      String?
+  customerName String?
+  createdAt    DateTime @default(now())
+
+  ticket Ticket? @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@map("satisfaction_surveys")
+}
+
+model ArticleCommission {
+  id                 String           @id @default(cuid())
+  title              String
+  description        String?          @db.Text
+  status             CommissionStatus @default(TOPIC_DEFINED)
+  contributorId      String?
+  assigneeId         String?
+  createdById        String
+  issueId            String?
+  articleId          String?
+  dueDate            DateTime?
+  deadlineNotifiedAt DateTime?
+  reviewNote         String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  contributor Contributor? @relation(fields: [contributorId], references: [id], onDelete: SetNull)
+  assignee    User?        @relation("CommissionAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy   User         @relation("CommissionCreator", fields: [createdById], references: [id])
+  ratings     ContributorRating[]
+
+  @@index([status, dueDate])
+  @@map("article_commissions")
+}
+
+model ContributorRating {
+  id            String   @id @default(cuid())
+  contributorId String
+  commissionId  String?
+  score         Int
+  note          String?
+  ratedById     String
+  createdAt     DateTime @default(now())
+
+  contributor Contributor        @relation(fields: [contributorId], references: [id], onDelete: Cascade)
+  commission  ArticleCommission? @relation(fields: [commissionId], references: [id], onDelete: SetNull)
+  ratedBy     User               @relation("RatingAuthor", fields: [ratedById], references: [id])
+
+  @@index([contributorId])
+  @@map("contributor_ratings")
+}
+
+model MessageTemplate {
+  id                 String              @id @default(cuid())
+  key                String              @unique
+  name               String
+  channel            NotificationChannel
+  subject            String?
+  body               String              @db.Text
+  externalTemplateId String?
+  variables          String[]            @default([])
+  isActive           Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  notifications Notification[]
+  bulkCampaigns BulkCampaign[]
+
+  @@map("message_templates")
+}
+
+model WebhookEndpoint {
+  id        String          @id @default(cuid())
+  name      String
+  url       String
+  provider  WebhookProvider @default(GENERIC)
+  secret    String?
+  events    String[]        @default([])
+  isActive  Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@map("webhook_endpoints")
+}
+
+model Notification {
+  id              String              @id @default(cuid())
+  channel         NotificationChannel
+  status          NotificationStatus  @default(PENDING)
+  recipient       String
+  subject         String?
+  body            String              @db.Text
+  templateId      String?
+  relatedEntity   String?
+  relatedEntityId String?
+  metadata        Json?
+  scheduledAt     DateTime            @default(now())
+  sentAt          DateTime?
+  errorMessage    String?
+  createdAt       DateTime            @default(now())
+
+  template MessageTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@index([status, scheduledAt])
+  @@map("notifications")
+}
+
+model BulkCampaign {
+  id           String              @id @default(cuid())
+  title        String
+  channel      NotificationChannel
+  status       BulkCampaignStatus  @default(DRAFT)
+  subject      String?
+  body         String              @db.Text
+  templateId   String?
+  filters      Json
+  scheduledAt  DateTime?
+  totalCount   Int                 @default(0)
+  sentCount    Int                 @default(0)
+  failedCount  Int                 @default(0)
+  skippedCount Int                 @default(0)
+  createdById  String?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  createdBy  User?                   @relation("BulkCampaignCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  template   MessageTemplate?        @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  recipients BulkCampaignRecipient[]
+
+  @@index([status, scheduledAt])
+  @@index([createdAt])
+  @@map("bulk_campaigns")
+}
+
+model BulkCampaignRecipient {
+  id             String             @id @default(cuid())
+  campaignId     String
+  subscriberId   String?
+  recipient      String
+  name           String?
+  status         NotificationStatus @default(PENDING)
+  notificationId String?
+  errorMessage   String?
+  sentAt         DateTime?
+  createdAt      DateTime           @default(now())
+
+  campaign   BulkCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  subscriber Subscriber?  @relation(fields: [subscriberId], references: [id], onDelete: SetNull)
+
+  @@index([campaignId, status])
+  @@index([status])
+  @@map("bulk_campaign_recipients")
+}
+
+model ReminderLog {
+  id         String       @id @default(cuid())
+  type       ReminderType
+  entityType String
+  entityId   String
+  sentAt     DateTime     @default(now())
+
+  @@unique([type, entityType, entityId])
+  @@index([entityType, entityId])
+  @@map("reminder_logs")
+}
+
+// ─── Messaging ───────────────────────────────────────────────────────────────
+
+model Message {
+  id           String        @id @default(cuid())
+  type         MessageType
+  status       MessageStatus @default(NEW)
+  senderName   String
+  senderEmail  String?
+  senderPhone  String?
+  province     String?
+  city         String?
+  cityId       String?
+  subject      String?
+  body         String        @db.Text
+  assignedToId String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  assignedTo User?          @relation("MessageAssignee", fields: [assignedToId], references: [id])
+  cityRef    IranCity?      @relation(fields: [cityId], references: [id], onDelete: SetNull)
+  replies    MessageReply[]
+
+  @@index([cityId])
+  @@index([type, status])
+  @@map("messages")
+}
+
+model MessageReply {
+  id         String   @id @default(cuid())
+  messageId  String
+  authorId   String?
+  body       String   @db.Text
+  isInternal Boolean  @default(false)
+  emailSent  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  author  User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([messageId])
+  @@index([createdAt])
+  @@map("message_replies")
+}
+
+model NewsletterSubscription {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  status           NewsletterStatus @default(ACTIVE)
+  confirmToken     String?          @unique
+  unsubscribeToken String           @unique
+  confirmedAt      DateTime?
+  unsubscribedAt   DateTime?
+  source           String?
+  consentIp        String?
+  userAgent        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([status, createdAt])
+  @@map("newsletter_subscriptions")
+}
+
+model BackgroundJob {
+  id          String              @id @default(cuid())
+  type        String
+  payload     Json
+  status      BackgroundJobStatus @default(PENDING)
+  attempts    Int                 @default(0)
+  maxAttempts Int                 @default(5)
+  runAfter    DateTime            @default(now())
+  lockedAt    DateTime?
+  lockedBy    String?
+  lastError   String?             @db.Text
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([status, runAfter])
+  @@index([type, status])
+  @@map("background_jobs")
+}
+
+// ─── Audit & Settings ────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  userId     String?
+  action     AuditAction
+  entity     String
+  entityId   String?
+  changes    Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime    @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model TrafficStat {
+  id        String   @id @default(cuid())
+  date      DateTime @db.Date
+  pageViews Int      @default(0)
+  visitors  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([date])
+  @@map("traffic_stats")
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  articleId String?
+  referrer  String?
+  source    String   @default("direct")
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  article Article? @relation(fields: [articleId], references: [id], onDelete: SetNull)
+
+  @@index([path, createdAt])
+  @@index([articleId, createdAt])
+  @@index([source, createdAt])
+  @@map("page_views")
+}
+
+// ─── Live Chat ───────────────────────────────────────────────────────────────
+
+model ChatConversation {
+  id                 String                 @id @default(cuid())
+  guestName          String
+  guestPhone         String
+  guestTokenHash     String                 @unique
+  status             ChatConversationStatus @default(WAITING)
+  assignedToId       String?
+  lastMessageAt      DateTime               @default(now())
+  lastGuestMessageAt DateTime?
+  closedAt           DateTime?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  assignedTo User?         @relation("ChatAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  messages   ChatMessage[]
+
+  @@index([status, lastMessageAt])
+  @@index([guestPhone])
+  @@index([assignedToId, status])
+  @@map("chat_conversations")
+}
+
+model ChatMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  senderType     ChatSenderType
+  senderUserId   String?
+  body           String         @db.Text
+  createdAt      DateTime       @default(now())
+  readAt         DateTime?
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderUser   User?            @relation("ChatMessageAgent", fields: [senderUserId], references: [id], onDelete: SetNull)
+
+  @@index([conversationId, createdAt])
+  @@map("chat_messages")
+}

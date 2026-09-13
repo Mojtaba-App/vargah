@@ -1,0 +1,85 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.pnpm-store/
+
+# Build / cache
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Environment and secrets (never commit)
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.p12
+*.key
+secrets/
+.secrets/
+
+# Debug / logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+logs/
+
+# IDE / editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# Testing
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.nyc_output/
+
+# Prisma
+packages/database/generated/
+
+# Uploads and local storage (keep .gitkeep only)
+apps/web/storage/
+apps/*/public/uploads/**
+!apps/*/public/uploads/
+!apps/*/public/uploads/**/.gitkeep
+backups/
+*.sql.gz
+*.dump
+
+# Sentry / monitoring local
+.sentryclirc
+
+# Agent / AI tooling (not part of product repo)
+.cursor/
+.claude/
+.codex/
+AGENTS.md
+.agent/
+.agents/
+**/agent-transcripts/
+**/*agent-store*/
+
+# Misc local
+*.local
+.tmp/
+.temp/
+.cache/

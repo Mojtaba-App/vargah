@@ -1,0 +1,173 @@
+import { UserRole } from '@prisma/client';
+
+import type { SeedContext, SeedUsers } from './types';
+
+export async function seedSettings(ctx: SeedContext, users: SeedUsers) {
+  const { prisma } = ctx;
+
+  await prisma.siteSetting.upsert({
+    where: { key: 'site_config' },
+    update: {},
+    create: {
+      key: 'site_config',
+      value: {
+        branding: {
+          siteName: 'وارگه',
+          siteTagline: 'ماهنامه مستقل فارسی‌زبان',
+          siteLogo: '/images/vargah-logo.png',
+          favicon: '/favicon.ico',
+          adminLogo: '/images/vargah-logo.png',
+          loginLogo: '/images/vargah-logo.png',
+          loginBackground: '/images/login-landscape.webp',
+          heroBanner: '/images/hero-vargah.jpg',
+        },
+        footer: {
+          description:
+            'ماهنامه مستقل برای تحلیل، گزارش و نگاه عمیق به زندگی، فرهنگ و جامعه — با تمرکز بر مخاطب فارسی‌زبان.',
+          copyright: 'ماهنامه وارگه. تمامی حقوق محفوظ است.',
+          email: 'info@magazine.ir',
+          phone: '021-12345678',
+          address: 'تهران، خیابان ولیعصر، پلاک ۱۲۳۴',
+        },
+        contact: {
+          address: 'تهران، خیابان ولیعصر، بالاتر از میدان ونک، پلاک ۱۲۳۴، واحد ۵',
+          phone: '021-12345678',
+          email: 'info@magazine.ir',
+          mapEmbedUrl: '',
+          mapLat: 35.7575,
+          mapLng: 51.41,
+        },
+      },
+    },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: 'general' },
+    update: {},
+    create: {
+      key: 'general',
+      value: {
+        siteName: 'وارگه',
+        email: 'info@magazine.ir',
+        phone: '021-12345678',
+        social: { telegram: '', instagram: '' },
+      },
+    },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: 'messaging_config' },
+    update: {},
+    create: {
+      key: 'messaging_config',
+      value: {
+        email: { enabled: false, host: '', port: 587, secure: false, user: '', password: '', fromName: 'وارگه', fromEmail: '' },
+        sms: { enabled: false, provider: 'kavenegar', apiKey: '', username: '', password: '', sender: '', lineNumber: '' },
+      },
+    },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: 'payment_config' },
+    update: {},
+    create: {
+      key: 'payment_config',
+      value: {
+        enabled: false,
+        provider: 'zarinpal',
+        callbackBaseUrl: '',
+        zarinpal: { merchantId: '', sandbox: true },
+      },
+    },
+  });
+
+  await prisma.siteSetting.upsert({
+    where: { key: 'map_config' },
+    update: {},
+    create: {
+      key: 'map_config',
+      value: {
+        googleEnabled: false,
+        googleApiKey: '',
+        defaultBasemap: 'osm',
+        layerVisibility: {
+          osm: true,
+          osmHot: true,
+          carto: true,
+          topo: true,
+          googleRoad: true,
+          googleSatellite: true,
+          googleHybrid: true,
+        },
+        customLayers: [],
+        showAdvertisersOnMap: true,
+        showMessagesOnMap: true,
+      },
+    },
+  });
+
+  const rolePermissionDefaults: Record<string, string[]> = {
+    SUPER_ADMIN: [
+      'dashboard.view', 'article.view', 'article.create', 'article.edit', 'article.delete', 'article.publish',
+      'issue.view', 'issue.create', 'issue.edit', 'issue.delete', 'category.manage', 'media.manage',
+      'user.view', 'user.create', 'user.edit', 'user.manage', 'role.permissions',
+      'subscriber.view', 'subscriber.manage', 'advertiser.view', 'advertiser.manage',
+      'contributor.view', 'contributor.manage', 'message.view', 'message.manage',
+      'chat.view', 'chat.manage',
+      'finance.view', 'finance.export', 'discount.view', 'discount.manage',
+      'settings.view', 'settings.edit', 'security.view', 'security.manage', 'audit.view',
+    ],
+    PUBLISHER: [
+      'dashboard.view', 'article.view', 'article.create', 'article.edit', 'article.delete', 'article.publish',
+      'issue.view', 'issue.create', 'issue.edit', 'issue.delete', 'category.manage', 'media.manage',
+      'user.view', 'user.create', 'user.edit', 'user.manage', 'role.permissions',
+      'subscriber.view', 'subscriber.manage', 'advertiser.view', 'advertiser.manage',
+      'contributor.view', 'contributor.manage', 'message.view', 'message.manage',
+      'chat.view', 'chat.manage',
+      'finance.view', 'finance.export', 'discount.view', 'discount.manage',
+      'settings.view', 'settings.edit', 'security.view', 'security.manage', 'audit.view',
+    ],
+    MANAGING_DIRECTOR: [
+      'dashboard.view', 'article.view', 'article.create', 'article.edit', 'article.delete', 'article.publish',
+      'issue.view', 'issue.create', 'issue.edit', 'issue.delete', 'category.manage', 'media.manage',
+      'user.view', 'user.create', 'user.edit', 'user.manage', 'role.permissions',
+      'subscriber.view', 'subscriber.manage', 'advertiser.view', 'advertiser.manage',
+      'contributor.view', 'contributor.manage', 'message.view', 'message.manage',
+      'chat.view', 'chat.manage',
+      'finance.view', 'finance.export', 'discount.view', 'discount.manage',
+      'settings.view', 'settings.edit', 'security.view', 'security.manage', 'audit.view',
+    ],
+    EDITOR_IN_CHIEF: [
+      'dashboard.view', 'article.view', 'article.create', 'article.edit', 'article.delete', 'article.publish',
+      'issue.view', 'issue.create', 'issue.edit', 'issue.delete', 'category.manage', 'media.manage',
+      'user.view', 'user.create', 'user.edit',
+      'subscriber.view', 'advertiser.view', 'contributor.view', 'contributor.manage',
+      'message.view', 'message.manage', 'chat.view', 'chat.manage', 'finance.view', 'discount.view', 'settings.view', 'audit.view',
+    ],
+    COPY_EDITOR: [
+      'dashboard.view', 'article.view', 'article.edit', 'issue.view', 'media.manage', 'message.view', 'contributor.view',
+    ],
+    WRITER: [
+      'dashboard.view', 'article.view', 'article.create', 'article.edit', 'media.manage', 'message.view',
+    ],
+    AD_MANAGER: [
+      'dashboard.view', 'advertiser.view', 'advertiser.manage', 'subscriber.view',
+      'message.view', 'message.manage', 'chat.view', 'chat.manage', 'finance.view', 'finance.export', 'discount.view', 'discount.manage',
+    ],
+    SUBSCRIBER: [],
+  };
+
+  for (const [role, permissions] of Object.entries(rolePermissionDefaults)) {
+    await prisma.rolePermissionConfig.upsert({
+      where: { role: role as UserRole },
+      update: {},
+      create: {
+        role: role as UserRole,
+        permissions,
+        updatedById: users.admin.id,
+      },
+    });
+  }
+
+  console.log('   ⚙️  settings — برندینگ، درگاه، پیام‌رسانی، دسترسی نقش‌ها');
+}

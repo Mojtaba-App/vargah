@@ -1,0 +1,42 @@
+{
+  "name": "@vargah/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n admin,web -c magenta,blue \"pnpm --filter @vargah/admin dev\" \"next dev --port 3000\"",
+    "dev:web-only": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vargah/business": "workspace:*",
+    "@vargah/database": "workspace:^",
+    "@vargah/security": "workspace:*",
+    "@vargah/seo": "workspace:*",
+    "@vargah/ui": "workspace:*",
+    "dayjs": "catalog:",
+    "framer-motion": "^13.1.1",
+    "jalaliday": "^3.1.1",
+    "next": "catalog:",
+    "next-intl": "^4.14.2",
+    "next-themes": "^0.4.6",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@types/leaflet": "^1.9.21",
+    "@vargah/eslint-config": "workspace:*",
+    "@vargah/typescript-config": "workspace:*",
+    "eslint": "catalog:",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  }
+}

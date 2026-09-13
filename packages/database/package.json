@@ -1,0 +1,41 @@
+{
+  "name": "@vargah/database",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./enums": "./src/enums.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "db:generate": "dotenv -e ../../.env -- prisma generate",
+    "db:push": "dotenv -e ../../.env -- prisma db push",
+    "db:migrate": "dotenv -e ../../.env -- prisma migrate dev",
+    "db:migrate:deploy": "dotenv -e ../../.env -- prisma migrate deploy",
+    "db:studio": "dotenv -e ../../.env -- prisma studio",
+    "db:seed": "dotenv -e ../../.env -- tsx prisma/seed.ts",
+    "db:seed:users": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=users",
+    "db:seed:content": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=taxonomy,content",
+    "db:seed:crm": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=crm",
+    "db:seed:templates": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=templates",
+    "db:seed:settings": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=settings",
+    "db:seed:analytics": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=analytics",
+    "db:seed:geo": "dotenv -e ../../.env -- tsx prisma/seed.ts -- --only=geo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "@vargah/security": "workspace:*",
+    "bcryptjs": "catalog:"
+  },
+  "devDependencies": {
+    "@vargah/typescript-config": "workspace:*",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^6.19.0",
+    "tsx": "^4.23.13",
+    "typescript": "catalog:"
+  }
+}

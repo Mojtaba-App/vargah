@@ -1,0 +1,43 @@
+{
+  "name": "@vargah/security",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./headers": "./src/headers.ts",
+    "./sanitize": "./src/sanitize.ts",
+    "./rate-limit": "./src/rate-limit.ts",
+    "./csrf": "./src/csrf.ts",
+    "./password": "./src/password.ts",
+    "./otp": "./src/otp.ts",
+    "./tokens": "./src/tokens.ts",
+    "./token-constants": "./src/token-constants.ts",
+    "./two-factor": "./src/two-factor.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./schemas/admin-user": "./src/schemas/admin-user.ts",
+    "./password-strength": "./src/password-strength.ts",
+    "./roles": "./src/sensitive-roles.ts",
+    "./phone": "./src/phone.ts",
+    "./database-url": "./src/database-url.ts",
+    "./admin-login": "./src/admin-login.ts",
+    "./file-magic": "./src/file-magic.ts",
+    "./secrets": "./src/secrets.ts",
+    "./otp-sandbox": "./src/otp-sandbox.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "bcryptjs": "catalog:",
+    "isomorphic-dompurify": "^2.36.0",
+    "otplib": "^13.5.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@vargah/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@vargah/ui",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    "./globals.css": "./src/globals.css",
+    "./tailwind.config": "./tailwind.config.ts",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./components/*": "./src/components/*.tsx"
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vargah/eslint-config": "workspace:*",
+    "@vargah/typescript-config": "workspace:*",
+    "eslint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  }
+}

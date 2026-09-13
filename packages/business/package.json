@@ -1,0 +1,55 @@
+{
+  "name": "@vargah/business",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./finance": "./src/finance.ts",
+    "./subscription": "./src/subscription.ts",
+    "./publication": "./src/publication.ts",
+    "./workflow": "./src/workflow.ts",
+    "./site-settings": "./src/site-settings.ts",
+    "./messaging-config": "./src/messaging-config.ts",
+    "./payment-config": "./src/payment-config.ts",
+    "./subscription-plans": "./src/subscription-plans.ts",
+    "./subscription-cart": "./src/subscription-cart.ts",
+    "./discounts": "./src/discounts.ts",
+    "./zarinpal": "./src/zarinpal.ts",
+    "./payment-errors": "./src/payment-errors.ts",
+    "./subscription-activation": "./src/subscription-activation.ts",
+    "./services-content": "./src/services-content.ts",
+    "./services-content-types": "./src/services-content-types.ts",
+    "./about-content": "./src/about-content.ts",
+    "./sms-presets": "./src/sms-presets.ts",
+    "./issue-toc": "./src/issue-toc.ts",
+    "./iran-locations": "./src/iran-locations.ts",
+    "./iran-geo": "./src/iran-geo.ts",
+    "./geo-stats": "./src/geo-stats.ts",
+    "./map-config": "./src/map-config.ts",
+    "./subscriber-location": "./src/subscriber-location.ts",
+    "./customer-subscription": "./src/customer-subscription.ts",
+    "./reading-time": "./src/reading-time.ts",
+    "./sms": "./src/sms.ts",
+    "./storage": "./src/storage.ts",
+    "./job-queue": "./src/job-queue.ts",
+    "./newsletter": "./src/newsletter.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.787.0",
+    "@aws-sdk/s3-request-presigner": "3.787.0",
+    "@vargah/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@vargah/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "vitest": "^3.2.4"
+  }
+}

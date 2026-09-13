@@ -1,0 +1,61 @@
+{
+  "name": "vargah",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "@swc/core",
+      "esbuild",
+      "prisma"
+    ]
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,json}\"",
+    "typecheck": "turbo typecheck",
+    "test": "vitest run",
+    "test:unit": "vitest run packages",
+    "test:integration": "vitest run tests/integration",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "db:generate": "pnpm --filter @vargah/database db:generate",
+    "db:push": "pnpm --filter @vargah/database db:push",
+    "db:migrate": "pnpm --filter @vargah/database db:migrate",
+    "db:migrate:deploy": "pnpm --filter @vargah/database db:migrate:deploy",
+    "db:studio": "pnpm --filter @vargah/database db:studio",
+    "db:seed": "pnpm --filter @vargah/database db:seed",
+    "db:seed:users": "pnpm --filter @vargah/database db:seed:users",
+    "db:seed:content": "pnpm --filter @vargah/database db:seed:content",
+    "db:seed:crm": "pnpm --filter @vargah/database db:seed:crm",
+    "db:seed:templates": "pnpm --filter @vargah/database db:seed:templates",
+    "db:seed:settings": "pnpm --filter @vargah/database db:seed:settings",
+    "db:seed:analytics": "pnpm --filter @vargah/database db:seed:analytics",
+    "db:seed:geo": "pnpm --filter @vargah/database db:seed:geo"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^12.0.1",
+    "@playwright/test": "^1.55.0",
+    "@types/supertest": "^6.0.3",
+    "@vargah/eslint-config": "workspace:*",
+    "@vargah/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "^3.2.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "supertest": "^7.1.4",
+    "turbo": "^2.10.12",
+    "typescript": "catalog:",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

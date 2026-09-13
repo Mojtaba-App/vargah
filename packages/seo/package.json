@@ -1,0 +1,22 @@
+{
+  "name": "@vargah/seo",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./slug": "./src/slug.ts",
+    "./json-ld": "./src/json-ld.ts",
+    "./site": "./src/site.ts",
+    "./discover": "./src/discover.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@vargah/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

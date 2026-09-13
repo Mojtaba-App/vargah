@@ -1,0 +1,31 @@
+name: OWASP ZAP Baseline Scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1' # هر دوشنبه ساعت ۳ صبح UTC
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ZAP Baseline — Public Site
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: ${{ vars.STAGING_SITE_URL || 'http://localhost:3000' }}
+          cmd_options: '-a'
+
+      - name: ZAP Baseline — Admin Panel
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: ${{ vars.STAGING_ADMIN_URL || 'http://localhost:3001' }}
+          cmd_options: '-a'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: report_html.html
