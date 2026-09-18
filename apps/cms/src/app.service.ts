@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello() {
+  getInfo() {
     return {
       message: 'API ماهنامه وارگه — content read + job wake',
       status: 'ready',
