@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState, useTransition } from 'react';
+import Link from 'next/link';
 import type { PaymentConfig } from '@vargah/business/payment-config';
 import {
   PLAN_PERIOD_LABELS,
@@ -201,9 +202,9 @@ export function SubscriptionWorkspace({
       {paymentStatus === 'success' && (
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200">
           پرداخت با موفقیت انجام شد. اشتراک شما فعال شد. جزئیات در{' '}
-          <a href="/profile?tab=payments" className="font-medium underline">
+          <Link href="/profile?tab=payments" className="font-medium underline">
             پروفایل
-          </a>{' '}
+          </Link>{' '}
           قابل مشاهده است.
         </div>
       )}
