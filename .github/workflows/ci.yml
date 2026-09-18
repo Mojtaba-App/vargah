@@ -18,7 +18,7 @@ env:
   CRON_SECRET: ci-build-only-cron-secret-not-for-production
   CMS_API_KEY: ci-build-only-cms-key-not-for-production
   REVALIDATE_SECRET: ci-build-only-revalidate-secret
-  SECRETS_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  SECRETS_ENCRYPTION_KEY: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
   AUTH_URL: http://localhost:3000/admin/api/auth
   NEXT_PUBLIC_SITE_URL: http://localhost:3000
   NEXT_PUBLIC_ADMIN_URL: http://localhost:3000/admin
@@ -64,6 +64,24 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      # Next build workers load .env from the app directory; job env alone is not enough for Prisma.
+      - name: Write app env files for build
+        run: |
+          umask 077
+          printf '%s\n' \
+            "DATABASE_URL=${DATABASE_URL}" \
+            "AUTH_SECRET=${AUTH_SECRET}" \
+            "CRON_SECRET=${CRON_SECRET}" \
+            "CMS_API_KEY=${CMS_API_KEY}" \
+            "REVALIDATE_SECRET=${REVALIDATE_SECRET}" \
+            "SECRETS_ENCRYPTION_KEY=${SECRETS_ENCRYPTION_KEY}" \
+            "AUTH_URL=${AUTH_URL}" \
+            "NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}" \
+            "NEXT_PUBLIC_ADMIN_URL=${NEXT_PUBLIC_ADMIN_URL}" \
+            "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" \
+            "ADMIN_INTERNAL_URL=${ADMIN_INTERNAL_URL}" \
+            | tee .env apps/web/.env apps/admin/.env apps/cms/.env >/dev/null
 
       - name: Build
         run: pnpm build
