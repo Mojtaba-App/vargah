@@ -16,7 +16,7 @@ export type ExportMeta = {
 };
 
 export function stampFilename(base: string, ext: string): string {
-  const safe = base.replace(/[^\w\u0600-\u06FF\-]+/g, '-').replace(/-+/g, '-');
+  const safe = base.replace(/[^\w\u0600-\u06FF-]+/g, '-').replace(/-+/g, '-');
   const date = new Date().toISOString().slice(0, 10);
   return `${safe}-${date}.${ext}`;
 }
