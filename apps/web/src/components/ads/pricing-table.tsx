@@ -15,7 +15,7 @@ export function PricingTable({ items, placements = [] }: PricingTableProps) {
 
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground">
+      <p className="border-border text-muted-foreground rounded-2xl border border-dashed px-6 py-10 text-center text-sm">
         تعرفه‌ای برای نمایش وجود ندارد.
       </p>
     );
@@ -51,7 +51,7 @@ function PricingGroup({
   placementById: Map<string, AdPlacement>;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card/50 p-5 sm:p-6">
+    <div className="border-border bg-card/50 rounded-2xl border p-5 sm:p-6">
       <div className="mb-4 flex items-center gap-2">
         <span
           className={cn(
@@ -65,7 +65,7 @@ function PricingGroup({
       </div>
       <div className="space-y-3">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground">موردی ثبت نشده</p>
+          <p className="text-muted-foreground text-sm">موردی ثبت نشده</p>
         ) : (
           items.map((item) => {
             const placement = item.placementId ? placementById.get(item.placementId) : undefined;
@@ -75,27 +75,27 @@ function PricingGroup({
             return (
               <article
                 key={item.id}
-                className="rounded-xl border border-border/80 bg-background p-4 transition-shadow hover:shadow-sm"
+                className="border-border/80 bg-background rounded-xl border p-4 transition-shadow hover:shadow-sm"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h4 className="font-semibold">{item.name}</h4>
-                    <p className="text-xs text-muted-foreground">{item.size}</p>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">{item.size}</p>
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                       {item.description}
                     </p>
                     {placement && (
-                      <p className="mt-2 text-xs text-primary/90">
+                      <p className="text-primary/90 mt-2 text-xs">
                         جایگاه: {placement.label}
                         {surfaceLabel ? ` · ${surfaceLabel}` : ''}
                       </p>
                     )}
                   </div>
                   <p className="shrink-0 text-end">
-                    <span className="text-lg font-bold tabular-nums text-primary">
+                    <span className="text-primary text-lg font-bold tabular-nums">
                       {formatPrice(item.price)}
                     </span>
-                    <span className="block text-[11px] text-muted-foreground">تومان</span>
+                    <span className="text-muted-foreground block text-[11px]">تومان</span>
                   </p>
                 </div>
               </article>

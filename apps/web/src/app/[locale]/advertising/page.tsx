@@ -27,10 +27,7 @@ export default async function AdvertisingPage({ params }: { params: Promise<{ lo
             title={advertising.placementsTitle}
             subtitle={advertising.placementsSubtitle}
           />
-          <PlacementSchematics
-            placements={advertising.placements}
-            pricing={advertising.pricing}
-          />
+          <PlacementSchematics placements={advertising.placements} pricing={advertising.pricing} />
         </section>
 
         <section className="mb-14">
@@ -46,7 +43,10 @@ export default async function AdvertisingPage({ params }: { params: Promise<{ lo
         </section>
 
         <section>
-          <SectionTitle title={advertising.portfolioTitle} subtitle={advertising.portfolioSubtitle} />
+          <SectionTitle
+            title={advertising.portfolioTitle}
+            subtitle={advertising.portfolioSubtitle}
+          />
           <PortfolioGrid items={advertising.portfolio} />
         </section>
       </Container>

@@ -7,10 +7,7 @@ import { Input, Label, Textarea, Select } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 import { Card, CardContent } from '@vargah/ui/components/card';
 
-import {
-  createBulkCampaign,
-  previewCampaignAudience,
-} from '@/actions/campaigns';
+import { createBulkCampaign, previewCampaignAudience } from '@/actions/campaigns';
 import {
   CAMPAIGN_SEGMENT_LABELS,
   CAMPAIGN_SEGMENTS,
@@ -176,8 +173,9 @@ export function CampaignComposer({ templates, planTypes }: CampaignComposerProps
               placeholder="سلام {{name}}، ..."
               disabled={pending}
             />
-            <p className="mt-1 text-xs text-muted-foreground">
-              متغیرهای مجاز: <code dir="ltr">{'{{name}}'}</code> ، <code dir="ltr">{'{{recipient}}'}</code>
+            <p className="text-muted-foreground mt-1 text-xs">
+              متغیرهای مجاز: <code dir="ltr">{'{{name}}'}</code> ،{' '}
+              <code dir="ltr">{'{{recipient}}'}</code>
             </p>
           </div>
 
@@ -217,7 +215,7 @@ export function CampaignComposer({ templates, planTypes }: CampaignComposerProps
           <CardContent className="space-y-4 pt-6">
             <div className="flex items-center justify-between gap-3">
               <p className="font-semibold">فیلتر مخاطبان</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {counting ? 'در حال شمارش…' : audienceCount === null ? '—' : `${audienceCount} نفر`}
               </p>
             </div>

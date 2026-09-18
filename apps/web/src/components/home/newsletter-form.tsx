@@ -63,7 +63,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
   return (
     <section className="relative overflow-hidden" aria-labelledby="newsletter-heading">
       <div
-        className="absolute inset-0 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-900"
+        className="from-brand-800 via-brand-700 to-brand-900 absolute inset-0 bg-gradient-to-br"
         aria-hidden="true"
       />
       <div
@@ -71,14 +71,14 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
         aria-hidden="true"
       />
       <div
-        className="absolute -start-24 bottom-0 size-72 rounded-full bg-brand-400/20 blur-3xl"
+        className="bg-brand-400/20 absolute -start-24 bottom-0 size-72 rounded-full blur-3xl"
         aria-hidden="true"
       />
       <Container className="relative py-14 sm:py-20">
         <FadeIn className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
           <div className="text-primary-foreground">
             {content.eyebrow && (
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-100/80">
+              <p className="text-brand-100/80 text-xs font-semibold tracking-[0.18em] uppercase">
                 {content.eyebrow}
               </p>
             )}
@@ -88,11 +88,11 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
             >
               {content.title}
             </h2>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-brand-50/90">
+            <p className="text-brand-50/90 mt-4 max-w-md text-base leading-relaxed">
               {content.description}
             </p>
             {content.privacyNote && (
-              <p className="mt-5 flex items-start gap-2 text-sm text-brand-100/75">
+              <p className="text-brand-100/75 mt-5 flex items-start gap-2 text-sm">
                 <ShieldIcon className="mt-0.5 size-4 shrink-0" />
                 <span>{content.privacyNote}</span>
               </p>
@@ -101,7 +101,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
 
           <form
             onSubmit={handleSubmit}
-            className="rounded-2xl border border-white/15 bg-card/95 p-5 shadow-xl shadow-brand-950/20 backdrop-blur-sm sm:p-7"
+            className="bg-card/95 shadow-brand-950/20 rounded-2xl border border-white/15 p-5 shadow-xl backdrop-blur-sm sm:p-7"
             aria-describedby={
               error ? 'newsletter-error' : submitted ? 'newsletter-success' : undefined
             }
@@ -110,7 +110,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
               <p
                 id="newsletter-error"
                 role="alert"
-                className="mb-4 rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+                className="border-destructive/30 bg-destructive/5 text-destructive mb-4 rounded-xl border px-3 py-2 text-sm"
               >
                 {error}
               </p>
@@ -119,7 +119,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
               <p
                 id="newsletter-success"
                 role="status"
-                className="mb-4 rounded-xl border border-success/30 bg-success/10 px-3 py-2 text-sm text-success"
+                className="border-success/30 bg-success/10 text-success mb-4 rounded-xl border px-3 py-2 text-sm"
               >
                 {content.successMessage}
               </p>
@@ -142,7 +142,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
                 autoComplete="email"
                 aria-invalid={!!error || !!fieldError}
                 aria-describedby={fieldError ? 'newsletter-email-error' : undefined}
-                className="h-12 flex-1 rounded-xl border-border bg-background"
+                className="border-border bg-background h-12 flex-1 rounded-xl"
               />
               <Button
                 type="submit"
@@ -154,7 +154,7 @@ export function NewsletterForm({ content }: NewsletterFormProps) {
               </Button>
             </div>
             {fieldError && (
-              <p id="newsletter-email-error" className="mt-2 text-xs text-destructive">
+              <p id="newsletter-email-error" className="text-destructive mt-2 text-xs">
                 {fieldError}
               </p>
             )}

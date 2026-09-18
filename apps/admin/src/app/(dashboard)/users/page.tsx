@@ -63,10 +63,7 @@ export default async function UsersPage({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="کاربران پنل"
-        description="مدیریت نقش‌ها، وضعیت و دسترسی کاربران ادمین"
-      />
+      <PageHeader title="کاربران پنل" description="مدیریت نقش‌ها، وضعیت و دسترسی کاربران ادمین" />
       <UsersWorkspace
         users={data}
         canCreate={canCreate}

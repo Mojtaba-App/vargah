@@ -139,9 +139,7 @@ export function generateSecurePassword(length = 14): string {
 
   const pick = (chars: string) => chars[Math.floor(Math.random() * chars.length)]!;
   const required = [pick(upper), pick(lower), pick(digits), pick(special)];
-  const rest = Array.from({ length: Math.max(8, length) - required.length }, () =>
-    pick(all),
-  );
+  const rest = Array.from({ length: Math.max(8, length) - required.length }, () => pick(all));
 
   const combined = [...required, ...rest];
   for (let i = combined.length - 1; i > 0; i--) {

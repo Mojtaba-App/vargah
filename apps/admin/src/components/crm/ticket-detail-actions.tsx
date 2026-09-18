@@ -7,7 +7,11 @@ import { replyToTicket, submitSatisfactionSurvey, updateTicketStatus } from '@/a
 import { LoadingButton } from '@/components/ui/feedback/loading-button';
 import { StatusBanner } from '@/components/ui/feedback/status-banner';
 import { useActionFeedback } from '@/hooks/use-action-feedback';
-import { TICKET_STATUS_LABELS, TicketStatus, type TicketStatus as TicketStatusType } from '@/lib/crm/tickets/constants';
+import {
+  TICKET_STATUS_LABELS,
+  TicketStatus,
+  type TicketStatus as TicketStatusType,
+} from '@/lib/crm/tickets/constants';
 import { formatJalali } from '@/lib/utils';
 
 type Reply = {
@@ -117,9 +121,12 @@ export function TicketDetailActions({
             )}
           </div>
 
-          <form className="space-y-3 rounded-2xl border border-border p-4" onSubmit={handleReply}>
+          <form className="border-border space-y-3 rounded-2xl border p-4" onSubmit={handleReply}>
             {(replyMessage || replyError) && (
-              <StatusBanner type={replyError ? 'error' : 'success'} message={replyError ?? replyMessage!} />
+              <StatusBanner
+                type={replyError ? 'error' : 'success'}
+                message={replyError ?? replyMessage!}
+              />
             )}
             <Textarea
               name="body"
@@ -133,7 +140,12 @@ export function TicketDetailActions({
               <input type="checkbox" name="internal" disabled={replyPending} />
               یادداشت داخلی (بدون ارسال به مشتری)
             </label>
-            <LoadingButton type="submit" className="rounded-xl" loading={replyPending} loadingText="در حال ارسال...">
+            <LoadingButton
+              type="submit"
+              className="rounded-xl"
+              loading={replyPending}
+              loadingText="در حال ارسال..."
+            >
               ارسال پاسخ
             </LoadingButton>
           </form>
@@ -142,10 +154,12 @@ export function TicketDetailActions({
 
       <div className="space-y-3">
         <h4 className="font-semibold">گفتگو</h4>
-        {replies.length === 0 && <p className="text-sm text-muted-foreground">هنوز پاسخی ثبت نشده.</p>}
+        {replies.length === 0 && (
+          <p className="text-muted-foreground text-sm">هنوز پاسخی ثبت نشده.</p>
+        )}
         {replies.map((r) => (
-          <div key={r.id} className="rounded-xl border border-border bg-muted/20 p-3 text-sm">
-            <div className="mb-1 flex justify-between gap-2 text-xs text-muted-foreground">
+          <div key={r.id} className="border-border bg-muted/20 rounded-xl border p-3 text-sm">
+            <div className="text-muted-foreground mb-1 flex justify-between gap-2 text-xs">
               <span>
                 {r.authorName ?? 'سیستم'}
                 {r.isInternal ? ' (داخلی)' : ''}
@@ -157,7 +171,9 @@ export function TicketDetailActions({
         ))}
       </div>
 
-      {canManage && status === TicketStatus.RESOLVED && !hasSurvey && <SurveyForm ticketId={ticketId} />}
+      {canManage && status === TicketStatus.RESOLVED && !hasSurvey && (
+        <SurveyForm ticketId={ticketId} />
+      )}
     </div>
   );
 }
@@ -190,11 +206,14 @@ function SurveyForm({ ticketId }: { ticketId: string }) {
   };
 
   return (
-    <form className="space-y-3 rounded-2xl border border-dashed border-border p-4" onSubmit={handleSubmit}>
+    <form
+      className="border-border space-y-3 rounded-2xl border border-dashed p-4"
+      onSubmit={handleSubmit}
+    >
       {message && <StatusBanner type="success" message={message} />}
       {error && <StatusBanner type="error" message={error} />}
       <h4 className="font-semibold">رضایت‌سنجی (NPS)</h4>
-      <p className="text-sm text-muted-foreground">از ۰ (نامحتمل) تا ۱۰ (بسیار محتمل)</p>
+      <p className="text-muted-foreground text-sm">از ۰ (نامحتمل) تا ۱۰ (بسیار محتمل)</p>
       <input
         name="score"
         type="number"
@@ -202,10 +221,23 @@ function SurveyForm({ ticketId }: { ticketId: string }) {
         max={10}
         required
         disabled={pending}
-        className="w-20 rounded-md border border-border px-2 py-1"
+        className="border-border w-20 rounded-md border px-2 py-1"
       />
-      <Textarea name="comment" placeholder="نظر اختیاری..." rows={2} disabled={pending} className="rounded-xl" />
-      <LoadingButton type="submit" size="sm" variant="outline" className="rounded-xl" loading={pending} loadingText="در حال ثبت...">
+      <Textarea
+        name="comment"
+        placeholder="نظر اختیاری..."
+        rows={2}
+        disabled={pending}
+        className="rounded-xl"
+      />
+      <LoadingButton
+        type="submit"
+        size="sm"
+        variant="outline"
+        className="rounded-xl"
+        loading={pending}
+        loadingText="در حال ثبت..."
+      >
         ثبت نظر
       </LoadingButton>
     </form>

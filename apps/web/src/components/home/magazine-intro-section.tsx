@@ -13,7 +13,7 @@ type MagazineIntroSectionProps = {
 
 export function MagazineIntroSection({ intro, stats }: MagazineIntroSectionProps) {
   return (
-    <section className="section-padding relative overflow-hidden border-y border-border">
+    <section className="section-padding border-border relative overflow-hidden border-y">
       <div
         className="absolute inset-0 bg-[linear-gradient(135deg,var(--accent)_0%,transparent_45%,var(--muted)_100%)] opacity-70"
         aria-hidden="true"
@@ -27,7 +27,7 @@ export function MagazineIntroSection({ intro, stats }: MagazineIntroSectionProps
               subtitle={intro.subtitle}
               className="mb-0 sm:mb-0"
             />
-            <p className="mt-2 max-w-xl leading-relaxed text-muted-foreground">{intro.body}</p>
+            <p className="text-muted-foreground mt-2 max-w-xl leading-relaxed">{intro.body}</p>
             <Link href="/about" className="mt-8 inline-block">
               <Button variant="outline" size="lg" className="rounded-full px-7">
                 {intro.ctaLabel}

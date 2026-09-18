@@ -64,8 +64,7 @@ export async function proxy(req: NextRequest) {
 
   const role = token?.role as UserRole | undefined;
   const twoFactorEnabled = token?.twoFactorEnabled === true;
-  const pendingMandatory2FA =
-    isLoggedIn && role && requiresMandatory2FA(role) && !twoFactorEnabled;
+  const pendingMandatory2FA = isLoggedIn && role && requiresMandatory2FA(role) && !twoFactorEnabled;
 
   const isSetup2faPage = pathname === '/setup-2fa';
   const is2faApi = pathname.startsWith('/api/auth/2fa/');

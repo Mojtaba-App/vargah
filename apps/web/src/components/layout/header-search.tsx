@@ -64,14 +64,14 @@ export function HeaderSearch({
     return (
       <form onSubmit={submit} className={cn('w-full', className)} role="search" aria-label={label}>
         <div className="relative">
-          <SearchIcon className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <SearchIcon className="text-muted-foreground pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2" />
           <input
             ref={inputRef}
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
-            className="h-11 w-full rounded-xl border border-border bg-muted/50 pe-4 ps-10 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary/40 focus:bg-background focus:ring-2 focus:ring-primary/15"
+            className="border-border bg-muted/50 placeholder:text-muted-foreground focus:border-primary/40 focus:bg-background focus:ring-primary/15 h-11 w-full rounded-xl border ps-10 pe-4 text-sm transition-colors outline-none focus:ring-2"
           />
         </div>
       </form>
@@ -97,21 +97,21 @@ export function HeaderSearch({
           onSubmit={submit}
           role="search"
           aria-label={label}
-          className="absolute end-0 top-0 z-30 flex h-9 w-[min(18rem,calc(100vw-7rem))] items-center gap-2 rounded-full border border-border bg-background px-3 shadow-lg ring-1 ring-primary/10"
+          className="border-border bg-background ring-primary/10 absolute end-0 top-0 z-30 flex h-9 w-[min(18rem,calc(100vw-7rem))] items-center gap-2 rounded-full border px-3 shadow-lg ring-1"
         >
-          <SearchIcon className="size-4 shrink-0 text-muted-foreground" />
+          <SearchIcon className="text-muted-foreground size-4 shrink-0" />
           <input
             ref={inputRef}
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            className="placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-sm outline-none"
           />
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex size-6 shrink-0 items-center justify-center rounded-full"
             aria-label="بستن جستجو"
           >
             <CloseIcon />

@@ -2,12 +2,7 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export type SocialNetwork =
-  | 'instagram'
-  | 'telegram'
-  | 'whatsapp'
-  | 'twitter'
-  | 'eitaa'
-  | 'linkedin';
+  'instagram' | 'telegram' | 'whatsapp' | 'twitter' | 'eitaa' | 'linkedin';
 
 export type SocialLinksMap = Partial<Record<SocialNetwork, string>>;
 
@@ -24,7 +19,8 @@ const networkMeta: Record<
 > = {
   instagram: {
     label: 'اینستاگرام',
-    hover: 'hover:border-pink-500/30 hover:bg-pink-500/10 hover:text-pink-600 dark:hover:text-pink-400',
+    hover:
+      'hover:border-pink-500/30 hover:bg-pink-500/10 hover:text-pink-600 dark:hover:text-pink-400',
     icon: InstagramIcon,
   },
   telegram: {
@@ -34,7 +30,8 @@ const networkMeta: Record<
   },
   whatsapp: {
     label: 'واتساپ',
-    hover: 'hover:border-green-500/30 hover:bg-green-500/10 hover:text-green-600 dark:hover:text-green-400',
+    hover:
+      'hover:border-green-500/30 hover:bg-green-500/10 hover:text-green-600 dark:hover:text-green-400',
     icon: WhatsAppIcon,
   },
   twitter: {
@@ -44,12 +41,14 @@ const networkMeta: Record<
   },
   eitaa: {
     label: 'ایتا',
-    hover: 'hover:border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400',
+    hover:
+      'hover:border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400',
     icon: EitaaIcon,
   },
   linkedin: {
     label: 'لینکدین',
-    hover: 'hover:border-blue-600/30 hover:bg-blue-600/10 hover:text-blue-700 dark:hover:text-blue-400',
+    hover:
+      'hover:border-blue-600/30 hover:bg-blue-600/10 hover:text-blue-700 dark:hover:text-blue-400',
     icon: LinkedInIcon,
   },
 };
@@ -85,8 +84,8 @@ export function SocialLinks({
               aria-label={meta.label}
               title={meta.label}
               className={cn(
-                'inline-flex items-center justify-center rounded-xl border border-border/80 bg-background/80 text-muted-foreground transition-all duration-200',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                'border-border/80 bg-background/80 text-muted-foreground inline-flex items-center justify-center rounded-xl border transition-all duration-200',
+                'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 sizeClasses[size],
                 meta.hover,
                 showLabels && 'h-auto min-h-10 w-auto gap-2 px-3 py-2',

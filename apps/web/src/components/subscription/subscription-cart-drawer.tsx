@@ -30,16 +30,16 @@ export function SubscriptionCartDrawer() {
         aria-label="بستن سبد"
         onClick={() => setDrawerOpen(false)}
       />
-      <aside className="absolute inset-y-0 end-0 flex w-[min(100%,24rem)] flex-col border-s border-border bg-background shadow-2xl">
-        <div className="flex items-center justify-between border-b border-border px-4 py-4">
+      <aside className="border-border bg-background absolute inset-y-0 end-0 flex w-[min(100%,24rem)] flex-col border-s shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b px-4 py-4">
           <div>
             <h2 className="text-base font-bold">سبد اشتراک</h2>
-            <p className="text-xs text-muted-foreground">{itemCount} مورد</p>
+            <p className="text-muted-foreground text-xs">{itemCount} مورد</p>
           </div>
           <button
             type="button"
             onClick={() => setDrawerOpen(false)}
-            className="rounded-lg px-2 py-1 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-lg px-2 py-1 text-sm"
           >
             بستن
           </button>
@@ -47,16 +47,16 @@ export function SubscriptionCartDrawer() {
 
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
           {items.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+            <p className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-8 text-center text-sm">
               سبد خالی است. یک پلن اشتراک اضافه کنید.
             </p>
           ) : (
             items.map((item) => (
-              <div key={item.planSlug} className="rounded-xl border border-border p-3">
+              <div key={item.planSlug} className="border-border rounded-xl border p-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">{item.name}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mt-0.5 text-xs">
                       {PLAN_TYPE_LABELS[item.type]} · {PLAN_PERIOD_LABELS[item.period]}
                     </p>
                     <p className="mt-1 text-sm tabular-nums">
@@ -67,13 +67,13 @@ export function SubscriptionCartDrawer() {
                   <button
                     type="button"
                     onClick={() => removeItem(item.planSlug)}
-                    className="text-xs text-destructive hover:underline"
+                    className="text-destructive text-xs hover:underline"
                   >
                     حذف
                   </button>
                 </div>
                 <div className="mt-3 flex items-center justify-between gap-2">
-                  <div className="inline-flex items-center rounded-lg border border-border">
+                  <div className="border-border inline-flex items-center rounded-lg border">
                     <button
                       type="button"
                       className="px-2.5 py-1.5 text-sm"
@@ -103,11 +103,11 @@ export function SubscriptionCartDrawer() {
           )}
         </div>
 
-        <div className="space-y-3 border-t border-border p-4">
+        <div className="border-border space-y-3 border-t p-4">
           {items.length > 0 && (
-            <p className="text-[11px] leading-relaxed text-muted-foreground">
-              اقلام سبد تا {SUBSCRIPTION_CART_TTL_DAYS} روز نگهداری می‌شوند و پس از آن به‌صورت خودکار حذف
-              می‌گردند.
+            <p className="text-muted-foreground text-[11px] leading-relaxed">
+              اقلام سبد تا {SUBSCRIPTION_CART_TTL_DAYS} روز نگهداری می‌شوند و پس از آن به‌صورت
+              خودکار حذف می‌گردند.
             </p>
           )}
           <div className="flex items-center justify-between text-sm">
@@ -125,7 +125,11 @@ export function SubscriptionCartDrawer() {
               className="flex-1"
               onClick={() => setDrawerOpen(false)}
             >
-              <Button type="button" className={cn('w-full rounded-xl')} disabled={items.length === 0}>
+              <Button
+                type="button"
+                className={cn('w-full rounded-xl')}
+                disabled={items.length === 0}
+              >
                 ادامه خرید
               </Button>
             </Link>

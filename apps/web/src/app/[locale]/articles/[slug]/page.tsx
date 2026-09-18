@@ -50,13 +50,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const dbArticle = await getCachedPublishedArticleBySlug(slug).catch(() => null);
-  const mockArticle =
-    process.env.NODE_ENV === 'production' ? null : getArticleBySlug(slug);
+  const mockArticle = process.env.NODE_ENV === 'production' ? null : getArticleBySlug(slug);
 
   const title = dbArticle?.metaTitle ?? dbArticle?.title ?? mockArticle?.title;
   const description =
     dbArticle?.metaDescription ?? dbArticle?.excerpt ?? mockArticle?.excerpt ?? undefined;
-  const image = pickDiscoverImage(dbArticle?.coverImage, dbArticle?.ogImage) ?? mockArticle?.coverImage;
+  const image =
+    pickDiscoverImage(dbArticle?.coverImage, dbArticle?.ogImage) ?? mockArticle?.coverImage;
   const imageUrl = image?.startsWith('http') ? image : image ? absoluteUrl(image) : undefined;
   const canonical = articleUrl(slug);
 
@@ -99,7 +99,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     const comments = await getCachedApprovedComments(dbArticle.id);
     const safeContent = sanitizeArticleHtml(article.content);
     const pageUrl = articleUrl(slug);
-    const discoverImage = pickDiscoverImage(dbArticle.coverImage, dbArticle.ogImage) ?? article.coverImage;
+    const discoverImage =
+      pickDiscoverImage(dbArticle.coverImage, dbArticle.ogImage) ?? article.coverImage;
 
     const jsonLd = buildNewsArticleJsonLd({
       title: article.title,
@@ -115,7 +116,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
     return (
       <>
-        <JsonLd data={[jsonLd, buildPeriodicalJsonLd({ number: 0, title: 'وارگه', slug: 'vargah' })]} />
+        <JsonLd
+          data={[jsonLd, buildPeriodicalJsonLd({ number: 0, title: 'وارگه', slug: 'vargah' })]}
+        />
         <AnalyticsProvider articleId={dbArticle.id} />
         <Container className="py-6">
           <Breadcrumb
@@ -129,7 +132,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <Container className="pb-12">
           <article className="mx-auto max-w-3xl">
             <FadeIn>
-              <ArticleMeta article={article} author={meta.author} category={meta.category} tags={meta.tags} />
+              <ArticleMeta
+                article={article}
+                author={meta.author}
+                category={meta.category}
+                tags={meta.tags}
+              />
             </FadeIn>
             <FadeIn delay={0.05}>
               <OptimizedImage
@@ -144,7 +152,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <FadeIn delay={0.1}>
               <div className="prose-content" dangerouslySetInnerHTML={{ __html: safeContent }} />
             </FadeIn>
-            <div className="mt-8 border-t border-border pt-6">
+            <div className="border-border mt-8 border-t pt-6">
               <ShareButtons title={article.title} url={pageUrl} />
             </div>
           </article>
@@ -208,7 +216,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <FadeIn delay={0.1}>
             <div className="prose-content" dangerouslySetInnerHTML={{ __html: safeContent }} />
           </FadeIn>
-          <div className="mt-8 border-t border-border pt-6">
+          <div className="border-border mt-8 border-t pt-6">
             <ShareButtons title={article.title} url={pageUrl} />
           </div>
         </article>

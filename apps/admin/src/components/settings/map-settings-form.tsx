@@ -29,8 +29,14 @@ type MapSettingsFormProps = {
 };
 
 const BASEMAP_OPTIONS: Array<{ id: MapLayerId; label: string }> = [
-  ...Object.entries(FREE_MAP_LAYERS).map(([id, layer]) => ({ id: id as MapLayerId, label: layer.label })),
-  ...Object.entries(GOOGLE_MAP_LAYERS).map(([id, layer]) => ({ id: id as MapLayerId, label: layer.label })),
+  ...Object.entries(FREE_MAP_LAYERS).map(([id, layer]) => ({
+    id: id as MapLayerId,
+    label: layer.label,
+  })),
+  ...Object.entries(GOOGLE_MAP_LAYERS).map(([id, layer]) => ({
+    id: id as MapLayerId,
+    label: layer.label,
+  })),
 ];
 
 function emptyCustomLayer(index: number): CustomGeoLayer {
@@ -98,7 +104,11 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
       ...current,
       customLayers: [...current.customLayers, emptyCustomLayer(current.customLayers.length)],
     }));
-    showFeedback('layers', 'success', 'لایه جدید اضافه شد — فایل یا آدرس را تنظیم کنید و ذخیره کنید.');
+    showFeedback(
+      'layers',
+      'success',
+      'لایه جدید اضافه شد — فایل یا آدرس را تنظیم کنید و ذخیره کنید.',
+    );
   }
 
   async function handleLayerFile(file: File) {
@@ -192,7 +202,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-border bg-card p-5 space-y-4">
+      <section className="border-border bg-card space-y-4 rounded-2xl border p-5">
         {feedback?.section === 'google' && (
           <StatusBanner
             type={feedback.type}
@@ -203,7 +213,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="font-bold">Google Maps</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               پیش‌فرض غیرفعال — تا زمان وارد کردن API Key هیچ درخواستی به Google ارسال نمی‌شود.
             </p>
           </div>
@@ -217,7 +227,9 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
             type="checkbox"
             checked={config.googleEnabled}
             disabled={!canEdit}
-            onChange={(event) => setConfig((current) => ({ ...current, googleEnabled: event.target.checked }))}
+            onChange={(event) =>
+              setConfig((current) => ({ ...current, googleEnabled: event.target.checked }))
+            }
           />
           فعال‌سازی Google Maps (Road / Satellite / Hybrid)
         </label>
@@ -231,7 +243,9 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
               disabled={!canEdit}
               value={config.googleApiKey}
               placeholder={hasStoredKey ? 'برای تغییر وارد کنید' : 'AIza...'}
-              onChange={(event) => setConfig((current) => ({ ...current, googleApiKey: event.target.value }))}
+              onChange={(event) =>
+                setConfig((current) => ({ ...current, googleApiKey: event.target.value }))
+              }
             />
           </div>
           <div className="space-y-2">
@@ -246,7 +260,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
                   defaultBasemap: event.target.value as MapLayerId,
                 }))
               }
-              className="h-10 w-full rounded-xl border border-input bg-background px-3 text-sm"
+              className="border-input bg-background h-10 w-full rounded-xl border px-3 text-sm"
             >
               {BASEMAP_OPTIONS.map((option) => (
                 <option key={option.id} value={option.id}>
@@ -258,7 +272,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-5 space-y-4">
+      <section className="border-border bg-card space-y-4 rounded-2xl border p-5">
         {feedback?.section === 'visibility' && (
           <StatusBanner
             type={feedback.type}
@@ -269,24 +283,30 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         <h2 className="font-bold">لایه‌های قابل نمایش</h2>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {Object.entries(DEFAULT_LAYER_VISIBILITY).map(([key]) => (
-            <label key={key} className="flex items-center gap-2 rounded-xl border border-border/70 px-3 py-2 text-sm">
+            <label
+              key={key}
+              className="border-border/70 flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"
+            >
               <input
                 type="checkbox"
                 disabled={!canEdit}
                 checked={config.layerVisibility[key as keyof MapConfig['layerVisibility']]}
                 onChange={(event) =>
-                  updateLayerVisibility(key as keyof MapConfig['layerVisibility'], event.target.checked)
+                  updateLayerVisibility(
+                    key as keyof MapConfig['layerVisibility'],
+                    event.target.checked,
+                  )
                 }
               />
               {key.startsWith('google')
                 ? GOOGLE_MAP_LAYERS[key as keyof typeof GOOGLE_MAP_LAYERS]?.label
-                : FREE_MAP_LAYERS[key as keyof typeof FREE_MAP_LAYERS]?.label ?? key}
+                : (FREE_MAP_LAYERS[key as keyof typeof FREE_MAP_LAYERS]?.label ?? key)}
             </label>
           ))}
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-5 space-y-4">
+      <section className="border-border bg-card space-y-4 rounded-2xl border p-5">
         {feedback?.section === 'layers' && (
           <StatusBanner
             type={feedback.type}
@@ -297,7 +317,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-bold">لایه‌های GeoJSON / KMZ سفارشی</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               آپلود GeoJSON، KML یا KMZ — یا افزودن دستی با آدرس
             </p>
           </div>
@@ -323,7 +343,13 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
               >
                 آپلود فایل لایه
               </LoadingButton>
-              <Button type="button" size="sm" variant="outline" className="rounded-full" onClick={addEmptyLayer}>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="rounded-full"
+                onClick={addEmptyLayer}
+              >
                 افزودن لایه دستی
               </Button>
             </div>
@@ -341,24 +367,26 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
               const file = event.dataTransfer.files?.[0];
               if (file) void handleLayerFile(file);
             }}
-            className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-muted/20 px-4 py-8 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:bg-muted/40"
+            className="border-border bg-muted/20 text-muted-foreground hover:border-primary/40 hover:bg-muted/40 flex w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-8 text-sm transition-colors"
           >
-            <span className="font-medium text-foreground">کشیدن و رها کردن فایل لایه</span>
+            <span className="text-foreground font-medium">کشیدن و رها کردن فایل لایه</span>
             <span>GeoJSON · KML · KMZ</span>
           </button>
         )}
 
         {config.customLayers.length === 0 && (
-          <p className="text-sm text-muted-foreground">لایه سفارشی تعریف نشده است.</p>
+          <p className="text-muted-foreground text-sm">لایه سفارشی تعریف نشده است.</p>
         )}
 
         <div className="space-y-4">
           {config.customLayers.map((layer, index) => (
-            <div key={layer.id} className="space-y-3 rounded-xl border border-border/70 p-4">
+            <div key={layer.id} className="border-border/70 space-y-3 rounded-xl border p-4">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline">{layer.sourceFormat?.toUpperCase() ?? 'URL'}</Badge>
                 {layer.originalFileName && (
-                  <span className="truncate text-xs text-muted-foreground">{layer.originalFileName}</span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {layer.originalFileName}
+                  </span>
                 )}
               </div>
               <div className="grid gap-3 md:grid-cols-2">
@@ -405,8 +433,10 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
                     step={0.05}
                     disabled={!canEdit}
                     value={layer.opacity}
-                    onChange={(event) => updateCustomLayer(index, { opacity: Number(event.target.value) })}
-                    className="mt-3 w-full accent-primary"
+                    onChange={(event) =>
+                      updateCustomLayer(index, { opacity: Number(event.target.value) })
+                    }
+                    className="accent-primary mt-3 w-full"
                   />
                 </div>
                 <label className="flex items-end gap-2 pb-2 text-sm">
@@ -414,7 +444,9 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
                     type="checkbox"
                     disabled={!canEdit}
                     checked={layer.enabled}
-                    onChange={(event) => updateCustomLayer(index, { enabled: event.target.checked })}
+                    onChange={(event) =>
+                      updateCustomLayer(index, { enabled: event.target.checked })
+                    }
                   />
                   فعال
                 </label>
@@ -435,7 +467,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         </div>
       </section>
 
-      <section className="rounded-2xl border border-border bg-card p-5 space-y-3">
+      <section className="border-border bg-card space-y-3 rounded-2xl border p-5">
         {feedback?.section === 'entities' && (
           <StatusBanner
             type={feedback.type}
@@ -469,7 +501,7 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         <Textarea
           readOnly
           value="پیام‌ها و آگهی‌دهندگان فقط وقتی روی نقشه دیده می‌شوند که استان/شهر معتبر و cityId ثبت شده باشد."
-          className="min-h-16 text-xs text-muted-foreground"
+          className="text-muted-foreground min-h-16 text-xs"
         />
       </section>
 
@@ -477,10 +509,10 @@ export function MapSettingsForm({ initialConfig, canEdit }: MapSettingsFormProps
         <div className="space-y-3">
           {feedback?.section === 'save' && (
             <StatusBanner
-            type={feedback.type}
-            message={feedback.message}
-            onDismiss={feedback.type === 'error' ? undefined : () => setFeedback(null)}
-          />
+              type={feedback.type}
+              message={feedback.message}
+              onDismiss={feedback.type === 'error' ? undefined : () => setFeedback(null)}
+            />
           )}
           <LoadingButton type="button" loading={isPending} onClick={handleSave}>
             ذخیره تنظیمات نقشه

@@ -113,16 +113,21 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-2xl font-bold tabular-nums">{typeof value === 'number' ? formatNumber(value) : value}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-2xl font-bold tabular-nums">
+        {typeof value === 'number' ? formatNumber(value) : value}
+      </p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
 
-export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManage }: AdvertisersWorkspaceProps) {
+export function AdvertisersWorkspace({
+  advertisers: initialAdvertisers,
+  canManage,
+}: AdvertisersWorkspaceProps) {
   const router = useRouter();
   const [advertisers, setAdvertisers] = useState(initialAdvertisers);
   const [tab, setTab] = useState<Tab>('advertisers');
@@ -148,14 +153,19 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
   const allCampaigns = useMemo(
     () =>
       advertisers.flatMap((advertiser) =>
-        advertiser.campaigns.map((campaign) => ({ ...campaign, companyName: advertiser.companyName })),
+        advertiser.campaigns.map((campaign) => ({
+          ...campaign,
+          companyName: advertiser.companyName,
+        })),
       ),
     [advertisers],
   );
 
   const stats = useMemo(() => {
     const active = allCampaigns.filter((c) => c.status === AdCampaignStatus.ACTIVE).length;
-    const running = allCampaigns.filter((c) => isCampaignRunning(c.status, c.startDate, c.endDate)).length;
+    const running = allCampaigns.filter((c) =>
+      isCampaignRunning(c.status, c.startDate, c.endDate),
+    ).length;
     const draft = allCampaigns.filter((c) => c.status === AdCampaignStatus.DRAFT).length;
     const activeTariff = allCampaigns
       .filter((c) => c.status === AdCampaignStatus.ACTIVE)
@@ -175,7 +185,14 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
     return advertisers.filter((advertiser) => {
       if (!matchesGeoFilter(advertiser, provinceFilter, cityFilter)) return false;
       if (!q) return true;
-      return [advertiser.companyName, advertiser.contactName, advertiser.email, advertiser.phone ?? '', advertiser.province ?? '', advertiser.city ?? '']
+      return [
+        advertiser.companyName,
+        advertiser.contactName,
+        advertiser.email,
+        advertiser.phone ?? '',
+        advertiser.province ?? '',
+        advertiser.city ?? '',
+      ]
         .join(' ')
         .toLowerCase()
         .includes(q);
@@ -195,12 +212,25 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
   }, [allCampaigns, statusFilter, debouncedSearch]);
 
   const advertiserForm = useForm<AdvertiserFormValues>({
-    resolver: zodResolver(advertiserFormSchema) as import('react-hook-form').Resolver<AdvertiserFormValues>,
-    defaultValues: { companyName: '', contactName: '', email: '', phone: '', province: '', city: '', address: '', notes: '' },
+    resolver: zodResolver(
+      advertiserFormSchema,
+    ) as import('react-hook-form').Resolver<AdvertiserFormValues>,
+    defaultValues: {
+      companyName: '',
+      contactName: '',
+      email: '',
+      phone: '',
+      province: '',
+      city: '',
+      address: '',
+      notes: '',
+    },
   });
 
   const campaignForm = useForm<CampaignFormValues>({
-    resolver: zodResolver(campaignFormSchema) as import('react-hook-form').Resolver<CampaignFormValues>,
+    resolver: zodResolver(
+      campaignFormSchema,
+    ) as import('react-hook-form').Resolver<CampaignFormValues>,
     defaultValues: {
       advertiserId: '',
       title: '',
@@ -228,7 +258,16 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
       setEditingAdvertiser(row);
       setSelectedAdvertiser(row);
     } else {
-      advertiserForm.reset({ companyName: '', contactName: '', email: '', phone: '', province: '', city: '', address: '', notes: '' });
+      advertiserForm.reset({
+        companyName: '',
+        contactName: '',
+        email: '',
+        phone: '',
+        province: '',
+        city: '',
+        address: '',
+        notes: '',
+      });
       setEditingAdvertiser(null);
     }
     setTab('advertisers');
@@ -338,13 +377,21 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
       accessorKey: 'companyName',
       header: 'شرکت',
       cell: ({ row }) => (
-        <button type="button" className="text-start" onClick={() => resetAdvertiserForm(row.original)}>
+        <button
+          type="button"
+          className="text-start"
+          onClick={() => resetAdvertiserForm(row.original)}
+        >
           <p className="font-medium">{row.original.companyName}</p>
-          <p className="text-xs text-muted-foreground">{row.original.contactName}</p>
+          <p className="text-muted-foreground text-xs">{row.original.contactName}</p>
         </button>
       ),
     },
-    { accessorKey: 'email', header: 'ایمیل', cell: ({ row }) => <span dir="ltr">{row.original.email}</span> },
+    {
+      accessorKey: 'email',
+      header: 'ایمیل',
+      cell: ({ row }) => <span dir="ltr">{row.original.email}</span>,
+    },
     { accessorKey: 'phone', header: 'تلفن', cell: ({ row }) => row.original.phone ?? '—' },
     {
       accessorKey: '_count.campaigns',
@@ -385,9 +432,13 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
       accessorKey: 'title',
       header: 'کمپین',
       cell: ({ row }) => (
-        <button type="button" className="text-start" onClick={() => resetCampaignForm(row.original)}>
+        <button
+          type="button"
+          className="text-start"
+          onClick={() => resetCampaignForm(row.original)}
+        >
           <p className="font-medium">{row.original.title}</p>
-          <p className="text-xs text-muted-foreground">{row.original.companyName}</p>
+          <p className="text-muted-foreground text-xs">{row.original.companyName}</p>
         </button>
       ),
     },
@@ -448,13 +499,19 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
           label="فعال"
           value={stats.active}
           active={statusFilter === AdCampaignStatus.ACTIVE}
-          onClick={() => { setTab('campaigns'); setStatusFilter(AdCampaignStatus.ACTIVE); }}
+          onClick={() => {
+            setTab('campaigns');
+            setStatusFilter(AdCampaignStatus.ACTIVE);
+          }}
         />
         <StatCard
           label="پیش‌نویس"
           value={stats.draft}
           active={statusFilter === AdCampaignStatus.DRAFT}
-          onClick={() => { setTab('campaigns'); setStatusFilter(AdCampaignStatus.DRAFT); }}
+          onClick={() => {
+            setTab('campaigns');
+            setStatusFilter(AdCampaignStatus.DRAFT);
+          }}
         />
         <StatCard label="ارزش کمپین‌های فعال" value={`${formatPrice(stats.activeTariff)} ت`} />
       </div>
@@ -467,7 +524,9 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
           onClick={() => setTab('advertisers')}
         >
           شرکت‌ها
-          <Badge variant="secondary" className="ms-2">{advertisers.length}</Badge>
+          <Badge variant="secondary" className="ms-2">
+            {advertisers.length}
+          </Badge>
         </Button>
         <Button
           type="button"
@@ -476,7 +535,9 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
           onClick={() => setTab('campaigns')}
         >
           کمپین‌ها
-          <Badge variant="secondary" className="ms-2">{allCampaigns.length}</Badge>
+          <Badge variant="secondary" className="ms-2">
+            {allCampaigns.length}
+          </Badge>
         </Button>
         <ExportToolbar
           title={tab === 'campaigns' ? 'گزارش کمپین‌های تبلیغاتی' : 'گزارش آگهی‌دهندگان'}
@@ -529,7 +590,9 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
 
       <SearchInput
         id="advertiser-search"
-        placeholder={tab === 'advertisers' ? 'جستجوی شرکت، مسئول، ایمیل...' : 'جستجوی کمپین، شرکت، نوع...'}
+        placeholder={
+          tab === 'advertisers' ? 'جستجوی شرکت، مسئول، ایمیل...' : 'جستجوی کمپین، شرکت، نوع...'
+        }
         value={search}
         onChange={setSearch}
       />
@@ -546,7 +609,16 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
 
       {tab === 'campaigns' && (
         <div className="flex flex-wrap gap-2">
-          {(['ALL', AdCampaignStatus.ACTIVE, AdCampaignStatus.DRAFT, AdCampaignStatus.PAUSED, AdCampaignStatus.COMPLETED, AdCampaignStatus.CANCELLED] as const).map((status) => (
+          {(
+            [
+              'ALL',
+              AdCampaignStatus.ACTIVE,
+              AdCampaignStatus.DRAFT,
+              AdCampaignStatus.PAUSED,
+              AdCampaignStatus.COMPLETED,
+              AdCampaignStatus.CANCELLED,
+            ] as const
+          ).map((status) => (
             <Button
               key={status}
               type="button"
@@ -568,9 +640,16 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
               {tab === 'advertisers' ? (
                 <>
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold">{editingAdvertiser ? 'ویرایش شرکت' : 'شرکت جدید'}</p>
+                    <p className="font-semibold">
+                      {editingAdvertiser ? 'ویرایش شرکت' : 'شرکت جدید'}
+                    </p>
                     {editingAdvertiser && (
-                      <Button type="button" variant="ghost" size="sm" onClick={() => resetAdvertiserForm(null)}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => resetAdvertiserForm(null)}
+                      >
                         انصراف
                       </Button>
                     )}
@@ -578,22 +657,44 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                   <form onSubmit={submitAdvertiser} noValidate className="space-y-3">
                     <div>
                       <Label required>نام شرکت</Label>
-                      <Input className="mt-2 rounded-xl" disabled={isPending} {...advertiserForm.register('companyName')} />
-                      <FieldMessage message={advertiserForm.formState.errors.companyName?.message} />
+                      <Input
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...advertiserForm.register('companyName')}
+                      />
+                      <FieldMessage
+                        message={advertiserForm.formState.errors.companyName?.message}
+                      />
                     </div>
                     <div>
                       <Label required>مسئول</Label>
-                      <Input className="mt-2 rounded-xl" disabled={isPending} {...advertiserForm.register('contactName')} />
-                      <FieldMessage message={advertiserForm.formState.errors.contactName?.message} />
+                      <Input
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...advertiserForm.register('contactName')}
+                      />
+                      <FieldMessage
+                        message={advertiserForm.formState.errors.contactName?.message}
+                      />
                     </div>
                     <div>
                       <Label required>ایمیل</Label>
-                      <Input className="mt-2 rounded-xl" dir="ltr" disabled={isPending} {...advertiserForm.register('email')} />
+                      <Input
+                        className="mt-2 rounded-xl"
+                        dir="ltr"
+                        disabled={isPending}
+                        {...advertiserForm.register('email')}
+                      />
                       <FieldMessage message={advertiserForm.formState.errors.email?.message} />
                     </div>
                     <div>
                       <Label>تلفن</Label>
-                      <Input className="mt-2 rounded-xl" dir="ltr" disabled={isPending} {...advertiserForm.register('phone')} />
+                      <Input
+                        className="mt-2 rounded-xl"
+                        dir="ltr"
+                        disabled={isPending}
+                        {...advertiserForm.register('phone')}
+                      />
                     </div>
                     <Controller
                       name="province"
@@ -618,11 +719,21 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                     />
                     <div>
                       <Label>آدرس (خیابان و پلاک)</Label>
-                      <Textarea rows={2} className="mt-2 rounded-xl" disabled={isPending} {...advertiserForm.register('address')} />
+                      <Textarea
+                        rows={2}
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...advertiserForm.register('address')}
+                      />
                     </div>
                     <div>
                       <Label>یادداشت قرارداد</Label>
-                      <Textarea rows={2} className="mt-2 rounded-xl" disabled={isPending} {...advertiserForm.register('notes')} />
+                      <Textarea
+                        rows={2}
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...advertiserForm.register('notes')}
+                      />
                     </div>
                     <LoadingButton type="submit" loading={isPending} className="w-full rounded-xl">
                       {editingAdvertiser ? 'ذخیره شرکت' : 'افزودن شرکت'}
@@ -632,9 +743,16 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
               ) : (
                 <>
                   <div className="flex items-center justify-between">
-                    <p className="font-semibold">{editingCampaign ? 'ویرایش کمپین' : 'کمپین جدید'}</p>
+                    <p className="font-semibold">
+                      {editingCampaign ? 'ویرایش کمپین' : 'کمپین جدید'}
+                    </p>
                     {editingCampaign && (
-                      <Button type="button" variant="ghost" size="sm" onClick={() => resetCampaignForm(null)}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => resetCampaignForm(null)}
+                      >
                         انصراف
                       </Button>
                     )}
@@ -642,31 +760,53 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                   <form onSubmit={submitCampaign} noValidate className="space-y-3">
                     <div>
                       <Label required>شرکت</Label>
-                      <Select className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('advertiserId')}>
+                      <Select
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('advertiserId')}
+                      >
                         <option value="">انتخاب شرکت</option>
                         {advertisers.map((a) => (
-                          <option key={a.id} value={a.id}>{a.companyName}</option>
+                          <option key={a.id} value={a.id}>
+                            {a.companyName}
+                          </option>
                         ))}
                       </Select>
                       <FieldMessage message={campaignForm.formState.errors.advertiserId?.message} />
                     </div>
                     <div>
                       <Label required>عنوان کمپین</Label>
-                      <Input className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('title')} />
+                      <Input
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('title')}
+                      />
                       <FieldMessage message={campaignForm.formState.errors.title?.message} />
                     </div>
                     <div>
                       <Label required>نوع</Label>
-                      <Select className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('type')}>
+                      <Select
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('type')}
+                      >
                         <option value="">انتخاب نوع</option>
                         {CAMPAIGN_TYPES.map((t) => (
-                          <option key={t.value} value={t.value}>{t.label}</option>
+                          <option key={t.value} value={t.value}>
+                            {t.label}
+                          </option>
                         ))}
                       </Select>
                     </div>
                     <div>
                       <Label required>تعرفه (تومان)</Label>
-                      <Input type="number" min={0} className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('tariff')} />
+                      <Input
+                        type="number"
+                        min={0}
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('tariff')}
+                      />
                       <div className="mt-2 flex flex-wrap gap-1">
                         {TARIFF_PRESETS.map((preset) => (
                           <Button
@@ -676,7 +816,9 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                             size="sm"
                             className="rounded-lg text-xs"
                             disabled={isPending}
-                            onClick={() => campaignForm.setValue('tariff', preset.value, { shouldDirty: true })}
+                            onClick={() =>
+                              campaignForm.setValue('tariff', preset.value, { shouldDirty: true })
+                            }
                           >
                             {preset.label}
                           </Button>
@@ -714,15 +856,26 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                     <FieldMessage message={campaignForm.formState.errors.endDate?.message} />
                     <div>
                       <Label>وضعیت</Label>
-                      <Select className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('status')}>
+                      <Select
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('status')}
+                      >
                         {Object.entries(CAMPAIGN_STATUS_LABELS).map(([value, label]) => (
-                          <option key={value} value={value}>{label}</option>
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
                         ))}
                       </Select>
                     </div>
                     <div>
                       <Label>یادداشت</Label>
-                      <Textarea rows={2} className="mt-2 rounded-xl" disabled={isPending} {...campaignForm.register('notes')} />
+                      <Textarea
+                        rows={2}
+                        className="mt-2 rounded-xl"
+                        disabled={isPending}
+                        {...campaignForm.register('notes')}
+                      />
                     </div>
                     <LoadingButton type="submit" loading={isPending} className="w-full rounded-xl">
                       {editingCampaign ? 'ذخیره کمپین' : 'افزودن کمپین'}
@@ -737,56 +890,100 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
         <div className={cn('space-y-4', canManage ? 'xl:col-span-2' : 'xl:col-span-3')}>
           {tab === 'advertisers' ? (
             <>
-              <DataTable columns={advertiserColumns} data={filteredAdvertisers} showSearch={false} />
+              <DataTable
+                columns={advertiserColumns}
+                data={filteredAdvertisers}
+                showSearch={false}
+              />
               {selectedAdvertiser && (
                 <Card className="rounded-2xl">
                   <CardContent className="space-y-4 pt-6">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <p className="text-lg font-semibold">{selectedAdvertiser.companyName}</p>
-                        <p className="text-sm text-muted-foreground">{selectedAdvertiser.contactName}</p>
+                        <p className="text-muted-foreground text-sm">
+                          {selectedAdvertiser.contactName}
+                        </p>
                       </div>
                       {canManage && (
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="rounded-xl" onClick={() => resetCampaignForm(null, selectedAdvertiser.id)}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-xl"
+                            onClick={() => resetCampaignForm(null, selectedAdvertiser.id)}
+                          >
                             کمپین جدید
                           </Button>
-                          <Button size="sm" variant="destructive" className="rounded-xl" onClick={() => setDeleteAdvertiserTarget(selectedAdvertiser)}>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            className="rounded-xl"
+                            onClick={() => setDeleteAdvertiserTarget(selectedAdvertiser)}
+                          >
                             حذف
                           </Button>
                         </div>
                       )}
                     </div>
-                    <div className="grid gap-3 sm:grid-cols-2 text-sm">
-                      <div><p className="text-muted-foreground">ایمیل</p><p dir="ltr">{selectedAdvertiser.email}</p></div>
-                      <div><p className="text-muted-foreground">تلفن</p><p dir="ltr">{selectedAdvertiser.phone ?? '—'}</p></div>
+                    <div className="grid gap-3 text-sm sm:grid-cols-2">
+                      <div>
+                        <p className="text-muted-foreground">ایمیل</p>
+                        <p dir="ltr">{selectedAdvertiser.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">تلفن</p>
+                        <p dir="ltr">{selectedAdvertiser.phone ?? '—'}</p>
+                      </div>
                       <div>
                         <p className="text-muted-foreground">موقعیت</p>
-                        <p>{formatIranLocation(selectedAdvertiser.province, selectedAdvertiser.city) ?? '—'}</p>
+                        <p>
+                          {formatIranLocation(
+                            selectedAdvertiser.province,
+                            selectedAdvertiser.city,
+                          ) ?? '—'}
+                        </p>
                       </div>
-                      <div><p className="text-muted-foreground">کمپین‌ها</p><p>{formatNumber(selectedAdvertiser._count.campaigns)}</p></div>
-                      <div><p className="text-muted-foreground">پرداخت‌ها</p><p>{formatNumber(selectedAdvertiser._count.payments)}</p></div>
+                      <div>
+                        <p className="text-muted-foreground">کمپین‌ها</p>
+                        <p>{formatNumber(selectedAdvertiser._count.campaigns)}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">پرداخت‌ها</p>
+                        <p>{formatNumber(selectedAdvertiser._count.payments)}</p>
+                      </div>
                     </div>
                     {selectedAdvertiser.address && (
-                      <p className="rounded-xl bg-muted/40 p-3 text-sm">
+                      <p className="bg-muted/40 rounded-xl p-3 text-sm">
                         <span className="text-muted-foreground">آدرس: </span>
                         {selectedAdvertiser.address}
                       </p>
                     )}
                     {selectedAdvertiser.notes && (
-                      <p className="rounded-xl bg-muted/40 p-3 text-sm">{selectedAdvertiser.notes}</p>
+                      <p className="bg-muted/40 rounded-xl p-3 text-sm">
+                        {selectedAdvertiser.notes}
+                      </p>
                     )}
                     {selectedAdvertiser.campaigns.length > 0 && (
                       <div className="space-y-2">
                         <p className="font-medium">کمپین‌های این شرکت</p>
                         <ul className="space-y-2">
                           {selectedAdvertiser.campaigns.map((c) => (
-                            <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-muted/40 px-3 py-2 text-sm">
-                              <button type="button" className="text-start hover:underline" onClick={() => resetCampaignForm(c)}>
+                            <li
+                              key={c.id}
+                              className="bg-muted/40 flex flex-wrap items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm"
+                            >
+                              <button
+                                type="button"
+                                className="text-start hover:underline"
+                                onClick={() => resetCampaignForm(c)}
+                              >
                                 {c.title}
                               </button>
                               <div className="flex items-center gap-2">
-                                <Badge variant={CAMPAIGN_STATUS_VARIANT[c.status]}>{CAMPAIGN_STATUS_LABELS[c.status]}</Badge>
+                                <Badge variant={CAMPAIGN_STATUS_VARIANT[c.status]}>
+                                  {CAMPAIGN_STATUS_LABELS[c.status]}
+                                </Badge>
                                 <span>{formatPrice(c.tariff)} ت</span>
                               </div>
                             </li>
@@ -807,55 +1004,138 @@ export function AdvertisersWorkspace({ advertisers: initialAdvertisers, canManag
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <p className="text-lg font-semibold">{selectedCampaign.title}</p>
-                        <p className="text-sm text-muted-foreground">{selectedCampaign.companyName}</p>
+                        <p className="text-muted-foreground text-sm">
+                          {selectedCampaign.companyName}
+                        </p>
                         <div className="mt-2 flex flex-wrap gap-1">
                           <Badge variant={CAMPAIGN_STATUS_VARIANT[selectedCampaign.status]}>
                             {CAMPAIGN_STATUS_LABELS[selectedCampaign.status]}
                           </Badge>
-                          {isCampaignRunning(selectedCampaign.status, selectedCampaign.startDate, selectedCampaign.endDate) && (
-                            <Badge variant="secondary">در حال اجرا</Badge>
-                          )}
+                          {isCampaignRunning(
+                            selectedCampaign.status,
+                            selectedCampaign.startDate,
+                            selectedCampaign.endDate,
+                          ) && <Badge variant="secondary">در حال اجرا</Badge>}
                         </div>
                       </div>
                       {canManage && (
                         <div className="flex flex-wrap gap-2">
                           {selectedCampaign.status === AdCampaignStatus.DRAFT && (
-                            <Button size="sm" className="rounded-xl" disabled={isPending} onClick={() => runAction(() => updateCampaignStatus(selectedCampaign.id, AdCampaignStatus.ACTIVE), 'کمپین فعال شد.')}>
+                            <Button
+                              size="sm"
+                              className="rounded-xl"
+                              disabled={isPending}
+                              onClick={() =>
+                                runAction(
+                                  () =>
+                                    updateCampaignStatus(
+                                      selectedCampaign.id,
+                                      AdCampaignStatus.ACTIVE,
+                                    ),
+                                  'کمپین فعال شد.',
+                                )
+                              }
+                            >
                               فعال‌سازی
                             </Button>
                           )}
                           {selectedCampaign.status === AdCampaignStatus.ACTIVE && (
-                            <Button size="sm" variant="outline" className="rounded-xl" disabled={isPending} onClick={() => runAction(() => updateCampaignStatus(selectedCampaign.id, AdCampaignStatus.PAUSED), 'کمپین متوقف شد.')}>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="rounded-xl"
+                              disabled={isPending}
+                              onClick={() =>
+                                runAction(
+                                  () =>
+                                    updateCampaignStatus(
+                                      selectedCampaign.id,
+                                      AdCampaignStatus.PAUSED,
+                                    ),
+                                  'کمپین متوقف شد.',
+                                )
+                              }
+                            >
                               توقف
                             </Button>
                           )}
-                          <Button size="sm" variant="outline" className="rounded-xl" disabled={isPending} onClick={() => runAction(() => recordCampaignPayment(selectedCampaign.id, selectedCampaign.tariff), 'پرداخت ثبت شد.')}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-xl"
+                            disabled={isPending}
+                            onClick={() =>
+                              runAction(
+                                () =>
+                                  recordCampaignPayment(
+                                    selectedCampaign.id,
+                                    selectedCampaign.tariff,
+                                  ),
+                                'پرداخت ثبت شد.',
+                              )
+                            }
+                          >
                             ثبت پرداخت
                           </Button>
-                          <Button size="sm" variant="destructive" className="rounded-xl" onClick={() => setDeleteCampaignTarget(selectedCampaign)}>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            className="rounded-xl"
+                            onClick={() => setDeleteCampaignTarget(selectedCampaign)}
+                          >
                             حذف
                           </Button>
                         </div>
                       )}
                     </div>
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">
-                      <div><p className="text-muted-foreground">نوع</p><p>{getCampaignTypeLabel(selectedCampaign.type)}</p></div>
-                      <div><p className="text-muted-foreground">تعرفه</p><p>{formatPrice(selectedCampaign.tariff)} تومان</p></div>
-                      <div><p className="text-muted-foreground">مدت</p><p>{formatNumber(getCampaignDurationDays(selectedCampaign.startDate, selectedCampaign.endDate))} روز</p></div>
-                      <div><p className="text-muted-foreground">شروع</p><p>{formatJalali(selectedCampaign.startDate, true)}</p></div>
-                      <div><p className="text-muted-foreground">پایان</p><p>{formatJalali(selectedCampaign.endDate, true)}</p></div>
+                    <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+                      <div>
+                        <p className="text-muted-foreground">نوع</p>
+                        <p>{getCampaignTypeLabel(selectedCampaign.type)}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">تعرفه</p>
+                        <p>{formatPrice(selectedCampaign.tariff)} تومان</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">مدت</p>
+                        <p>
+                          {formatNumber(
+                            getCampaignDurationDays(
+                              selectedCampaign.startDate,
+                              selectedCampaign.endDate,
+                            ),
+                          )}{' '}
+                          روز
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">شروع</p>
+                        <p>{formatJalali(selectedCampaign.startDate, true)}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">پایان</p>
+                        <p>{formatJalali(selectedCampaign.endDate, true)}</p>
+                      </div>
                     </div>
                     <div className="flex gap-2">
-                      <Link href="/finance" className="text-sm text-primary hover:underline">مشاهده مالی</Link>
+                      <Link href="/finance" className="text-primary text-sm hover:underline">
+                        مشاهده مالی
+                      </Link>
                     </div>
                     {selectedCampaign.payments.length > 0 && (
                       <div className="space-y-2">
                         <p className="font-medium">پرداخت‌ها</p>
                         <ul className="space-y-1 text-sm">
                           {selectedCampaign.payments.map((p) => (
-                            <li key={p.id} className="flex justify-between rounded-lg bg-muted/40 px-3 py-2">
+                            <li
+                              key={p.id}
+                              className="bg-muted/40 flex justify-between rounded-lg px-3 py-2"
+                            >
                               <span>{formatPrice(p.amount)} ت</span>
-                              <span className="text-muted-foreground">{p.paidAt ? formatJalali(p.paidAt) : formatJalali(p.createdAt)}</span>
+                              <span className="text-muted-foreground">
+                                {p.paidAt ? formatJalali(p.paidAt) : formatJalali(p.createdAt)}
+                              </span>
                             </li>
                           ))}
                         </ul>

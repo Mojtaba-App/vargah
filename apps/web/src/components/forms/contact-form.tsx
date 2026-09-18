@@ -14,7 +14,9 @@ const CONTACT_FIELDS = ['name', 'email', 'subject', 'body', 'province', 'city'] 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<(typeof CONTACT_FIELDS)[number], string>>>({});
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<(typeof CONTACT_FIELDS)[number], string>>
+  >({});
   const [province, setProvince] = useState('');
   const [city, setCity] = useState('');
   const [pending, startTransition] = useTransition();
@@ -77,19 +79,20 @@ export function ContactForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4"
-      aria-label="فرم تماس"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="space-y-4" aria-label="فرم تماس" noValidate>
       {error && (
-        <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       )}
       {submitted && (
-        <p role="status" className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400">
+        <p
+          role="status"
+          className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400"
+        >
           پیام شما دریافت شد. به‌زودی پاسخ می‌دهیم.
         </p>
       )}
@@ -111,7 +114,7 @@ export function ContactForm() {
             onChange={() => clearFieldError('name')}
           />
           {fieldErrors.name && (
-            <p id="contact-name-error" className="mt-1.5 text-xs text-destructive">
+            <p id="contact-name-error" className="text-destructive mt-1.5 text-xs">
               {fieldErrors.name}
             </p>
           )}
@@ -135,7 +138,7 @@ export function ContactForm() {
             onChange={() => clearFieldError('email')}
           />
           {fieldErrors.email && (
-            <p id="contact-email-error" className="mt-1.5 text-xs text-destructive">
+            <p id="contact-email-error" className="text-destructive mt-1.5 text-xs">
               {fieldErrors.email}
             </p>
           )}
@@ -157,7 +160,7 @@ export function ContactForm() {
           onChange={() => clearFieldError('subject')}
         />
         {fieldErrors.subject && (
-          <p id="contact-subject-error" className="mt-1.5 text-xs text-destructive">
+          <p id="contact-subject-error" className="text-destructive mt-1.5 text-xs">
             {fieldErrors.subject}
           </p>
         )}
@@ -180,7 +183,7 @@ export function ContactForm() {
         cityId="city"
       />
       {(fieldErrors.province || fieldErrors.city) && (
-        <p className="text-xs text-destructive">{fieldErrors.city || fieldErrors.province}</p>
+        <p className="text-destructive text-xs">{fieldErrors.city || fieldErrors.province}</p>
       )}
       <div>
         <Label htmlFor="contact-message" required>
@@ -200,7 +203,7 @@ export function ContactForm() {
           placeholder="پیام خود را بنویسید..."
         />
         {fieldErrors.body && (
-          <p id="contact-message-error" className="mt-1.5 text-xs text-destructive">
+          <p id="contact-message-error" className="text-destructive mt-1.5 text-xs">
             {fieldErrors.body}
           </p>
         )}

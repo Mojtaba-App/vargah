@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     "./globals.css": "./src/globals.css",
     "./tailwind.config": "./tailwind.config.ts",

@@ -8,10 +8,10 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
       <input
         type={type}
         className={cn(
-          'flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground',
+          'border-input bg-background text-foreground flex h-11 w-full rounded-md border px-3 py-2 text-sm',
           'placeholder:text-muted-foreground',
           'transition-colors duration-[var(--motion-duration-fast)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           'aria-[invalid=true]:border-destructive aria-[invalid=true]:ring-destructive/30',
           className,
@@ -31,10 +31,10 @@ const Textarea = React.forwardRef<
   return (
     <textarea
       className={cn(
-        'flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground',
+        'border-input bg-background text-foreground flex min-h-[120px] w-full rounded-md border px-3 py-2 text-sm',
         'placeholder:text-muted-foreground',
         'transition-colors duration-[var(--motion-duration-fast)]',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
         'disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
@@ -52,12 +52,12 @@ const Label = React.forwardRef<
   return (
     <label
       ref={ref}
-      className={cn('mb-1.5 block text-sm font-medium text-foreground', className)}
+      className={cn('text-foreground mb-1.5 block text-sm font-medium', className)}
       {...props}
     >
       {children}
       {required && (
-        <span className="ms-1 text-destructive" aria-hidden="true">
+        <span className="text-destructive ms-1" aria-hidden="true">
           *
         </span>
       )}
@@ -71,9 +71,9 @@ const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HT
     return (
       <select
         className={cn(
-          'flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground',
+          'border-input bg-background text-foreground flex h-11 w-full rounded-md border px-3 py-2 text-sm',
           'transition-colors duration-[var(--motion-duration-fast)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}

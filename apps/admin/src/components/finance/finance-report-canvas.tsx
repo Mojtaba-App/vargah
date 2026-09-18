@@ -64,11 +64,7 @@ export function FinanceReportCanvas({ payload }: FinanceReportCanvasProps) {
           value={`${formatPrice(payload.summary.monthlyIncome.advertisement)} ت`}
           tone="ad"
         />
-        <Kpi
-          label="تراکنش‌ها"
-          value={formatNumber(payload.summary.paymentCount)}
-          tone="muted"
-        />
+        <Kpi label="تراکنش‌ها" value={formatNumber(payload.summary.paymentCount)} tone="muted" />
       </section>
 
       <section className="rounded-2xl border border-[#d8e4e1] bg-white p-4">
@@ -79,7 +75,7 @@ export function FinanceReportCanvas({ payload }: FinanceReportCanvasProps) {
             <div key={row.type}>
               <div className="mb-1 flex items-center justify-between text-xs">
                 <span className="font-medium">{row.label}</span>
-                <span className="tabular-nums text-slate-600">
+                <span className="text-slate-600 tabular-nums">
                   {formatPrice(row.amount)} ت · {formatNumber(row.share)}٪
                 </span>
               </div>
@@ -107,7 +103,10 @@ export function FinanceReportCanvas({ payload }: FinanceReportCanvasProps) {
         <p className="mt-1 text-xs text-slate-500">{payload.narrative.monthlyInsight}</p>
         <div className="mt-4 space-y-2">
           {payload.trend.map((point) => (
-            <div key={point.key} className="grid grid-cols-[5.5rem_1fr_auto] items-center gap-3 text-xs">
+            <div
+              key={point.key}
+              className="grid grid-cols-[5.5rem_1fr_auto] items-center gap-3 text-xs"
+            >
               <span className="font-medium">{point.labelShort}</span>
               <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
                 <div
@@ -115,7 +114,7 @@ export function FinanceReportCanvas({ payload }: FinanceReportCanvasProps) {
                   style={{ width: `${(point.income / maxIncome) * 100}%` }}
                 />
               </div>
-              <span className="min-w-[7rem] text-end tabular-nums text-slate-600">
+              <span className="min-w-[7rem] text-end text-slate-600 tabular-nums">
                 {formatPrice(point.income)} ت
               </span>
             </div>
@@ -152,7 +151,7 @@ export function FinanceReportCanvas({ payload }: FinanceReportCanvasProps) {
             <div key={row.status} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
               <p className="text-[11px] text-slate-500">{row.label}</p>
               <p className="mt-1 text-lg font-bold tabular-nums">{formatNumber(row.count)}</p>
-              <p className="text-[11px] tabular-nums text-slate-600">{formatPrice(row.amount)} ت</p>
+              <p className="text-[11px] text-slate-600 tabular-nums">{formatPrice(row.amount)} ت</p>
             </div>
           ))}
         </div>

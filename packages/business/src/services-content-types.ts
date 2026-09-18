@@ -146,7 +146,10 @@ export function isAdSurfaceId(value: string): value is AdSurfaceId {
   return (AD_SURFACE_IDS as readonly string[]).includes(value);
 }
 
-export function getSchematicSlot(surface: AdSurfaceId, slotKey: string): AdSchematicSlotDef | undefined {
+export function getSchematicSlot(
+  surface: AdSurfaceId,
+  slotKey: string,
+): AdSchematicSlotDef | undefined {
   return AD_SCHEMATIC_SLOTS[surface].find((slot) => slot.key === slotKey);
 }
 

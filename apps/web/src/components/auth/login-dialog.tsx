@@ -6,10 +6,7 @@ import { Input, Label } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 
 import { sendCustomerOtp, verifyCustomerOtp, type CustomerSession } from '@/actions/customer-auth';
-import {
-  getLoginReasonMessage,
-  type LoginReason,
-} from '@/components/auth/customer-auth-provider';
+import { getLoginReasonMessage, type LoginReason } from '@/components/auth/customer-auth-provider';
 import { isValidIranPhone } from '@/lib/customer-auth/phone';
 import { cn } from '@/lib/utils';
 
@@ -121,7 +118,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
           <motion.button
             type="button"
             aria-label="بستن"
-            className="absolute inset-0 bg-foreground/40 backdrop-blur-sm"
+            className="bg-foreground/40 absolute inset-0 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -132,7 +129,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
             role="dialog"
             aria-modal="true"
             aria-labelledby="login-dialog-title"
-            className="relative z-10 w-full max-w-md rounded-t-3xl border border-border bg-background p-6 shadow-2xl sm:rounded-3xl"
+            className="border-border bg-background relative z-10 w-full max-w-md rounded-t-3xl border p-6 shadow-2xl sm:rounded-3xl"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
@@ -140,7 +137,9 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
           >
             <div className="mb-5 flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-primary">ورود مشتری</p>
+                <p className="text-primary text-xs font-medium tracking-wide uppercase">
+                  ورود مشتری
+                </p>
                 <h2 id="login-dialog-title" className="mt-1 text-xl font-bold">
                   {step === 'phone' ? 'ورود با موبایل' : 'تأیید کد'}
                 </h2>
@@ -148,7 +147,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-full p-2 transition-colors"
                 aria-label="بستن پنجره ورود"
               >
                 <CloseIcon />
@@ -156,7 +155,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
             </div>
 
             {reasonMessage && (
-              <p className="mb-4 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+              <p className="border-primary/20 bg-primary/5 text-foreground mb-4 rounded-xl border px-4 py-3 text-sm">
                 {reasonMessage}
               </p>
             )}
@@ -176,7 +175,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
                     disabled={pending}
                   />
                 </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && <p className="text-destructive text-sm">{error}</p>}
                 <Button
                   type="button"
                   className="h-11 w-full rounded-xl"
@@ -198,14 +197,14 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
                     }}
                   />
                 )}
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   کد ۶ رقمی ارسال‌شده به{' '}
-                  <span className="font-medium text-foreground" dir="ltr">
+                  <span className="text-foreground font-medium" dir="ltr">
                     {phone}
                   </span>{' '}
                   را وارد کنید.
                   {secondsLeft > 0 && (
-                    <span className="ms-2 tabular-nums text-primary">({secondsLeft} ثانیه)</span>
+                    <span className="text-primary ms-2 tabular-nums">({secondsLeft} ثانیه)</span>
                   )}
                 </p>
                 <div className="space-y-2">
@@ -222,7 +221,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
                     className="text-center text-lg tracking-[0.35em]"
                   />
                 </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && <p className="text-destructive text-sm">{error}</p>}
                 <Button
                   type="button"
                   className="h-11 w-full rounded-xl"
@@ -234,7 +233,7 @@ export function LoginDialog({ open, reason, onClose, onVerified }: LoginDialogPr
                 <div className="flex items-center justify-between gap-2 text-sm">
                   <button
                     type="button"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
                     onClick={() => {
                       setStep('phone');
                       setCode('');
@@ -293,12 +292,21 @@ function DevOtpBanner({
       <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[11px] text-amber-800/80 dark:text-amber-300/80">کد OTP تستی</p>
-          <p className="mt-0.5 font-mono text-2xl font-bold tracking-[0.25em] text-amber-950 dark:text-amber-100" dir="ltr">
+          <p
+            className="mt-0.5 font-mono text-2xl font-bold tracking-[0.25em] text-amber-950 dark:text-amber-100"
+            dir="ltr"
+          >
             {code}
           </p>
         </div>
         <div className="flex gap-2">
-          <Button type="button" size="sm" variant="outline" className="rounded-lg" onClick={handleCopy}>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="rounded-lg"
+            onClick={handleCopy}
+          >
             {copied ? 'کپی شد' : 'کپی'}
           </Button>
           <Button type="button" size="sm" className="rounded-lg" onClick={onUseCode}>
@@ -307,7 +315,7 @@ function DevOtpBanner({
         </div>
       </div>
       {secondsLeft === 0 && (
-        <p className="mt-2 text-xs text-destructive">کد منقضی شده — «ارسال مجدد» را بزنید.</p>
+        <p className="text-destructive mt-2 text-xs">کد منقضی شده — «ارسال مجدد» را بزنید.</p>
       )}
     </div>
   );
@@ -316,12 +324,7 @@ function DevOtpBanner({
 function CloseIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M6 6l12 12M18 6L6 18"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

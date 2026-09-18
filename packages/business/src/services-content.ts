@@ -403,7 +403,8 @@ function normalizeAdPricing(items: unknown): AdPricing[] {
       size: typeof item.size === 'string' ? item.size : '',
       price: typeof item.price === 'number' && item.price >= 0 ? item.price : 0,
       description: typeof item.description === 'string' ? item.description : '',
-      placementId: typeof item.placementId === 'string' && item.placementId ? item.placementId : undefined,
+      placementId:
+        typeof item.placementId === 'string' && item.placementId ? item.placementId : undefined,
       isActive: item.isActive !== false,
     };
   });
@@ -414,7 +415,8 @@ function normalizeAdPlacements(items: unknown): AdPlacement[] {
   const normalized: AdPlacement[] = [];
   for (const [index, raw] of items.entries()) {
     const item = (raw && typeof raw === 'object' ? raw : {}) as Partial<AdPlacement>;
-    const surface = typeof item.surface === 'string' && isAdSurfaceId(item.surface) ? item.surface : null;
+    const surface =
+      typeof item.surface === 'string' && isAdSurfaceId(item.surface) ? item.surface : null;
     if (!surface) continue;
     const slotKey = typeof item.slotKey === 'string' ? item.slotKey : '';
     if (!getSchematicSlot(surface, slotKey)) continue;
@@ -422,7 +424,10 @@ function normalizeAdPlacements(items: unknown): AdPlacement[] {
       id: typeof item.id === 'string' && item.id ? item.id : `place-${index + 1}`,
       surface,
       slotKey,
-      label: typeof item.label === 'string' ? item.label : getSchematicSlot(surface, slotKey)?.defaultLabel ?? '',
+      label:
+        typeof item.label === 'string'
+          ? item.label
+          : (getSchematicSlot(surface, slotKey)?.defaultLabel ?? ''),
       description: typeof item.description === 'string' ? item.description : '',
       sizeHint: typeof item.sizeHint === 'string' ? item.sizeHint : '',
       pricingId: typeof item.pricingId === 'string' && item.pricingId ? item.pricingId : undefined,
@@ -486,7 +491,9 @@ export function getActiveAdPricing(pricing: AdPricing[]): AdPricing[] {
 }
 
 export function getActiveAdPlacements(placements: AdPlacement[]): AdPlacement[] {
-  return placements.filter((p) => p.isActive !== false && Boolean(getSchematicSlot(p.surface, p.slotKey)));
+  return placements.filter(
+    (p) => p.isActive !== false && Boolean(getSchematicSlot(p.surface, p.slotKey)),
+  );
 }
 
 export function getActivePortfolio(items: AdPortfolio[]): AdPortfolio[] {

@@ -73,7 +73,7 @@ export function IssueFilter({
   return (
     <section
       className={cn(
-        'rounded-2xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-sm sm:p-6',
+        'border-border/80 bg-card/80 rounded-2xl border p-4 shadow-sm backdrop-blur-sm sm:p-6',
         isPending && 'opacity-80',
         className,
       )}
@@ -82,7 +82,7 @@ export function IssueFilter({
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold">فیلتر آرشیو</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {hasFilter
               ? `${formatNumber(filteredCount)} شماره از ${formatNumber(totalCount)}`
               : `${formatNumber(totalCount)} شماره منتشرشده`}
@@ -92,7 +92,7 @@ export function IssueFilter({
           <button
             type="button"
             onClick={clearFilters}
-            className="rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+            className="border-border hover:bg-muted rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
           >
             پاک کردن فیلترها
           </button>
@@ -101,8 +101,8 @@ export function IssueFilter({
 
       {activeLabel && (
         <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-muted-foreground">فعال:</span>
-          <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <span className="text-muted-foreground text-xs">فعال:</span>
+          <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium">
             {activeLabel}
           </span>
         </div>
@@ -110,7 +110,7 @@ export function IssueFilter({
 
       <div className="space-y-5">
         <div>
-          <p className="mb-3 text-sm font-medium text-muted-foreground">سال انتشار</p>
+          <p className="text-muted-foreground mb-3 text-sm font-medium">سال انتشار</p>
           <div className="flex flex-wrap gap-2">
             <FilterChip active={!selectedYear} onClick={() => selectYear(undefined)}>
               همه
@@ -129,9 +129,9 @@ export function IssueFilter({
         </div>
 
         <div>
-          <p className="mb-3 text-sm font-medium text-muted-foreground">ماه انتشار</p>
+          <p className="text-muted-foreground mb-3 text-sm font-medium">ماه انتشار</p>
           {!selectedYear ? (
-            <p className="rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+            <p className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-3 text-sm">
               برای فیلتر ماهانه، ابتدا یک سال را انتخاب کنید.
             </p>
           ) : (

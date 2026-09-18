@@ -12,29 +12,29 @@ export function PageHeader({ title, description, eyebrow, className }: PageHeade
   return (
     <div
       className={cn(
-        'content-under-header relative overflow-hidden border-b border-border',
+        'content-under-header border-border relative overflow-hidden border-b',
         className,
       )}
     >
       <div
-        className="absolute inset-0 bg-gradient-to-b from-accent/80 via-background/40 to-background"
+        className="from-accent/80 via-background/40 to-background absolute inset-0 bg-gradient-to-b"
         aria-hidden="true"
       />
       <div
-        className="absolute -start-24 top-0 size-72 rounded-full bg-primary/8 blur-3xl"
+        className="bg-primary/8 absolute -start-24 top-0 size-72 rounded-full blur-3xl"
         aria-hidden="true"
       />
       <div
-        className="absolute -end-16 bottom-0 size-56 rounded-full bg-brand-200/30 blur-3xl dark:bg-brand-800/15"
+        className="bg-brand-200/30 dark:bg-brand-800/15 absolute -end-16 bottom-0 size-56 rounded-full blur-3xl"
         aria-hidden="true"
       />
-      <FadeIn className="clear-site-header relative mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6 sm:pb-12 sm:pt-8 lg:px-8">
+      <FadeIn className="clear-site-header relative mx-auto max-w-6xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8 sm:pb-12 lg:px-8">
         {eyebrow && <p className="section-eyebrow mb-4">{eyebrow}</p>}
-        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+        <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {description}
           </p>
         )}

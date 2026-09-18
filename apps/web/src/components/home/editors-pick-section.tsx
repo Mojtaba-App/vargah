@@ -15,7 +15,7 @@ export function EditorsPickSection({ articles }: EditorsPickSectionProps) {
   const [featured, ...rest] = articles;
 
   return (
-    <section className="section-padding border-y border-border bg-muted/20">
+    <section className="section-padding border-border bg-muted/20 border-y">
       <Container>
         <SectionTitle
           eyebrow="انتخاب ویژه"
@@ -37,7 +37,7 @@ export function EditorsPickSection({ articles }: EditorsPickSectionProps) {
           </div>
         </div>
         <div className="mt-6 text-end">
-          <Link href="/articles" className="text-sm font-semibold text-primary hover:underline">
+          <Link href="/articles" className="text-primary text-sm font-semibold hover:underline">
             مشاهده همه مقالات
           </Link>
         </div>

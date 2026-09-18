@@ -48,22 +48,29 @@ export async function processSubscriptionReminders() {
       planType: sub.planType ?? 'اشتراک',
     };
 
-    if (shouldSendExpiryReminder(days, 7) && !(await alreadySent(ReminderType.SUBSCRIPTION_EXPIRY_7D, 'Subscriber', sub.id))) {
+    if (
+      shouldSendExpiryReminder(days, 7) &&
+      !(await alreadySent(ReminderType.SUBSCRIPTION_EXPIRY_7D, 'Subscriber', sub.id))
+    ) {
       try {
         if (sub.email) {
-          await dispatchFromTemplate(DEFAULT_TEMPLATE_KEYS.SUBSCRIPTION_EXPIRY_7D, sub.email, vars, {
-            entity: 'Subscriber',
-            entityId: sub.id,
-          });
+          await dispatchFromTemplate(
+            DEFAULT_TEMPLATE_KEYS.SUBSCRIPTION_EXPIRY_7D,
+            sub.email,
+            vars,
+            {
+              entity: 'Subscriber',
+              entityId: sub.id,
+            },
+          );
         }
         if (sub.phone) {
           await dispatchNotification({
             channel: NotificationChannel.SMS,
             recipient: sub.phone,
-            body: `{{name}} عزیز، ۷ روز تا پایان اشتراک {{planType}} باقی مانده.`.replace(
-              '{{name}}',
-              sub.name,
-            ).replace('{{planType}}', sub.planType ?? 'اشتراک'),
+            body: `{{name}} عزیز، ۷ روز تا پایان اشتراک {{planType}} باقی مانده.`
+              .replace('{{name}}', sub.name)
+              .replace('{{planType}}', sub.planType ?? 'اشتراک'),
             relatedEntity: 'Subscriber',
             relatedEntityId: sub.id,
           });
@@ -75,13 +82,21 @@ export async function processSubscriptionReminders() {
       }
     }
 
-    if (shouldSendExpiryReminder(days, 1) && !(await alreadySent(ReminderType.SUBSCRIPTION_EXPIRY_1D, 'Subscriber', sub.id))) {
+    if (
+      shouldSendExpiryReminder(days, 1) &&
+      !(await alreadySent(ReminderType.SUBSCRIPTION_EXPIRY_1D, 'Subscriber', sub.id))
+    ) {
       try {
         if (sub.email) {
-          await dispatchFromTemplate(DEFAULT_TEMPLATE_KEYS.SUBSCRIPTION_EXPIRY_1D, sub.email, vars, {
-            entity: 'Subscriber',
-            entityId: sub.id,
-          });
+          await dispatchFromTemplate(
+            DEFAULT_TEMPLATE_KEYS.SUBSCRIPTION_EXPIRY_1D,
+            sub.email,
+            vars,
+            {
+              entity: 'Subscriber',
+              entityId: sub.id,
+            },
+          );
         }
         if (sub.phone) {
           await dispatchNotification({
@@ -107,7 +122,9 @@ export async function processCommissionDeadlineReminders() {
   const soon = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
   const commissions = await prisma.articleCommission.findMany({
     where: {
-      status: { in: [CommissionStatus.ASSIGNED, CommissionStatus.IN_WRITING, CommissionStatus.SUBMITTED] },
+      status: {
+        in: [CommissionStatus.ASSIGNED, CommissionStatus.IN_WRITING, CommissionStatus.SUBMITTED],
+      },
       dueDate: { lte: soon, gte: new Date() },
       deadlineNotifiedAt: null,
     },
@@ -150,7 +167,9 @@ export async function processCommissionDeadlineReminders() {
       data: { deadlineNotifiedAt: new Date() },
     });
 
-    if (!(await alreadySent(ReminderType.COMMISSION_DEADLINE, 'ArticleCommission', commission.id))) {
+    if (
+      !(await alreadySent(ReminderType.COMMISSION_DEADLINE, 'ArticleCommission', commission.id))
+    ) {
       await markSent(ReminderType.COMMISSION_DEADLINE, 'ArticleCommission', commission.id);
     }
 

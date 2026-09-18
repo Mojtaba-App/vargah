@@ -51,7 +51,7 @@ export function LoginBrandPanel({
           </div>
         </div>
 
-        <h2 className="max-w-md text-balance text-3xl font-bold leading-tight text-white xl:text-4xl">
+        <h2 className="max-w-md text-3xl leading-tight font-bold text-balance text-white xl:text-4xl">
           مدیریت حرفه‌ای محتوای ماهنامه
         </h2>
         <p className="mt-4 max-w-md text-base leading-relaxed text-white/85">

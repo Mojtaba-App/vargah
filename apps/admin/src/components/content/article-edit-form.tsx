@@ -183,7 +183,7 @@ export function ArticleEditForm({
                   <Label htmlFor="title" required>
                     عنوان مقاله
                   </Label>
-                  <span className="text-xs text-muted-foreground">{title?.length ?? 0}/300</span>
+                  <span className="text-muted-foreground text-xs">{title?.length ?? 0}/300</span>
                 </div>
                 <Input
                   id="title"
@@ -198,7 +198,7 @@ export function ArticleEditForm({
               <div>
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <Label htmlFor="excerpt">خلاصه / لید</Label>
-                  <span className="text-xs text-muted-foreground">{excerpt?.length ?? 0}/1000</span>
+                  <span className="text-muted-foreground text-xs">{excerpt?.length ?? 0}/1000</span>
                 </div>
                 <Textarea
                   id="excerpt"
@@ -257,7 +257,12 @@ export function ArticleEditForm({
 
               <div>
                 <Label htmlFor="status">وضعیت</Label>
-                <Select id="status" disabled={isPending} className="mt-2 rounded-xl" {...register('status')}>
+                <Select
+                  id="status"
+                  disabled={isPending}
+                  className="mt-2 rounded-xl"
+                  {...register('status')}
+                >
                   {ARTICLE_STATUS_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
@@ -268,7 +273,12 @@ export function ArticleEditForm({
 
               <div>
                 <Label htmlFor="categoryId">دسته‌بندی</Label>
-                <Select id="categoryId" disabled={isPending} className="mt-2 rounded-xl" {...register('categoryId')}>
+                <Select
+                  id="categoryId"
+                  disabled={isPending}
+                  className="mt-2 rounded-xl"
+                  {...register('categoryId')}
+                >
                   <option value="">بدون دسته</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
@@ -301,7 +311,13 @@ export function ArticleEditForm({
                 انتخاب سردبیر
               </label>
 
-              <LoadingButton type="submit" size="lg" className="w-full rounded-xl" loading={isPending} loadingText="در حال ذخیره...">
+              <LoadingButton
+                type="submit"
+                size="lg"
+                className="w-full rounded-xl"
+                loading={isPending}
+                loadingText="در حال ذخیره..."
+              >
                 ذخیره تغییرات
               </LoadingButton>
             </CardContent>
@@ -335,11 +351,12 @@ export function ArticleEditForm({
                   {ARTICLE_STATUS_LABELS[status]}
                 </Badge>
                 <Badge variant="outline">
-                  {WORKFLOW_STAGE_LABELS[article.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS] ??
-                    article.workflowStage}
+                  {WORKFLOW_STAGE_LABELS[
+                    article.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS
+                  ] ?? article.workflowStage}
                 </Badge>
               </div>
-              <dl className="space-y-2 text-muted-foreground">
+              <dl className="text-muted-foreground space-y-2">
                 <div className="flex justify-between gap-3">
                   <dt>Slug</dt>
                   <dd dir="ltr" className="text-foreground">
@@ -370,7 +387,7 @@ export function ArticleEditForm({
                   href={getPublicArticleUrl(article.slug)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex text-sm text-primary hover:underline"
+                  className="text-primary inline-flex text-sm hover:underline"
                 >
                   مشاهده در سایت
                 </a>
@@ -383,25 +400,34 @@ export function ArticleEditForm({
               <h3 className="mb-3 font-semibold">تاریخچه نسخه‌ها</h3>
               <ul className="max-h-64 space-y-2 overflow-y-auto text-sm">
                 {versions.map((version) => (
-                  <li key={version.id} className="rounded-lg border border-border p-2">
+                  <li key={version.id} className="border-border rounded-lg border p-2">
                     <p className="font-medium">نسخه {formatNumber(version.version)}</p>
                     <p className="text-muted-foreground">
                       {version.author.name ?? '—'} — {formatJalali(version.createdAt)}
                     </p>
-                    {version.note && <p className="text-xs text-muted-foreground">{version.note}</p>}
+                    {version.note && (
+                      <p className="text-muted-foreground text-xs">{version.note}</p>
+                    )}
                   </li>
                 ))}
-                {versions.length === 0 && <p className="text-muted-foreground">نسخه‌ای ثبت نشده.</p>}
+                {versions.length === 0 && (
+                  <p className="text-muted-foreground">نسخه‌ای ثبت نشده.</p>
+                )}
               </ul>
             </CardContent>
           </Card>
 
           {canDelete && (
-            <Card className="rounded-2xl border-destructive/30">
+            <Card className="border-destructive/30 rounded-2xl">
               <CardContent className="space-y-3 pt-6">
-                <h3 className="font-semibold text-destructive">منطقه خطر</h3>
-                <p className="text-sm text-muted-foreground">حذف دائمی مقاله و تمام نسخه‌های آن.</p>
-                <Button type="button" variant="destructive" className="rounded-xl" onClick={() => setConfirmDelete(true)}>
+                <h3 className="text-destructive font-semibold">منطقه خطر</h3>
+                <p className="text-muted-foreground text-sm">حذف دائمی مقاله و تمام نسخه‌های آن.</p>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  className="rounded-xl"
+                  onClick={() => setConfirmDelete(true)}
+                >
                   حذف مقاله
                 </Button>
               </CardContent>

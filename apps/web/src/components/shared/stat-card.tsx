@@ -19,16 +19,18 @@ export function StatCard({ label, value, suffix, className }: StatCardProps) {
       )}
     >
       <div
-        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-l from-brand-300 via-primary to-brand-600 opacity-90"
+        className="from-brand-300 via-primary to-brand-600 absolute inset-x-0 top-0 h-1 bg-gradient-to-l opacity-90"
         aria-hidden="true"
       />
-      <p className="text-3xl font-bold tabular-nums tracking-tight text-primary sm:text-4xl">
+      <p className="text-primary text-3xl font-bold tracking-tight tabular-nums sm:text-4xl">
         {displayValue}
         {suffix && (
-          <span className="ms-1 text-base font-medium text-muted-foreground sm:text-lg">{suffix}</span>
+          <span className="text-muted-foreground ms-1 text-base font-medium sm:text-lg">
+            {suffix}
+          </span>
         )}
       </p>
-      <p className="mt-2 text-sm font-medium text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-2 text-sm font-medium">{label}</p>
     </div>
   );
 }

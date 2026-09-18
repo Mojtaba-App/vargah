@@ -156,12 +156,14 @@ export function CreateUserForm({ assignableRoles }: CreateUserFormProps) {
                   {...register('phone')}
                 />
                 <FieldMessage message={errors.phone?.message} />
-                <FieldHint>کد ورود به این شماره ارسال می‌شود؛ در صفحه لاگین وارد نمی‌شود.</FieldHint>
+                <FieldHint>
+                  کد ورود به این شماره ارسال می‌شود؛ در صفحه لاگین وارد نمی‌شود.
+                </FieldHint>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="rounded-xl border border-border p-4">
+              <div className="border-border rounded-xl border p-4">
                 <p className="mb-3 text-sm font-semibold">نقش و وضعیت</p>
                 <div className="space-y-3">
                   <div>
@@ -185,7 +187,12 @@ export function CreateUserForm({ assignableRoles }: CreateUserFormProps) {
                   </div>
                   <div>
                     <Label htmlFor="status">وضعیت</Label>
-                    <Select id="status" disabled={isPending} className="mt-2" {...register('status')}>
+                    <Select
+                      id="status"
+                      disabled={isPending}
+                      className="mt-2"
+                      {...register('status')}
+                    >
                       {Object.entries(STATUS_LABELS).map(([value, label]) => (
                         <option key={value} value={value}>
                           {label}
@@ -196,7 +203,7 @@ export function CreateUserForm({ assignableRoles }: CreateUserFormProps) {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-border p-4">
+              <div className="border-border rounded-xl border p-4">
                 <Controller
                   name="password"
                   control={control}
@@ -225,7 +232,7 @@ export function CreateUserForm({ assignableRoles }: CreateUserFormProps) {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 border-t border-border pt-4">
+          <div className="border-border flex flex-wrap gap-3 border-t pt-4">
             <LoadingButton
               type="submit"
               loading={isPending}

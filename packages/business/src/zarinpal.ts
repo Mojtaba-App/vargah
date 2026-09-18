@@ -23,7 +23,9 @@ export type ZarinpalVerifyResult = {
 };
 
 function getApiBase(sandbox: boolean) {
-  return sandbox ? 'https://sandbox.zarinpal.com/pg/v4/payment' : 'https://api.zarinpal.com/pg/v4/payment';
+  return sandbox
+    ? 'https://sandbox.zarinpal.com/pg/v4/payment'
+    : 'https://api.zarinpal.com/pg/v4/payment';
 }
 
 export function zarinpalStartPayUrl(authority: string, sandbox: boolean): string {

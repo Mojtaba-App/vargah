@@ -14,7 +14,7 @@ export function PageBackLink({
     <Link
       href={href}
       className={cn(
-        'group inline-flex items-center gap-1.5 rounded-lg px-1 py-0.5 text-sm text-muted-foreground transition-colors hover:text-foreground',
+        'group text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 rounded-lg px-1 py-0.5 text-sm transition-colors',
         className,
       )}
     >

@@ -16,10 +16,12 @@ export default async function TagPage({ params }: TagPageProps) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const tag = await prisma.tag.findFirst({
-    where: { slug },
-    select: { id: true, slug: true, name: true },
-  }).catch(() => null);
+  const tag = await prisma.tag
+    .findFirst({
+      where: { slug },
+      select: { id: true, slug: true, name: true },
+    })
+    .catch(() => null);
 
   if (!tag) notFound();
 
@@ -38,7 +40,7 @@ export default async function TagPage({ params }: TagPageProps) {
           className="mb-6"
         />
         {results.length === 0 ? (
-          <p className="py-12 text-center text-muted-foreground">مقاله‌ای با این برچسب نیست.</p>
+          <p className="text-muted-foreground py-12 text-center">مقاله‌ای با این برچسب نیست.</p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((article) => (

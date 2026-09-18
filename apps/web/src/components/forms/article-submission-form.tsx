@@ -36,13 +36,11 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
 
   const handleInvalid = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target;
-    if (
-      !(
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLTextAreaElement ||
-        target instanceof HTMLSelectElement
-      )
-    ) {
+    if (!(
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
+    )) {
       return;
     }
     event.preventDefault();
@@ -86,12 +84,18 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
       aria-label="فرم ارسال مقاله"
     >
       {error && (
-        <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       )}
       {submitted && (
-        <p role="status" className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400">
+        <p
+          role="status"
+          className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400"
+        >
           مقاله شما دریافت شد و در صف بررسی تحریریه قرار گرفت.
         </p>
       )}
@@ -112,7 +116,9 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
             disabled={pending}
             onChange={() => clearFieldError('authorName')}
           />
-          {fieldErrors.authorName && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.authorName}</p>}
+          {fieldErrors.authorName && (
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.authorName}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="author-email" required>
@@ -129,7 +135,9 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
             disabled={pending}
             onChange={() => clearFieldError('email')}
           />
-          {fieldErrors.email && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.email}</p>}
+          {fieldErrors.email && (
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.email}</p>
+          )}
         </div>
       </div>
 
@@ -147,7 +155,9 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
           disabled={pending}
           onChange={() => clearFieldError('title')}
         />
-        {fieldErrors.title && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.title}</p>}
+        {fieldErrors.title && (
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.title}</p>
+        )}
       </div>
 
       <div>
@@ -171,7 +181,9 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
           <option value="culture">فرهنگ و هنر</option>
           <option value="technology">فناوری</option>
         </Select>
-        {fieldErrors.category && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.category}</p>}
+        {fieldErrors.category && (
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.category}</p>
+        )}
       </div>
 
       <div>
@@ -190,7 +202,9 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
           placeholder="خلاصهٔ کوتاه از ایده یا متن مقاله..."
           onChange={() => clearFieldError('summary')}
         />
-        {fieldErrors.summary && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.summary}</p>}
+        {fieldErrors.summary && (
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.summary}</p>
+        )}
       </div>
 
       <div>
@@ -203,7 +217,7 @@ export function ArticleSubmissionForm({ className }: ArticleSubmissionFormProps)
           className="mt-2 rounded-xl pt-2"
           disabled={pending}
         />
-        <p className="mt-1 text-xs text-muted-foreground">PDF یا Word — حداکثر ۸ مگابایت</p>
+        <p className="text-muted-foreground mt-1 text-xs">PDF یا Word — حداکثر ۸ مگابایت</p>
       </div>
 
       <Button type="submit" size="lg" className="rounded-full px-7" disabled={pending}>

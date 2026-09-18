@@ -39,13 +39,13 @@ function FooterNav({
 }) {
   return (
     <nav aria-label={ariaLabel}>
-      <h3 className="mb-4 text-sm font-bold text-foreground">{title}</h3>
+      <h3 className="text-foreground mb-4 text-sm font-bold">{title}</h3>
       <ul className="space-y-2.5">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="inline-flex text-sm text-muted-foreground transition-colors hover:text-primary"
+              className="text-muted-foreground hover:text-primary inline-flex text-sm transition-colors"
             >
               {link.label}
             </Link>
@@ -78,15 +78,15 @@ function FooterCtaCard({
         <p
           className={
             accent === 'primary'
-              ? 'text-xs font-bold uppercase tracking-wider text-primary'
-              : 'text-xs font-bold uppercase tracking-wider text-muted-foreground'
+              ? 'text-primary text-xs font-bold tracking-wider uppercase'
+              : 'text-muted-foreground text-xs font-bold tracking-wider uppercase'
           }
         >
           {title}
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{description}</p>
       </div>
-      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+      <span className="text-primary mt-4 inline-flex items-center gap-1 text-sm font-semibold">
         {cta}
         <ArrowIcon className="transition-transform group-hover:-translate-x-0.5 rtl:rotate-180 rtl:group-hover:translate-x-0.5" />
       </span>
@@ -100,9 +100,9 @@ export async function Footer() {
   const socialLinks = getActiveSocialLinks(siteConfig.contact.social) as SocialLinksMap;
 
   return (
-    <footer className="relative mt-auto border-t border-border bg-muted/20" role="contentinfo">
+    <footer className="border-border bg-muted/20 relative mt-auto border-t" role="contentinfo">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-primary/40 to-transparent"
+        className="via-primary/40 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent to-transparent"
         aria-hidden="true"
       />
 
@@ -125,7 +125,7 @@ export async function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-border/70 bg-background/60">
+      <div className="border-border/70 bg-background/60 border-t">
         <Container className="py-12 lg:py-14">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
             <div className="lg:col-span-4">
@@ -135,47 +135,51 @@ export async function Footer() {
                 logoSrc={siteConfig.branding.siteLogo}
                 homeAria={t('homeAria')}
               />
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground mt-4 max-w-sm text-sm leading-relaxed">
                 {siteConfig.footer.description}
               </p>
               <div className="mt-6">
-                <p className="mb-3 text-xs font-semibold text-foreground">ما را دنبال کنید</p>
+                <p className="text-foreground mb-3 text-xs font-semibold">ما را دنبال کنید</p>
                 <SocialLinks links={socialLinks} size="md" />
               </div>
             </div>
 
             <div className="grid gap-8 sm:grid-cols-3 lg:col-span-5">
-              <FooterNav title="ماهنامه" links={footerLinks.magazine} ariaLabel="لینک‌های ماهنامه" />
+              <FooterNav
+                title="ماهنامه"
+                links={footerLinks.magazine}
+                ariaLabel="لینک‌های ماهنامه"
+              />
               <FooterNav title="خدمات" links={footerLinks.services} ariaLabel="لینک‌های خدمات" />
               <FooterNav title="قوانین" links={footerLinks.legal} ariaLabel="لینک‌های قانونی" />
             </div>
 
             <aside className="lg:col-span-3">
               <div className="surface-card h-full rounded-2xl p-5 sm:p-6">
-                <h3 className="text-sm font-bold text-foreground">ارتباط با تحریریه</h3>
-                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                <h3 className="text-foreground text-sm font-bold">ارتباط با تحریریه</h3>
+                <ul className="text-muted-foreground mt-4 space-y-3 text-sm">
                   <li>
-                    <span className="mb-1 block text-xs font-medium text-foreground">ایمیل</span>
+                    <span className="text-foreground mb-1 block text-xs font-medium">ایمیل</span>
                     <a
                       href={`mailto:${siteConfig.footer.email}`}
-                      className="transition-colors hover:text-primary"
+                      className="hover:text-primary transition-colors"
                       dir="ltr"
                     >
                       {siteConfig.footer.email}
                     </a>
                   </li>
                   <li>
-                    <span className="mb-1 block text-xs font-medium text-foreground">تلفن</span>
+                    <span className="text-foreground mb-1 block text-xs font-medium">تلفن</span>
                     <a
                       href={`tel:${siteConfig.footer.phone.replace(/-/g, '')}`}
-                      className="transition-colors hover:text-primary"
+                      className="hover:text-primary transition-colors"
                       dir="ltr"
                     >
                       {siteConfig.footer.phone}
                     </a>
                   </li>
                   <li>
-                    <span className="mb-1 block text-xs font-medium text-foreground">آدرس</span>
+                    <span className="text-foreground mb-1 block text-xs font-medium">آدرس</span>
                     <p className="leading-relaxed">{siteConfig.footer.address}</p>
                   </li>
                 </ul>
@@ -190,15 +194,17 @@ export async function Footer() {
         </Container>
       </div>
 
-      <div className="border-t border-border/70 bg-background">
-        <Container className="flex flex-col items-center justify-between gap-4 py-6 text-sm text-muted-foreground sm:flex-row">
-          <p>© {year} {siteConfig.footer.copyright}</p>
+      <div className="border-border/70 bg-background border-t">
+        <Container className="text-muted-foreground flex flex-col items-center justify-between gap-4 py-6 text-sm sm:flex-row">
+          <p>
+            © {year} {siteConfig.footer.copyright}
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             {footerLinks.legal.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-foreground"
+                className="hover:text-foreground transition-colors"
               >
                 {link.label}
               </Link>

@@ -187,14 +187,14 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
       {error && <StatusBanner type="error" message={error} />}
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <Card className="overflow-hidden rounded-2xl border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card">
+        <Card className="border-primary/15 from-primary/8 via-card to-card overflow-hidden rounded-2xl bg-gradient-to-br">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h2 className="text-lg font-bold">
                   {editingId ? 'ویرایش کد تخفیف' : 'ساخت کد تخفیف جدید'}
                 </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-sm">
                   عمومی برای همه محصولات، یا محدود به پلن‌های انتخابی
                 </p>
               </div>
@@ -248,7 +248,7 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
                   onChange={(e) =>
                     setForm((f) => ({ ...f, type: e.target.value as DiscountCodeType }))
                   }
-                  className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                  className="border-border bg-background h-10 w-full rounded-xl border px-3 text-sm"
                 >
                   <option value={DiscountCodeType.PERCENT}>درصدی</option>
                   <option value={DiscountCodeType.FIXED}>مبلغ ثابت (تومان)</option>
@@ -275,7 +275,9 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
                   <ScopeChip
                     active={form.scope === DiscountCodeScope.ALL}
                     disabled={!canManage}
-                    onClick={() => setForm((f) => ({ ...f, scope: DiscountCodeScope.ALL, planSlugs: [] }))}
+                    onClick={() =>
+                      setForm((f) => ({ ...f, scope: DiscountCodeScope.ALL, planSlugs: [] }))
+                    }
                   >
                     عمومی (همه محصولات)
                   </ScopeChip>
@@ -406,7 +408,7 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
         <div className="space-y-3">
           <h3 className="font-semibold">کدهای ثبت‌شده ({formatNumber(codes.length)})</h3>
           {codes.length === 0 ? (
-            <Card className="rounded-2xl border-dashed p-8 text-center text-sm text-muted-foreground">
+            <Card className="text-muted-foreground rounded-2xl border-dashed p-8 text-center text-sm">
               هنوز کد تخفیفی ساخته نشده است.
             </Card>
           ) : (
@@ -431,16 +433,15 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
                       </Badge>
                     </div>
                     <p className="font-medium">{row.title}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       استفاده {formatNumber(row.usedCount)}
                       {row.maxUses != null ? ` از ${formatNumber(row.maxUses)}` : ''}
                       {' · '}
                       ثبت {formatJalali(row.createdAt, true)}
                     </p>
                     {(row.startsAt || row.endsAt) && (
-                      <p className="text-xs text-muted-foreground">
-                        اعتبار:{' '}
-                        {row.startsAt ? formatJalali(row.startsAt, true) : 'بدون شروع'}
+                      <p className="text-muted-foreground text-xs">
+                        اعتبار: {row.startsAt ? formatJalali(row.startsAt, true) : 'بدون شروع'}
                         {' تا '}
                         {row.endsAt ? formatJalali(row.endsAt, true) : 'بدون پایان'}
                       </p>
@@ -468,7 +469,9 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
                               await toggleDiscountCodeActive(row.id, !row.isActive);
                               router.refresh();
                             } catch (err) {
-                              setError(err instanceof Error ? err.message : 'تغییر وضعیت ناموفق بود');
+                              setError(
+                                err instanceof Error ? err.message : 'تغییر وضعیت ناموفق بود',
+                              );
                             }
                           });
                         }}
@@ -479,7 +482,7 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
                         type="button"
                         size="sm"
                         variant="ghost"
-                        className="rounded-xl text-destructive"
+                        className="text-destructive rounded-xl"
                         onClick={() => setDeleteTarget(row)}
                       >
                         حذف
@@ -523,8 +526,8 @@ export function DiscountsWorkspace({ codes, plans, canManage }: DiscountsWorkspa
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
-      <p className="text-sm text-muted-foreground">{label}</p>
+    <div className="border-border bg-card rounded-2xl border p-4">
+      <p className="text-muted-foreground text-sm">{label}</p>
       <p className="mt-1 text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
     </div>
   );

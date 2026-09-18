@@ -99,10 +99,10 @@ export function MediaPickerDialog({
                   onClose();
                 }}
                 className={cn(
-                  'group overflow-hidden rounded-xl border border-border text-start transition-colors hover:border-primary hover:ring-2 hover:ring-primary/20',
+                  'group border-border hover:border-primary hover:ring-primary/20 overflow-hidden rounded-xl border text-start transition-colors hover:ring-2',
                 )}
               >
-                <div className="aspect-square bg-muted/40">
+                <div className="bg-muted/40 aspect-square">
                   {isImageMime(asset.mimeType) ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -114,14 +114,14 @@ export function MediaPickerDialog({
                     <div className="flex h-full items-center justify-center text-2xl">📄</div>
                   )}
                 </div>
-                <p className="truncate px-2 py-1.5 text-xs text-muted-foreground group-hover:text-foreground">
+                <p className="text-muted-foreground group-hover:text-foreground truncate px-2 py-1.5 text-xs">
                   {asset.originalName}
                 </p>
               </button>
             ))}
           </div>
         ) : (
-          <p className="rounded-xl bg-muted/40 p-4 text-center text-sm text-muted-foreground">
+          <p className="bg-muted/40 text-muted-foreground rounded-xl p-4 text-center text-sm">
             {search ? 'نتیجه‌ای یافت نشد' : 'هنوز تصویری در کتابخانه نیست — یک فایل آپلود کنید'}
           </p>
         )}

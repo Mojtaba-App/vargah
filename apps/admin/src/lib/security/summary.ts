@@ -129,7 +129,11 @@ function formatDayLabel(date: Date): string {
   }
 }
 
-export function buildDailyLoginSeries(loginAttempts: LoginLike[], days = 14, now: Date = new Date()): DailyLoginPoint[] {
+export function buildDailyLoginSeries(
+  loginAttempts: LoginLike[],
+  days = 14,
+  now: Date = new Date(),
+): DailyLoginPoint[] {
   const points: DailyLoginPoint[] = [];
   for (let i = days - 1; i >= 0; i -= 1) {
     const day = new Date(now);

@@ -17,9 +17,13 @@ export async function POST(request: NextRequest) {
   }
 
   const campaigns = await processQueuedCampaigns(5, Number(process.env.JOB_BATCH_SIZE || 40));
-  await enqueueJob(JOB_TYPES.REMINDER_SCAN, {}, {
-    idempotencyKey: `reminder.scan:${new Date().toISOString().slice(0, 13)}`,
-  }).catch(() => undefined);
+  await enqueueJob(
+    JOB_TYPES.REMINDER_SCAN,
+    {},
+    {
+      idempotencyKey: `reminder.scan:${new Date().toISOString().slice(0, 13)}`,
+    },
+  ).catch(() => undefined);
 
   const jobs = await processBackgroundJobs(Number(process.env.JOB_WORKER_CONCURRENCY || 5));
 

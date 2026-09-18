@@ -40,7 +40,8 @@ export function OsmLeafletMap({
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
       style.id = styleId;
-      style.textContent = '.leaflet-osm-pin{background:transparent!important;border:none!important;}';
+      style.textContent =
+        '.leaflet-osm-pin{background:transparent!important;border:none!important;}';
       document.head.appendChild(style);
     }
   }, []);

@@ -3,11 +3,7 @@
 import { recordAuditLog } from '@/lib/audit/record';
 
 import { revalidatePath } from 'next/cache';
-import {
-  AuditAction,
-  NotificationChannel,
-  prisma,
-} from '@vargah/database';
+import { AuditAction, NotificationChannel, prisma } from '@vargah/database';
 import { SMS_TEMPLATE_PRESETS } from '@vargah/business/sms-presets';
 
 import { requirePermission } from '@/lib/auth-utils';
@@ -50,11 +46,11 @@ export async function upsertMessageTemplate(data: {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'MessageTemplate',
-      entityId: validated.key,
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'MessageTemplate',
+    entityId: validated.key,
+  });
 
   revalidatePath('/settings');
   revalidatePath('/settings/automation');
@@ -84,11 +80,11 @@ export async function deleteMessageTemplate(id: string) {
   await prisma.messageTemplate.delete({ where: { id } });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.DELETE,
-      entity: 'MessageTemplate',
-      entityId: template.key,
-    });
+    userId: session.user.id,
+    action: AuditAction.DELETE,
+    entity: 'MessageTemplate',
+    entityId: template.key,
+  });
 
   revalidatePath('/settings');
   revalidatePath('/settings/automation');
@@ -104,12 +100,12 @@ export async function toggleMessageTemplate(id: string, isActive: boolean) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'MessageTemplate',
-      entityId: template.key,
-      changes: { isActive },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'MessageTemplate',
+    entityId: template.key,
+    changes: { isActive },
+  });
 
   revalidatePath('/settings');
   revalidatePath('/settings/automation');

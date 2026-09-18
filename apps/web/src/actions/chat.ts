@@ -1,11 +1,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import {
-  ChatConversationStatus,
-  ChatSenderType,
-  prisma,
-} from '@vargah/database';
+import { ChatConversationStatus, ChatSenderType, prisma } from '@vargah/database';
 import { isValidIranPhone, normalizeIranPhone } from '@vargah/security/phone';
 import { sanitizePlainText } from '@vargah/security/sanitize';
 import { z } from 'zod';
@@ -145,9 +141,7 @@ async function getRequestIp(): Promise<string> {
   try {
     const hdrs = await headers();
     return (
-      hdrs.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-      hdrs.get('x-real-ip')?.trim() ||
-      'anon'
+      hdrs.get('x-forwarded-for')?.split(',')[0]?.trim() || hdrs.get('x-real-ip')?.trim() || 'anon'
     );
   } catch {
     return 'anon';
@@ -235,8 +229,7 @@ export async function startGuestChat(input: {
   phone: string;
   message?: string;
 }): Promise<
-  | { ok: true; conversation: ChatConversationDto; messages: ChatMessageDto[] }
-  | ChatActionFailure
+  { ok: true; conversation: ChatConversationDto; messages: ChatMessageDto[] } | ChatActionFailure
 > {
   await verifyCsrfFromRequest();
   const parsed = startSchema.safeParse({
@@ -363,10 +356,7 @@ export async function sendGuestChatMessage(
     const ipLimit = await assertChatRateLimit(`chat:send:ip:${ip}`, CHAT_IP_SEND_LIMIT);
     if (ipLimit) return ipLimit;
 
-    const sendLimit = await assertChatRateLimit(
-      `chat:send:${conversation.id}`,
-      CHAT_SEND_LIMIT,
-    );
+    const sendLimit = await assertChatRateLimit(`chat:send:${conversation.id}`, CHAT_SEND_LIMIT);
     if (sendLimit) return sendLimit;
 
     const now = new Date();
@@ -425,10 +415,7 @@ export async function pollGuestChatMessages(afterId?: string | null): Promise<{
       return { conversation: null, messages: [], closed: false };
     }
 
-    const pollLimit = await assertChatRateLimit(
-      `chat:poll:${conversation.id}`,
-      CHAT_POLL_LIMIT,
-    );
+    const pollLimit = await assertChatRateLimit(`chat:poll:${conversation.id}`, CHAT_POLL_LIMIT);
     if (pollLimit) {
       return { conversation: null, messages: [], closed: false };
     }

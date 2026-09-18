@@ -44,7 +44,7 @@ export function ModalDialog({
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       className={cn(
-        'fixed inset-0 z-50 m-auto w-[min(100%-2rem,48rem)] max-h-[90vh] rounded-2xl border border-border bg-card p-0 shadow-2xl backdrop:bg-black/50',
+        'border-border bg-card fixed inset-0 z-50 m-auto max-h-[90vh] w-[min(100%-2rem,48rem)] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/50',
         'open:animate-in open:fade-in-0',
       )}
       onCancel={(event) => {
@@ -54,13 +54,13 @@ export function ModalDialog({
       onClose={onClose}
     >
       <div className="flex max-h-[90vh] flex-col">
-        <div className="flex items-start justify-between gap-3 border-b border-border p-5">
+        <div className="border-border flex items-start justify-between gap-3 border-b p-5">
           <div>
             <h2 id={titleId} className="text-lg font-bold">
               {title}
             </h2>
             {description && (
-              <p id={descriptionId} className="mt-1 text-sm text-muted-foreground">
+              <p id={descriptionId} className="text-muted-foreground mt-1 text-sm">
                 {description}
               </p>
             )}
@@ -77,7 +77,7 @@ export function ModalDialog({
           </Button>
         </div>
         <div className={cn('flex-1 overflow-y-auto p-5', className)}>{children}</div>
-        {footer && <div className="border-t border-border p-4">{footer}</div>}
+        {footer && <div className="border-border border-t p-4">{footer}</div>}
       </div>
     </dialog>
   );

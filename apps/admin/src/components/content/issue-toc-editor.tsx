@@ -26,13 +26,13 @@ export function IssueTocEditor({ entries, articles, onChange, disabled }: IssueT
     const article = articles.find((a) => a.id === articleId);
     if (!article) return;
     if (entries.some((e) => e.articleId === articleId)) return;
-    onChange([
-      ...entries,
-      { title: article.title, articleId: article.id, page: undefined },
-    ]);
+    onChange([...entries, { title: article.title, articleId: article.id, page: undefined }]);
   };
 
-  const updateEntry = (index: number, patch: Partial<IssueFormValues['tableOfContents'][number]>) => {
+  const updateEntry = (
+    index: number,
+    patch: Partial<IssueFormValues['tableOfContents'][number]>,
+  ) => {
     onChange(entries.map((entry, i) => (i === index ? { ...entry, ...patch } : entry)));
   };
 
@@ -51,13 +51,19 @@ export function IssueTocEditor({ entries, articles, onChange, disabled }: IssueT
   const unusedArticles = articles.filter((a) => !entries.some((e) => e.articleId === a.id));
 
   return (
-    <div className="space-y-4 rounded-xl border border-border p-4">
+    <div className="border-border space-y-4 rounded-xl border p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="text-sm font-semibold">فهرست مطالب</p>
-          <p className="text-xs text-muted-foreground">ترتیب نمایش در صفحه شماره روی سایت</p>
+          <p className="text-muted-foreground text-xs">ترتیب نمایش در صفحه شماره روی سایت</p>
         </div>
-        <Button type="button" variant="outline" size="sm" disabled={disabled} onClick={addManualEntry}>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={disabled}
+          onClick={addManualEntry}
+        >
           + ردیف دستی
         </Button>
       </div>
@@ -84,7 +90,7 @@ export function IssueTocEditor({ entries, articles, onChange, disabled }: IssueT
       )}
 
       {entries.length === 0 ? (
-        <p className="rounded-lg bg-muted/40 p-4 text-sm text-muted-foreground">
+        <p className="bg-muted/40 text-muted-foreground rounded-lg p-4 text-sm">
           هنوز آیتمی در فهرست نیست. مقاله اضافه کنید یا ردیف دستی بسازید.
         </p>
       ) : (
@@ -92,7 +98,7 @@ export function IssueTocEditor({ entries, articles, onChange, disabled }: IssueT
           {entries.map((entry, index) => (
             <li
               key={`${entry.articleId ?? 'manual'}-${index}`}
-              className="grid gap-2 rounded-xl border border-border p-3 sm:grid-cols-[1fr_100px_auto]"
+              className="border-border grid gap-2 rounded-xl border p-3 sm:grid-cols-[1fr_100px_auto]"
             >
               <div>
                 <Input
@@ -103,7 +109,7 @@ export function IssueTocEditor({ entries, articles, onChange, disabled }: IssueT
                   className="rounded-lg"
                 />
                 {entry.articleId && (
-                  <p className="mt-1 text-xs text-muted-foreground">مرتبط با مقاله منتشرشده</p>
+                  <p className="text-muted-foreground mt-1 text-xs">مرتبط با مقاله منتشرشده</p>
                 )}
               </div>
               <div>

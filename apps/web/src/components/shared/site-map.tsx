@@ -12,17 +12,14 @@ import {
 
 import { cn } from '@/lib/utils';
 
-const OsmLeafletMap = dynamic(
-  () => import('./osm-leaflet-map').then((mod) => mod.OsmLeafletMap),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-        Loading map…
-      </div>
-    ),
-  },
-);
+const OsmLeafletMap = dynamic(() => import('./osm-leaflet-map').then((mod) => mod.OsmLeafletMap), {
+  ssr: false,
+  loading: () => (
+    <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
+      Loading map…
+    </div>
+  ),
+});
 
 type SiteMapProps = {
   contact: Pick<SiteContactSettings, 'mapEmbedUrl' | 'mapLat' | 'mapLng'>;
@@ -48,8 +45,12 @@ export function SiteMap({ contact, address, className, basemap = 'carto' }: Site
     : [];
 
   return (
-    <div className={cn('overflow-hidden rounded-xl border border-border', className)}>
-      <div className="relative h-64 bg-muted/50 sm:h-80" role="region" aria-label={t('attribution')}>
+    <div className={cn('border-border overflow-hidden rounded-xl border', className)}>
+      <div
+        className="bg-muted/50 relative h-64 sm:h-80"
+        role="region"
+        aria-label={t('attribution')}
+      >
         {view?.mode === 'embed' ? (
           <iframe
             title={t('attribution')}
@@ -67,14 +68,14 @@ export function SiteMap({ contact, address, className, basemap = 'carto' }: Site
             className="absolute inset-0 z-0"
           />
         ) : (
-          <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex h-full items-center justify-center px-6 text-center text-sm">
             {t('unset')}
           </div>
         )}
       </div>
-      <div className="space-y-2 border-t border-border bg-background px-4 py-3">
-        {address ? <p className="text-sm text-muted-foreground">{address}</p> : null}
-        <p className="text-xs text-muted-foreground">{t('attribution')}</p>
+      <div className="border-border bg-background space-y-2 border-t px-4 py-3">
+        {address ? <p className="text-muted-foreground text-sm">{address}</p> : null}
+        <p className="text-muted-foreground text-xs">{t('attribution')}</p>
         {links.length > 0 ? (
           <div className="flex flex-wrap gap-x-3 gap-y-1">
             {links.map((link) => (
@@ -83,7 +84,7 @@ export function SiteMap({ contact, address, className, basemap = 'carto' }: Site
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-medium text-primary hover:underline"
+                className="text-primary text-xs font-medium hover:underline"
               >
                 {link.label}
               </a>

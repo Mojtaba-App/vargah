@@ -48,12 +48,12 @@ export async function updateMediaAsset(id: string, formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'MediaAsset',
-      entityId: id,
-      changes: { originalName: existing.originalName, tags: parsed.tags },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'MediaAsset',
+    entityId: id,
+    changes: { originalName: existing.originalName, tags: parsed.tags },
+  });
 
   revalidatePath('/content/media');
 }
@@ -77,12 +77,12 @@ export async function deleteMediaAsset(id: string) {
   await prisma.mediaAsset.delete({ where: { id } });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.DELETE,
-      entity: 'MediaAsset',
-      entityId: id,
-      changes: { originalName: asset.originalName, url: asset.url },
-    });
+    userId: session.user.id,
+    action: AuditAction.DELETE,
+    entity: 'MediaAsset',
+    entityId: id,
+    changes: { originalName: asset.originalName, url: asset.url },
+  });
 
   revalidatePath('/content/media');
 }

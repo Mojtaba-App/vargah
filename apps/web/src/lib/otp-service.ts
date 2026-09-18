@@ -47,7 +47,9 @@ export async function createPhoneOtp(phone: string, clientIp?: string | null) {
   const sandboxMode = isOtpSandboxAllowed(['CUSTOMER_OTP_SANDBOX']);
 
   if (sandboxMode) {
-    console.info(`[Customer OTP / Sandbox] ${phone} → ${code} (expires ${expiresAt.toISOString()})`);
+    console.info(
+      `[Customer OTP / Sandbox] ${phone} → ${code} (expires ${expiresAt.toISOString()})`,
+    );
   } else {
     const messaging = await getMessagingConfig();
     if (!messaging.sms.enabled) {

@@ -52,9 +52,7 @@ export function resolvePaymentConfig(config: PaymentConfig): PaymentConfig {
   const sandbox = config.zarinpal.sandbox ?? process.env.ZARINPAL_SANDBOX !== 'false';
   const merchantId = config.zarinpal.merchantId || envMerchant;
   const callbackBaseUrl =
-    config.callbackBaseUrl ||
-    envBaseUrl ||
-    (isDev ? 'http://localhost:3000' : '');
+    config.callbackBaseUrl || envBaseUrl || (isDev ? 'http://localhost:3000' : '');
 
   return {
     ...config,
@@ -70,9 +68,7 @@ export function resolvePaymentConfig(config: PaymentConfig): PaymentConfig {
 export function isPaymentReady(config: PaymentConfig): boolean {
   const resolved = resolvePaymentConfig(config);
   return (
-    resolved.enabled &&
-    Boolean(resolved.zarinpal.merchantId) &&
-    Boolean(resolved.callbackBaseUrl)
+    resolved.enabled && Boolean(resolved.zarinpal.merchantId) && Boolean(resolved.callbackBaseUrl)
   );
 }
 

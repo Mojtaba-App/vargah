@@ -47,7 +47,10 @@ export function getEntityLabel(entity: string): string {
   return AUDIT_ENTITY_LABELS[entity] ?? entity;
 }
 
-export const AUDIT_ACTION_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+export const AUDIT_ACTION_VARIANT: Record<
+  string,
+  'default' | 'secondary' | 'destructive' | 'outline'
+> = {
   CREATE: 'default',
   UPDATE: 'secondary',
   DELETE: 'destructive',

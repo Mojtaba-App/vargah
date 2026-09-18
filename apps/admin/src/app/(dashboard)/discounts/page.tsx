@@ -25,11 +25,7 @@ export default async function DiscountsPage() {
         title="تخفیف‌ها"
         description="ساخت و مدیریت کد تخفیف عمومی یا مخصوص محصول — همراه با سقف استفاده و بازه اعتبار"
       />
-      <DiscountsWorkspace
-        codes={codes}
-        plans={plans}
-        canManage={canManage}
-      />
+      <DiscountsWorkspace codes={codes} plans={plans} canManage={canManage} />
     </div>
   );
 }

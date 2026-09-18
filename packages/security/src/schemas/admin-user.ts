@@ -37,22 +37,23 @@ const phoneFormSchema = z
   .max(20, 'شماره موبایل حداکثر ۲۰ رقم')
   .optional()
   .or(z.literal(''))
-  .refine(
-    (v) => !v || /^(\+98|0)?9\d{9}$/.test(v.replace(/[\s-]/g, '')),
-    { message: 'فرمت موبایل معتبر نیست (مثال: 09121234567)' },
-  );
+  .refine((v) => !v || /^(\+98|0)?9\d{9}$/.test(v.replace(/[\s-]/g, '')), {
+    message: 'فرمت موبایل معتبر نیست (مثال: 09121234567)',
+  });
 
 const requiredPhoneFormSchema = z
   .string()
   .trim()
   .min(1, 'شماره موبایل الزامی است')
   .max(20, 'شماره موبایل حداکثر ۲۰ رقم')
-  .refine(
-    (v) => /^(\+98|0)?9\d{9}$/.test(v.replace(/[\s-]/g, '')),
-    { message: 'فرمت موبایل معتبر نیست (مثال: 09121234567)' },
-  );
+  .refine((v) => /^(\+98|0)?9\d{9}$/.test(v.replace(/[\s-]/g, '')), {
+    message: 'فرمت موبایل معتبر نیست (مثال: 09121234567)',
+  });
 
-function requireEmailOrUsername(data: { email: string | null; username: string | null }, ctx: z.RefinementCtx) {
+function requireEmailOrUsername(
+  data: { email: string | null; username: string | null },
+  ctx: z.RefinementCtx,
+) {
   if (!data.email && !data.username) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

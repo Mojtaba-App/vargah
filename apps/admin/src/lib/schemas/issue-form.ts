@@ -17,7 +17,11 @@ const tocEntrySchema = z.object({
 });
 
 export const issueFormSchema = z.object({
-  number: z.coerce.number().int('شماره باید عدد صحیح باشد').min(1, 'شماره باید بزرگ‌تر از ۰ باشد').max(9999),
+  number: z.coerce
+    .number()
+    .int('شماره باید عدد صحیح باشد')
+    .min(1, 'شماره باید بزرگ‌تر از ۰ باشد')
+    .max(9999),
   title: z.string().trim().min(3, 'عنوان حداقل ۳ کاراکتر').max(200),
   description: z.string().max(2000).optional().or(z.literal('')),
   pageCount: z.coerce.number().int().min(0).max(9999).optional().default(0),

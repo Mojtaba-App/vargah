@@ -33,8 +33,17 @@ export default async function SettingsPage({ searchParams }: PageProps) {
   const session = await requireAuth();
   const params = await searchParams;
 
-  const [config, messagingConfig, paymentConfig, mapConfig, servicesContent, aboutContent, templates, webhooks, notifications] =
-    await Promise.all([
+  const [
+    config,
+    messagingConfig,
+    paymentConfig,
+    mapConfig,
+    servicesContent,
+    aboutContent,
+    templates,
+    webhooks,
+    notifications,
+  ] = await Promise.all([
     getSiteConfig(),
     getMessagingConfig(),
     getPaymentConfig(),

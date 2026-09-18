@@ -31,15 +31,19 @@ export function AboutPageView({ content }: AboutPageViewProps) {
 
         <section className="mb-16 grid gap-8 lg:grid-cols-2 lg:gap-10">
           <FadeIn>
-            <article className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-accent/50 via-background to-muted/40 p-7 sm:p-8">
+            <article className="border-border from-accent/50 via-background to-muted/40 relative overflow-hidden rounded-3xl border bg-gradient-to-br p-7 sm:p-8">
               <SectionTitle title={mission.title} className="mb-5 sm:mb-5" />
-              <p className="text-base leading-8 text-muted-foreground sm:text-[1.05rem]">{mission.body}</p>
+              <p className="text-muted-foreground text-base leading-8 sm:text-[1.05rem]">
+                {mission.body}
+              </p>
             </article>
           </FadeIn>
           <FadeIn delay={0.08}>
-            <article className="relative overflow-hidden rounded-3xl border border-border bg-card p-7 sm:p-8">
+            <article className="border-border bg-card relative overflow-hidden rounded-3xl border p-7 sm:p-8">
               <SectionTitle title={history.title} className="mb-5 sm:mb-5" />
-              <p className="text-base leading-8 text-muted-foreground sm:text-[1.05rem]">{history.body}</p>
+              <p className="text-muted-foreground text-base leading-8 sm:text-[1.05rem]">
+                {history.body}
+              </p>
             </article>
           </FadeIn>
         </section>
@@ -55,17 +59,19 @@ export function AboutPageView({ content }: AboutPageViewProps) {
             </FadeIn>
             <ol className="relative grid gap-6 md:grid-cols-3">
               <div
-                className="pointer-events-none absolute inset-x-8 top-8 hidden h-px bg-gradient-to-l from-transparent via-border to-transparent md:block"
+                className="via-border pointer-events-none absolute inset-x-8 top-8 hidden h-px bg-gradient-to-l from-transparent to-transparent md:block"
                 aria-hidden="true"
               />
               {milestones.map((item, index) => (
                 <FadeIn key={item.id} delay={index * 0.06}>
-                  <li className="relative rounded-3xl border border-border/80 bg-card/70 p-6">
-                    <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                  <li className="border-border/80 bg-card/70 relative rounded-3xl border p-6">
+                    <span className="bg-primary/10 text-primary inline-flex rounded-full px-3 py-1 text-sm font-semibold">
                       {item.year}
                     </span>
                     <h3 className="mt-4 text-lg font-bold tracking-tight">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                      {item.description}
+                    </p>
                   </li>
                 </FadeIn>
               ))}
@@ -93,16 +99,18 @@ export function AboutPageView({ content }: AboutPageViewProps) {
           <div className="grid gap-4 md:grid-cols-2">
             {ethics.items.map((item, index) => (
               <FadeIn key={item.id} delay={index * 0.04}>
-                <article className="flex gap-4 rounded-2xl border border-border/80 bg-muted/20 p-5">
+                <article className="border-border/80 bg-muted/20 flex gap-4 rounded-2xl border p-5">
                   <span
-                    className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
+                    className="bg-primary text-primary-foreground mt-1 flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold"
                     aria-hidden="true"
                   >
                     {index + 1}
                   </span>
                   <div>
                     <h3 className="font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                    <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
                 </article>
               </FadeIn>
@@ -111,14 +119,14 @@ export function AboutPageView({ content }: AboutPageViewProps) {
         </section>
 
         <FadeIn>
-          <section className="relative overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-primary/10 via-background to-accent/40 px-6 py-10 sm:px-10 sm:py-12">
+          <section className="border-border from-primary/10 via-background to-accent/40 relative overflow-hidden rounded-[2rem] border bg-gradient-to-br px-6 py-10 sm:px-10 sm:py-12">
             <div
-              className="absolute -end-10 -top-10 size-40 rounded-full bg-primary/10 blur-3xl"
+              className="bg-primary/10 absolute -end-10 -top-10 size-40 rounded-full blur-3xl"
               aria-hidden="true"
             />
             <div className="relative max-w-2xl">
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{cta.title}</h2>
-              <p className="mt-3 text-muted-foreground leading-relaxed">{cta.description}</p>
+              <p className="text-muted-foreground mt-3 leading-relaxed">{cta.description}</p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link href={cta.primaryHref}>
                   <Button size="lg" className="rounded-full px-7">

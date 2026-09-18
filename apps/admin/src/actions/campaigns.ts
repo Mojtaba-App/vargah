@@ -69,7 +69,10 @@ export async function previewCampaignAudience(
 async function enqueueCampaignInternal(campaignId: string, actorId: string) {
   const campaign = await prisma.bulkCampaign.findUnique({ where: { id: campaignId } });
   if (!campaign) throw new Error('کمپین یافت نشد');
-  if (campaign.status !== BulkCampaignStatus.DRAFT && campaign.status !== BulkCampaignStatus.CANCELLED) {
+  if (
+    campaign.status !== BulkCampaignStatus.DRAFT &&
+    campaign.status !== BulkCampaignStatus.CANCELLED
+  ) {
     throw new Error('فقط کمپین پیش‌نویس یا لغو‌شده قابل صف‌بندی است');
   }
 
@@ -144,8 +147,7 @@ export async function createBulkCampaign(input: unknown) {
   }
 
   const filters = normalizeCampaignFilters(parsed.filters);
-  const channel =
-    parsed.channel === 'EMAIL' ? NotificationChannel.EMAIL : NotificationChannel.SMS;
+  const channel = parsed.channel === 'EMAIL' ? NotificationChannel.EMAIL : NotificationChannel.SMS;
 
   if (parsed.templateId) {
     const template = await prisma.messageTemplate.findFirst({

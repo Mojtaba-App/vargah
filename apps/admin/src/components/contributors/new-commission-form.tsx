@@ -73,7 +73,7 @@ export function NewCommissionForm({
               id="assigneeId"
               name="assigneeId"
               disabled={isPending}
-              className="w-full rounded-md border border-border px-3 py-2 text-sm"
+              className="border-border w-full rounded-md border px-3 py-2 text-sm"
             >
               <option value="">بعداً تخصیص</option>
               {writers.map((w) => (
@@ -89,7 +89,7 @@ export function NewCommissionForm({
               id="contributorId"
               name="contributorId"
               disabled={isPending}
-              className="w-full rounded-md border border-border px-3 py-2 text-sm"
+              className="border-border w-full rounded-md border px-3 py-2 text-sm"
             >
               <option value="">—</option>
               {contributors.map((c) => (

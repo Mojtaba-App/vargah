@@ -69,7 +69,8 @@ function parseDayEnd(value?: string): Date | undefined {
 export function normalizeCampaignFilters(input: unknown): CampaignAudienceFilters {
   const raw = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const segment =
-    typeof raw.segment === 'string' && (CAMPAIGN_SEGMENTS as readonly string[]).includes(raw.segment)
+    typeof raw.segment === 'string' &&
+    (CAMPAIGN_SEGMENTS as readonly string[]).includes(raw.segment)
       ? (raw.segment as CampaignSegment)
       : 'all';
 
@@ -101,10 +102,7 @@ export function buildAudienceWhere(
     and.push({ email: { not: '' } });
   } else if (channel === NotificationChannel.SMS) {
     and.push({
-      OR: [
-        { phone: { not: null } },
-        { deliveryPhone: { not: null } },
-      ],
+      OR: [{ phone: { not: null } }, { deliveryPhone: { not: null } }],
     });
   }
 

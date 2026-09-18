@@ -271,7 +271,7 @@ export function IssueForm({ mode, issueId, defaultValues, articles }: IssueFormP
           <Card className="rounded-2xl">
             <CardContent className="space-y-3 pt-6 text-sm">
               <p className="font-semibold">خلاصه</p>
-              <div className="space-y-2 text-muted-foreground">
+              <div className="text-muted-foreground space-y-2">
                 <p>
                   وضعیت: <Badge variant="outline">{ISSUE_STATUS_LABELS[status]}</Badge>
                 </p>
@@ -284,7 +284,7 @@ export function IssueForm({ mode, issueId, defaultValues, articles }: IssueFormP
                   href={getPublicIssueUrl(defaultValues.slug)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block text-primary hover:underline"
+                  className="text-primary inline-block hover:underline"
                 >
                   مشاهده در سایت
                 </a>

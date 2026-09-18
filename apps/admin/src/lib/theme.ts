@@ -8,10 +8,7 @@ export function isThemeSetting(value: string | undefined | null): value is Theme
   return value === 'light' || value === 'dark' || value === 'system';
 }
 
-export function resolveThemePreference(
-  theme: ThemeSetting,
-  prefersDark: boolean,
-): ResolvedTheme {
+export function resolveThemePreference(theme: ThemeSetting, prefersDark: boolean): ResolvedTheme {
   if (theme === 'dark') return 'dark';
   if (theme === 'light') return 'light';
   return prefersDark ? 'dark' : 'light';

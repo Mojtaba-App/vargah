@@ -3,7 +3,9 @@ import { parseDatabaseUrl } from '@vargah/security/database-url';
 
 describe('parseDatabaseUrl', () => {
   it('parses standard postgres url', () => {
-    expect(parseDatabaseUrl('postgresql://postgres:secret@localhost:5432/db_vargah?schema=public')).toEqual({
+    expect(
+      parseDatabaseUrl('postgresql://postgres:secret@localhost:5432/db_vargah?schema=public'),
+    ).toEqual({
       databaseName: 'db_vargah',
       host: 'localhost',
       port: '5432',

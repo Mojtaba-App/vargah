@@ -77,11 +77,7 @@ export const DEFAULT_SUBSCRIPTION_PLANS: SubscriptionPlanConfig[] = [
     price: 2500000,
     period: 'yearly',
     periodMonths: 12,
-    features: [
-      'ارسال نسخه چاپی به آدرس شما',
-      'بسته‌بندی ویژه',
-      'کارت تشکر در هر شماره',
-    ],
+    features: ['ارسال نسخه چاپی به آدرس شما', 'بسته‌بندی ویژه', 'کارت تشکر در هر شماره'],
     isActive: true,
     sortOrder: 3,
   },
@@ -110,7 +106,10 @@ function normalizeDiscountType(raw: unknown): PlanSaleDiscountType {
   return 'none';
 }
 
-function normalizePlan(raw: Partial<SubscriptionPlanConfig>, index: number): SubscriptionPlanConfig | null {
+function normalizePlan(
+  raw: Partial<SubscriptionPlanConfig>,
+  index: number,
+): SubscriptionPlanConfig | null {
   if (!raw.slug || !raw.name) return null;
   const period = raw.period === 'yearly' ? 'yearly' : 'monthly';
   const periodMonths = raw.periodMonths ?? (period === 'yearly' ? 12 : 1);
@@ -149,7 +148,9 @@ export function mergeSubscriptionPlans(value: unknown): SubscriptionPlanConfig[]
   return plans.length > 0 ? plans : DEFAULT_SUBSCRIPTION_PLANS;
 }
 
-export function getActiveSubscriptionPlans(plans: SubscriptionPlanConfig[]): SubscriptionPlanConfig[] {
+export function getActiveSubscriptionPlans(
+  plans: SubscriptionPlanConfig[],
+): SubscriptionPlanConfig[] {
   return plans.filter((p) => p.isActive && p.price > 0);
 }
 

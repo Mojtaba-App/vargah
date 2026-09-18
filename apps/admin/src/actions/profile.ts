@@ -29,12 +29,12 @@ export async function updateProfile(formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: user.id,
-      action: AuditAction.UPDATE,
-      entity: 'User',
-      entityId: user.id,
-      changes: { field: 'profile' },
-    });
+    userId: user.id,
+    action: AuditAction.UPDATE,
+    entity: 'User',
+    entityId: user.id,
+    changes: { field: 'profile' },
+  });
 
   await setSessionCookie(user);
   revalidatePath('/', 'layout');

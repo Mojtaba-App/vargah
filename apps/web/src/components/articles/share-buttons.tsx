@@ -12,7 +12,10 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
   const shareLinks = [
     { label: 'تلگرام', href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}` },
     { label: 'واتساپ', href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}` },
-    { label: 'توییتر', href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}` },
+    {
+      label: 'توییتر',
+      href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    },
   ];
 
   const copyLink = async () => {
@@ -21,14 +24,14 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium text-muted-foreground">اشتراک‌گذاری:</span>
+      <span className="text-muted-foreground text-sm font-medium">اشتراک‌گذاری:</span>
       {shareLinks.map((link) => (
         <a
           key={link.label}
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-muted"
+          className="border-border hover:bg-muted rounded-full border px-3 py-1 text-xs font-medium"
         >
           {link.label}
         </a>
@@ -36,7 +39,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={copyLink}
-        className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-muted"
+        className="border-border hover:bg-muted rounded-full border px-3 py-1 text-xs font-medium"
       >
         کپی لینک
       </button>

@@ -10,12 +10,7 @@ function readCsrfToken(): string | null {
 }
 
 function shouldAttachCsrf(input: RequestInfo | URL): boolean {
-  const raw =
-    typeof input === 'string'
-      ? input
-      : input instanceof URL
-        ? input.href
-        : input.url;
+  const raw = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
 
   if (
     raw.startsWith('data:') ||

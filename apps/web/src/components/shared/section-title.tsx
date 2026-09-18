@@ -28,12 +28,12 @@ export function SectionTitle({
       )}
     >
       <div className={cn('max-w-2xl', align === 'center' && 'mx-auto')}>
-        {eyebrow && (
-          <p className="section-eyebrow mb-3">{eyebrow}</p>
-        )}
-        <Tag className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">{title}</Tag>
+        {eyebrow && <p className="section-eyebrow mb-3">{eyebrow}</p>}
+        <Tag className="text-2xl font-bold tracking-tight text-balance sm:text-3xl">{title}</Tag>
         {subtitle && (
-          <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>
+          <p className="text-muted-foreground mt-2.5 text-sm leading-relaxed sm:text-base">
+            {subtitle}
+          </p>
         )}
       </div>
       {action && <div className="shrink-0">{action}</div>}

@@ -23,7 +23,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       onClick={() => mounted && setTheme(isDark ? 'light' : 'dark')}
       disabled={!mounted}
       className={cn(
-        'rounded-xl p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50',
+        'text-muted-foreground hover:bg-muted hover:text-foreground rounded-xl p-2.5 transition-colors disabled:opacity-50',
         className,
       )}
       aria-label={isDark ? 'فعال‌سازی حالت روشن' : 'فعال‌سازی حالت شب'}

@@ -21,7 +21,10 @@ type HeatLayer = L.Layer & {
 };
 
 type LeafletWithHeat = typeof L & {
-  heatLayer?: (latlngs: Array<[number, number, number?]>, options?: Record<string, unknown>) => HeatLayer;
+  heatLayer?: (
+    latlngs: Array<[number, number, number?]>,
+    options?: Record<string, unknown>,
+  ) => HeatLayer;
 };
 
 export async function ensureLeafletHeat(): Promise<void> {

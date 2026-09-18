@@ -50,7 +50,7 @@ export function CommissionWorkflowActions({
 
   if (!canManage) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         مرحله فعلی: {COMMISSION_STATUS_LABELS[status]}
       </p>
     );
@@ -62,12 +62,17 @@ export function CommissionWorkflowActions({
         <StatusBanner type={error ? 'error' : 'success'} message={error ?? message!} />
       )}
       {(ratingMessage || ratingError) && (
-        <StatusBanner type={ratingError ? 'error' : 'success'} message={ratingError ?? ratingMessage!} />
+        <StatusBanner
+          type={ratingError ? 'error' : 'success'}
+          message={ratingError ?? ratingMessage!}
+        />
       )}
       {assignError && <StatusBanner type="error" message={assignError} />}
 
       <div>
-        <p className="mb-2 text-sm text-muted-foreground">مرحله فعلی: {COMMISSION_STATUS_LABELS[status]}</p>
+        <p className="text-muted-foreground mb-2 text-sm">
+          مرحله فعلی: {COMMISSION_STATUS_LABELS[status]}
+        </p>
         <CommissionTransitionButtons
           commissionId={commissionId}
           status={status}
@@ -82,7 +87,7 @@ export function CommissionWorkflowActions({
 
       {status === CommissionStatus.TOPIC_DEFINED && !assigneeId && (
         <form
-          className="space-y-3 rounded-2xl border border-border p-4"
+          className="border-border space-y-3 rounded-2xl border p-4"
           onSubmit={(event) => {
             event.preventDefault();
             const fd = new FormData(event.currentTarget);
@@ -116,7 +121,12 @@ export function CommissionWorkflowActions({
           </div>
           <div>
             <Label required>پروفایل همکار</Label>
-            <Select name="contributorId" required className="mt-2 rounded-xl" disabled={assignPending}>
+            <Select
+              name="contributorId"
+              required
+              className="mt-2 rounded-xl"
+              disabled={assignPending}
+            >
               <option value="">انتخاب...</option>
               {contributors.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -133,7 +143,13 @@ export function CommissionWorkflowActions({
             minDate={minDueDate}
             hint="اختیاری — از امروز به بعد، تا پایان روز شمسی"
           />
-          <LoadingButton type="submit" size="sm" className="rounded-xl" loading={assignPending} loadingText="در حال تخصیص...">
+          <LoadingButton
+            type="submit"
+            size="sm"
+            className="rounded-xl"
+            loading={assignPending}
+            loadingText="در حال تخصیص..."
+          >
             تخصیص
           </LoadingButton>
         </form>
@@ -141,7 +157,7 @@ export function CommissionWorkflowActions({
 
       {status === CommissionStatus.APPROVED && contributorId && (
         <form
-          className="space-y-3 rounded-2xl border border-dashed border-border p-4"
+          className="border-border space-y-3 rounded-2xl border border-dashed p-4"
           onSubmit={(event) => {
             event.preventDefault();
             const fd = new FormData(event.currentTarget);
@@ -164,9 +180,31 @@ export function CommissionWorkflowActions({
           }}
         >
           <h4 className="font-semibold">امتیاز کیفیت همکار</h4>
-          <Input name="score" type="number" min={1} max={5} required placeholder="۱ تا ۵" disabled={ratingPending} className="rounded-xl" />
-          <Textarea name="note" rows={2} placeholder="یادداشت (اختیاری)" disabled={ratingPending} className="rounded-xl" />
-          <LoadingButton type="submit" size="sm" variant="outline" className="rounded-xl" loading={ratingPending} loadingText="در حال ثبت...">
+          <Input
+            name="score"
+            type="number"
+            min={1}
+            max={5}
+            required
+            placeholder="۱ تا ۵"
+            disabled={ratingPending}
+            className="rounded-xl"
+          />
+          <Textarea
+            name="note"
+            rows={2}
+            placeholder="یادداشت (اختیاری)"
+            disabled={ratingPending}
+            className="rounded-xl"
+          />
+          <LoadingButton
+            type="submit"
+            size="sm"
+            variant="outline"
+            className="rounded-xl"
+            loading={ratingPending}
+            loadingText="در حال ثبت..."
+          >
             ثبت امتیاز
           </LoadingButton>
         </form>

@@ -58,11 +58,15 @@ export function NewsletterWorkspace({
           ].map((item) => (
             <Link
               key={item.key}
-              href={item.key === 'all' ? '/messages/newsletter' : `/messages/newsletter?status=${item.key}`}
+              href={
+                item.key === 'all'
+                  ? '/messages/newsletter'
+                  : `/messages/newsletter?status=${item.key}`
+              }
               className={
                 statusFilter === item.key || (item.key === 'all' && statusFilter === 'all')
-                  ? 'rounded-xl border border-primary bg-primary/10 px-3 py-1.5 text-primary'
-                  : 'rounded-xl border border-border px-3 py-1.5 text-muted-foreground'
+                  ? 'border-primary bg-primary/10 text-primary rounded-xl border px-3 py-1.5'
+                  : 'border-border text-muted-foreground rounded-xl border px-3 py-1.5'
               }
             >
               {item.label}
@@ -72,20 +76,20 @@ export function NewsletterWorkspace({
         <button
           type="button"
           onClick={downloadCsv}
-          className="rounded-xl border border-border px-3 py-1.5 text-sm hover:bg-muted"
+          className="border-border hover:bg-muted rounded-xl border px-3 py-1.5 text-sm"
         >
           خروجی CSV صفحه
         </button>
       </div>
 
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         اعضای فعال: {activeCount.toLocaleString('fa-IR')} — لغو عضویت عمومی:{' '}
-        <code className="rounded bg-muted px-1" dir="ltr">
+        <code className="bg-muted rounded px-1" dir="ltr">
           /newsletter/unsubscribe?token=…
         </code>
       </p>
 
-      <div className="overflow-x-auto rounded-2xl border border-border">
+      <div className="border-border overflow-x-auto rounded-2xl border">
         <table className="min-w-full text-sm">
           <thead className="bg-muted/40 text-start">
             <tr>
@@ -98,13 +102,13 @@ export function NewsletterWorkspace({
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={4} className="text-muted-foreground px-4 py-8 text-center">
                   عضوی یافت نشد
                 </td>
               </tr>
             ) : (
               rows.map((row) => (
-                <tr key={row.id} className="border-t border-border">
+                <tr key={row.id} className="border-border border-t">
                   <td className="px-4 py-3" dir="ltr">
                     {row.email}
                   </td>

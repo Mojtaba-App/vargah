@@ -105,7 +105,9 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
 
   return (
     <div className="space-y-6">
-      {message && <StatusBanner type="success" message={message} onDismiss={() => setMessage(null)} />}
+      {message && (
+        <StatusBanner type="success" message={message} onDismiss={() => setMessage(null)} />
+      )}
       {error && <StatusBanner type="error" message={error} onDismiss={() => setError(null)} />}
 
       <Card className="rounded-2xl">
@@ -113,7 +115,7 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h2 className="text-xl font-bold">{campaign.title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 {campaign.channel === NotificationChannel.EMAIL ? 'ایمیل' : 'پیامک'}
                 {campaign.createdByName ? ` · ${campaign.createdByName}` : ''}
                 {' · '}
@@ -130,8 +132,8 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
             <Stat label="پیشرفت" value={`${progress}%`} />
           </div>
 
-          <div className="h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
+          <div className="bg-muted h-2 overflow-hidden rounded-full">
+            <div className="bg-primary h-full transition-all" style={{ width: `${progress}%` }} />
           </div>
 
           {canManage && (
@@ -155,10 +157,7 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
                     className="rounded-xl"
                     loading={pending}
                     onClick={() =>
-                      run(
-                        () => processBulkCampaignNow(campaign.id, 40),
-                        'یک دسته از صف پردازش شد',
-                      )
+                      run(() => processBulkCampaignNow(campaign.id, 40), 'یک دسته از صف پردازش شد')
                     }
                   >
                     ارسال دسته بعدی
@@ -204,7 +203,7 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
                 {campaign.subject}
               </p>
             )}
-            <pre className="whitespace-pre-wrap rounded-xl border border-border bg-muted/30 p-3 text-sm">
+            <pre className="border-border bg-muted/30 rounded-xl border p-3 text-sm whitespace-pre-wrap">
               {campaign.body}
             </pre>
           </CardContent>
@@ -213,7 +212,7 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
         <Card className="rounded-2xl">
           <CardContent className="space-y-3 pt-6">
             <p className="font-semibold">فیلتر مخاطب</p>
-            <ul className="space-y-1 text-sm text-muted-foreground">
+            <ul className="text-muted-foreground space-y-1 text-sm">
               <li>سگمنت: {CAMPAIGN_SEGMENT_LABELS[segment]}</li>
               {campaign.filters.registeredFrom && (
                 <li>ثبت‌نام از: {formatJalaliDate(campaign.filters.registeredFrom)}</li>
@@ -244,7 +243,7 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-sm">
               <thead>
-                <tr className="border-b border-border text-start text-muted-foreground">
+                <tr className="border-border text-muted-foreground border-b text-start">
                   <th className="px-2 py-2 font-medium">گیرنده</th>
                   <th className="px-2 py-2 font-medium">نام</th>
                   <th className="px-2 py-2 font-medium">وضعیت</th>
@@ -254,19 +253,19 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
               <tbody>
                 {campaign.recipients.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-2 py-8 text-center text-muted-foreground">
+                    <td colSpan={4} className="text-muted-foreground px-2 py-8 text-center">
                       هنوز گیرنده‌ای در صف نیست. کمپین را به صف اضافه کنید.
                     </td>
                   </tr>
                 ) : (
                   campaign.recipients.map((row) => (
-                    <tr key={row.id} className="border-b border-border/60">
+                    <tr key={row.id} className="border-border/60 border-b">
                       <td className="px-2 py-2" dir="ltr">
                         {row.recipient}
                       </td>
                       <td className="px-2 py-2">{row.name ?? '—'}</td>
                       <td className="px-2 py-2">{RECIPIENT_STATUS_LABELS[row.status]}</td>
-                      <td className="px-2 py-2 text-destructive">{row.errorMessage ?? '—'}</td>
+                      <td className="text-destructive px-2 py-2">{row.errorMessage ?? '—'}</td>
                     </tr>
                   ))
                 )}
@@ -281,8 +280,8 @@ export function CampaignDetailPanel({ campaign, canManage }: CampaignDetailPanel
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-xl border border-border px-3 py-2">
-      <p className="text-xs text-muted-foreground">{label}</p>
+    <div className="border-border rounded-xl border px-3 py-2">
+      <p className="text-muted-foreground text-xs">{label}</p>
       <p className="mt-1 text-lg font-bold tabular-nums">{value}</p>
     </div>
   );

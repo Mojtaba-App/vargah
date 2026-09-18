@@ -4,10 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  AlertTriangleIcon,
-  InfoIcon,
-} from '@/components/dashboard/dashboard-icons';
+import { AlertTriangleIcon, InfoIcon } from '@/components/dashboard/dashboard-icons';
 import { BellIcon, BellRingIcon } from '@/components/layout/nav-icons';
 import { acknowledgeCurrentAdminAlerts, fetchAdminAlerts } from '@/actions/alerts';
 import type { AdminAlert } from '@/lib/admin-alerts';
@@ -92,7 +89,7 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
           setOpen((value) => !value);
         }}
         className={cn(
-          'relative rounded-xl p-2.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+          'text-muted-foreground hover:bg-muted hover:text-foreground relative rounded-xl p-2.5 transition-colors',
           open && 'bg-muted text-foreground',
           unreadCount > 0 && 'text-foreground',
         )}
@@ -103,7 +100,7 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
         <Bell className={cn('size-5', unreadCount > 0 && 'text-primary')} />
         {unreadCount > 0 && (
           <span
-            className="absolute end-1 top-1 flex min-h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground ring-2 ring-background animate-pulse"
+            className="bg-destructive text-destructive-foreground ring-background absolute end-1 top-1 flex min-h-4 min-w-4 animate-pulse items-center justify-center rounded-full px-1 text-[10px] font-bold ring-2"
             aria-live="polite"
           >
             {unreadCount > 99 ? '99+' : formatNumber(unreadCount)}
@@ -113,21 +110,21 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
 
       {open && (
         <div
-          className="absolute end-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border bg-card shadow-xl"
+          className="border-border bg-card absolute end-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border shadow-xl"
           role="menu"
         >
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+          <div className="border-border flex items-center justify-between border-b px-4 py-3">
             <div className="flex items-center gap-2">
               <p className="font-semibold">اعلان‌ها</p>
               {unreadCount > 0 && (
-                <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] font-medium text-destructive">
+                <span className="bg-destructive/10 text-destructive rounded-full px-2 py-0.5 text-[11px] font-medium">
                   {formatNumber(unreadCount)} جدید
                 </span>
               )}
             </div>
             <button
               type="button"
-              className="text-xs text-primary hover:underline disabled:opacity-50"
+              className="text-primary text-xs hover:underline disabled:opacity-50"
               disabled={refreshing}
               onClick={() => void refresh()}
             >
@@ -136,7 +133,7 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
           </div>
 
           {alerts.length === 0 ? (
-            <p className="px-4 py-8 text-center text-sm text-muted-foreground">اعلان فعالی نیست</p>
+            <p className="text-muted-foreground px-4 py-8 text-center text-sm">اعلان فعالی نیست</p>
           ) : (
             <ul className="max-h-80 overflow-y-auto p-2">
               {alerts.map((alert) => {
@@ -153,10 +150,10 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
                         style.wrap,
                       )}
                     >
-                      <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                      <Icon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
                       <span className="flex-1 leading-relaxed">{alert.text}</span>
                       {alert.unreadCount > 0 ? (
-                        <span className="mt-0.5 shrink-0 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold text-destructive">
+                        <span className="bg-destructive/10 text-destructive mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold">
                           {formatNumber(alert.unreadCount)}
                         </span>
                       ) : null}
@@ -167,10 +164,10 @@ export function NotificationBell({ initialAlerts }: NotificationBellProps) {
             </ul>
           )}
 
-          <div className="border-t border-border p-2">
+          <div className="border-border border-t p-2">
             <button
               type="button"
-              className="w-full rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted"
+              className="text-muted-foreground hover:bg-muted w-full rounded-xl px-3 py-2 text-sm transition-colors"
               onClick={() => {
                 setOpen(false);
                 router.push('/');

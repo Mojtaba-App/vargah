@@ -80,7 +80,7 @@ export function IssueFileUpload({
   };
 
   return (
-    <div className="space-y-3 rounded-xl border border-border p-4">
+    <div className="border-border space-y-3 rounded-xl border p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Label>{meta.label}</Label>
         <Button
@@ -110,7 +110,9 @@ export function IssueFileUpload({
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={type === 'pdf' ? '/uploads/issues/12/issue-12.pdf' : '/uploads/issues/12/cover-12.jpg'}
+        placeholder={
+          type === 'pdf' ? '/uploads/issues/12/issue-12.pdf' : '/uploads/issues/12/cover-12.jpg'
+        }
         dir="ltr"
         disabled={disabled || uploading}
         aria-invalid={Boolean(error || uploadError)}
@@ -121,9 +123,13 @@ export function IssueFileUpload({
       <FieldHint>{meta.hint}</FieldHint>
 
       {type === 'cover' && value && (value.startsWith('/') || value.startsWith('http')) && (
-        <div className="overflow-hidden rounded-xl border border-border">
+        <div className="border-border overflow-hidden rounded-xl border">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="پیش‌نمایش کاور" className="aspect-[3/4] w-full max-w-xs object-cover" />
+          <img
+            src={value}
+            alt="پیش‌نمایش کاور"
+            className="aspect-[3/4] w-full max-w-xs object-cover"
+          />
         </div>
       )}
 
@@ -132,7 +138,7 @@ export function IssueFileUpload({
           href={value}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn('inline-flex text-sm text-primary hover:underline')}
+          className={cn('text-primary inline-flex text-sm hover:underline')}
         >
           مشاهده PDF آپلودشده
         </a>

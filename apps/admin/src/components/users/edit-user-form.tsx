@@ -10,11 +10,7 @@ import { Badge } from '@vargah/ui/components/badge';
 import { evaluatePasswordStrength } from '@vargah/security/password-strength';
 import { hasAdminSmsVerification, maskPhone } from '@vargah/security/phone';
 
-import {
-  deleteAdminUser,
-  updateAdminUser,
-  updateAdminUserPassword,
-} from '@/actions/users';
+import { deleteAdminUser, updateAdminUser, updateAdminUserPassword } from '@/actions/users';
 import { PasswordFields } from '@/components/users/password-fields';
 import { LoadingButton } from '@/components/ui/feedback/loading-button';
 import { StatusBanner } from '@/components/ui/feedback/status-banner';
@@ -248,12 +244,15 @@ export function EditUserForm({
         <Card className="rounded-2xl">
           <CardContent className="space-y-4 pt-6 text-sm">
             <p className="font-semibold">اطلاعات حساب</p>
-            <div className="space-y-2 text-muted-foreground">
+            <div className="text-muted-foreground space-y-2">
               <p>
                 نقش فعلی: <Badge>{ROLE_LABELS[user.role]}</Badge>
               </p>
               <p>
-                وضعیت: <Badge variant={user.status === 'ACTIVE' ? 'default' : 'outline'}>{STATUS_LABELS[user.status]}</Badge>
+                وضعیت:{' '}
+                <Badge variant={user.status === 'ACTIVE' ? 'default' : 'outline'}>
+                  {STATUS_LABELS[user.status]}
+                </Badge>
               </p>
               <p>
                 ورود دو مرحله‌ای (پیامک):{' '}
@@ -275,8 +274,8 @@ export function EditUserForm({
                 موبایل: {user.phone ? maskPhone(user.phone) : '— (ورود بدون پیامک ممکن نیست)'}
               </p>
               <p className="text-xs leading-relaxed">
-                پس از ایمیل/نام کاربری و رمز، کد تأیید به موبایل ثبت‌شده ارسال می‌شود (مثل ورود کاربران
-                سایت).
+                پس از ایمیل/نام کاربری و رمز، کد تأیید به موبایل ثبت‌شده ارسال می‌شود (مثل ورود
+                کاربران سایت).
               </p>
               <p>آخرین ورود: {user.lastLoginAt ? formatJalali(user.lastLoginAt) : '—'}</p>
               <p>ایجاد: {formatJalali(user.createdAt)}</p>
@@ -312,11 +311,11 @@ export function EditUserForm({
       )}
 
       {canDelete && !isSelf && (
-        <Card className="rounded-2xl border-destructive/30">
+        <Card className="border-destructive/30 rounded-2xl">
           <CardContent className="flex flex-wrap items-center justify-between gap-4 pt-6">
             <div>
-              <p className="font-semibold text-destructive">حذف کاربر</p>
-              <p className="text-sm text-muted-foreground">این عمل قابل بازگشت نیست.</p>
+              <p className="text-destructive font-semibold">حذف کاربر</p>
+              <p className="text-muted-foreground text-sm">این عمل قابل بازگشت نیست.</p>
             </div>
             <Button
               variant="destructive"

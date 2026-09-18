@@ -10,10 +10,7 @@ import { MagazineIntroSection } from '@/components/home/magazine-intro-section';
 import { NewsletterForm } from '@/components/home/newsletter-form';
 import { getPublicAboutContent } from '@/lib/about-content';
 import { getSiteConfig } from '@/lib/site-config';
-import {
-  getCachedEditorsPickArticles,
-  getCachedLatestArticlesGrouped,
-} from '@/lib/db/articles';
+import { getCachedEditorsPickArticles, getCachedLatestArticlesGrouped } from '@/lib/db/articles';
 import { getCachedLatestPublishedIssue } from '@/lib/db/issues';
 import { mapDbArticleToView } from '@/lib/db/map-article';
 import { mockImages } from '@/data/mock/images';

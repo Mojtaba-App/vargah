@@ -50,17 +50,47 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/', label: 'داشبورد', icon: LayoutDashboardIcon, permission: PERMISSIONS.DASHBOARD_VIEW },
+  {
+    href: '/',
+    label: 'داشبورد',
+    icon: LayoutDashboardIcon,
+    permission: PERMISSIONS.DASHBOARD_VIEW,
+  },
   {
     href: '/content',
     label: 'مدیریت محتوا',
     icon: LayersIcon,
     children: [
-      { href: '/content/articles', label: 'مقالات', icon: FileTextIcon, permission: PERMISSIONS.ARTICLE_VIEW },
-      { href: '/content/comments', label: 'نظرات', icon: MessageSquareIcon, permission: PERMISSIONS.COMMENT_VIEW },
-      { href: '/content/issues', label: 'شماره‌ها', icon: BookOpenIcon, permission: PERMISSIONS.ISSUE_VIEW },
-      { href: '/content/categories', label: 'دسته‌بندی‌ها', icon: TagsIcon, permission: PERMISSIONS.CATEGORY_MANAGE },
-      { href: '/content/media', label: 'رسانه', icon: ImageIcon, permission: PERMISSIONS.MEDIA_MANAGE },
+      {
+        href: '/content/articles',
+        label: 'مقالات',
+        icon: FileTextIcon,
+        permission: PERMISSIONS.ARTICLE_VIEW,
+      },
+      {
+        href: '/content/comments',
+        label: 'نظرات',
+        icon: MessageSquareIcon,
+        permission: PERMISSIONS.COMMENT_VIEW,
+      },
+      {
+        href: '/content/issues',
+        label: 'شماره‌ها',
+        icon: BookOpenIcon,
+        permission: PERMISSIONS.ISSUE_VIEW,
+      },
+      {
+        href: '/content/categories',
+        label: 'دسته‌بندی‌ها',
+        icon: TagsIcon,
+        permission: PERMISSIONS.CATEGORY_MANAGE,
+      },
+      {
+        href: '/content/media',
+        label: 'رسانه',
+        icon: ImageIcon,
+        permission: PERMISSIONS.MEDIA_MANAGE,
+      },
       {
         href: '/subscription-plans',
         label: 'پلن‌های اشتراک',
@@ -81,8 +111,18 @@ const NAV_ITEMS: NavItem[] = [
     icon: UsersIcon,
     children: [
       { href: '/users', label: 'لیست کاربران', icon: UserIcon, permission: PERMISSIONS.USER_VIEW },
-      { href: '/users/permissions', label: 'ماتریس دسترسی', icon: ShieldCheckIcon, permission: PERMISSIONS.ROLE_PERMISSION_MANAGE },
-      { href: '/users/audit', label: 'لاگ فعالیت', icon: ScrollTextIcon, permission: PERMISSIONS.AUDIT_VIEW },
+      {
+        href: '/users/permissions',
+        label: 'ماتریس دسترسی',
+        icon: ShieldCheckIcon,
+        permission: PERMISSIONS.ROLE_PERMISSION_MANAGE,
+      },
+      {
+        href: '/users/audit',
+        label: 'لاگ فعالیت',
+        icon: ScrollTextIcon,
+        permission: PERMISSIONS.AUDIT_VIEW,
+      },
     ],
   },
   {
@@ -90,10 +130,30 @@ const NAV_ITEMS: NavItem[] = [
     label: 'مشتریان',
     icon: BriefcaseIcon,
     children: [
-      { href: '/crm/subscribers', label: 'مشترکین', icon: StarIcon, permission: PERMISSIONS.SUBSCRIBER_VIEW },
-      { href: '/crm/advertisers', label: 'آگهی‌دهندگان', icon: MegaphoneIcon, permission: PERMISSIONS.ADVERTISER_VIEW },
-      { href: '/crm/tickets', label: 'تیکت‌ها', icon: TicketIcon, permission: PERMISSIONS.TICKET_VIEW },
-      { href: '/crm/surveys', label: 'رضایت‌سنجی', icon: ChartIcon, permission: PERMISSIONS.TICKET_VIEW },
+      {
+        href: '/crm/subscribers',
+        label: 'مشترکین',
+        icon: StarIcon,
+        permission: PERMISSIONS.SUBSCRIBER_VIEW,
+      },
+      {
+        href: '/crm/advertisers',
+        label: 'آگهی‌دهندگان',
+        icon: MegaphoneIcon,
+        permission: PERMISSIONS.ADVERTISER_VIEW,
+      },
+      {
+        href: '/crm/tickets',
+        label: 'تیکت‌ها',
+        icon: TicketIcon,
+        permission: PERMISSIONS.TICKET_VIEW,
+      },
+      {
+        href: '/crm/surveys',
+        label: 'رضایت‌سنجی',
+        icon: ChartIcon,
+        permission: PERMISSIONS.TICKET_VIEW,
+      },
     ],
   },
   {
@@ -101,10 +161,30 @@ const NAV_ITEMS: NavItem[] = [
     label: 'همکاران',
     icon: PenLineIcon,
     children: [
-      { href: '/contributors', label: 'پروفایل‌ها', icon: UserCircleIcon, permission: PERMISSIONS.CONTRIBUTOR_VIEW },
-      { href: '/contributors/workflow', label: 'گردش کار مطلب', icon: GitBranchIcon, permission: PERMISSIONS.CONTRIBUTOR_MANAGE },
-      { href: '/contributors/tasks', label: 'وظایف', icon: CheckSquareIcon, permission: PERMISSIONS.CONTRIBUTOR_MANAGE },
-      { href: '/contributors/calendar', label: 'تقویم تحریریه', icon: CalendarIcon, permission: PERMISSIONS.CONTRIBUTOR_VIEW },
+      {
+        href: '/contributors',
+        label: 'پروفایل‌ها',
+        icon: UserCircleIcon,
+        permission: PERMISSIONS.CONTRIBUTOR_VIEW,
+      },
+      {
+        href: '/contributors/workflow',
+        label: 'گردش کار مطلب',
+        icon: GitBranchIcon,
+        permission: PERMISSIONS.CONTRIBUTOR_MANAGE,
+      },
+      {
+        href: '/contributors/tasks',
+        label: 'وظایف',
+        icon: CheckSquareIcon,
+        permission: PERMISSIONS.CONTRIBUTOR_MANAGE,
+      },
+      {
+        href: '/contributors/calendar',
+        label: 'تقویم تحریریه',
+        icon: CalendarIcon,
+        permission: PERMISSIONS.CONTRIBUTOR_VIEW,
+      },
     ],
   },
   {
@@ -118,7 +198,12 @@ const NAV_ITEMS: NavItem[] = [
     label: 'پیام‌رسانی',
     icon: MessageSquareIcon,
     children: [
-      { href: '/messages', label: 'صندوق ورودی', icon: MessageSquareIcon, permission: PERMISSIONS.MESSAGE_VIEW },
+      {
+        href: '/messages',
+        label: 'صندوق ورودی',
+        icon: MessageSquareIcon,
+        permission: PERMISSIONS.MESSAGE_VIEW,
+      },
       {
         href: '/messages/chat',
         label: 'چت آنلاین',
@@ -228,7 +313,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        'fixed start-0 top-0 z-40 flex h-screen flex-col border-e border-brand-800/40 bg-brand-950 text-[#eef7f6] shadow-xl shadow-brand-950/30 transition-all duration-300 dark:border-white/10 dark:bg-[#071c1a] dark:shadow-black/40',
+        'border-brand-800/40 bg-brand-950 shadow-brand-950/30 fixed start-0 top-0 z-40 flex h-screen flex-col border-e text-[#eef7f6] shadow-xl transition-all duration-300 dark:border-white/10 dark:bg-[#071c1a] dark:shadow-black/40',
         'w-64 max-lg:transition-transform',
         mobileOpen ? 'max-lg:translate-x-0' : 'max-lg:translate-x-full',
         'lg:translate-x-0',
@@ -238,7 +323,7 @@ export function Sidebar({
     >
       <div
         className={cn(
-          'flex h-16 shrink-0 items-center border-b border-brand-800/50',
+          'border-brand-800/50 flex h-16 shrink-0 items-center border-b',
           collapsed ? 'justify-center px-2' : 'justify-between px-4',
         )}
       >
@@ -312,12 +397,7 @@ function NavSection({
         <ul className="space-y-1">
           {item.children?.map((child) => (
             <li key={child.href}>
-              <SubNavLink
-                item={child}
-                pathname={pathname}
-                collapsed
-                siblingHrefs={siblingHrefs}
-              />
+              <SubNavLink item={child} pathname={pathname} collapsed siblingHrefs={siblingHrefs} />
             </li>
           ))}
         </ul>
@@ -329,9 +409,7 @@ function NavSection({
     <section
       className={cn(
         'rounded-2xl border transition-colors',
-        sectionActive
-          ? 'border-brand-400/25 bg-brand-400/10'
-          : 'border-transparent bg-transparent',
+        sectionActive ? 'border-brand-400/25 bg-brand-400/10' : 'border-transparent bg-transparent',
       )}
       aria-label={item.label}
     >
@@ -352,10 +430,10 @@ function NavSection({
         <span className="truncate text-sm font-bold">{item.label}</span>
       </div>
 
-      <ul className="relative space-y-0.5 pb-2 pe-2 ps-5">
+      <ul className="relative space-y-0.5 ps-5 pe-2 pb-2">
         <span
           className={cn(
-            'absolute bottom-2 start-[1.35rem] top-0 w-px',
+            'absolute start-[1.35rem] top-0 bottom-2 w-px',
             sectionActive ? 'bg-brand-300/50' : 'bg-white/15',
           )}
           aria-hidden="true"
@@ -395,7 +473,7 @@ function MainNavLink({
       className={cn(
         'group flex items-center gap-2.5 rounded-xl px-3 py-2.5 transition-all',
         isActive
-          ? 'bg-brand-400 text-brand-950 shadow-sm shadow-brand-950/30'
+          ? 'bg-brand-400 text-brand-950 shadow-brand-950/30 shadow-sm'
           : 'text-white/90 hover:bg-white/10 hover:text-white',
         collapsed && 'justify-center px-2',
       )}
@@ -437,7 +515,7 @@ function SubNavLink({
       title={collapsed ? item.label : undefined}
       className={cn(
         'group relative flex items-center gap-2 rounded-lg py-2 transition-all',
-        collapsed ? 'justify-center px-2' : 'pe-2 ps-4',
+        collapsed ? 'justify-center px-2' : 'ps-4 pe-2',
         isActive
           ? 'bg-brand-400/20 font-semibold text-white shadow-[inset_-2px_0_0_0_#9ad4cf]'
           : 'text-white/75 hover:bg-white/10 hover:text-white',
@@ -454,9 +532,7 @@ function SubNavLink({
         className={cn(
           'flex shrink-0 items-center justify-center rounded-md transition-colors',
           collapsed ? 'size-9' : 'size-7',
-          isActive
-            ? 'bg-brand-400/25 text-white'
-            : 'text-white/65 group-hover:text-white',
+          isActive ? 'bg-brand-400/25 text-white' : 'text-white/65 group-hover:text-white',
         )}
       >
         <Icon className={cn(collapsed ? 'size-[1.125rem]' : 'size-4')} />

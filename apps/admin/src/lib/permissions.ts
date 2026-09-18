@@ -292,7 +292,11 @@ export function canAccessAdmin(role: UserRole): boolean {
   return ADMIN_ROLES.includes(role);
 }
 
-export function hasPermission(role: UserRole, permission: Permission, matrix?: Record<UserRole, Permission[]>): boolean {
+export function hasPermission(
+  role: UserRole,
+  permission: Permission,
+  matrix?: Record<UserRole, Permission[]>,
+): boolean {
   const source = matrix ?? DEFAULT_ROLE_PERMISSIONS;
   return source[role]?.includes(permission) ?? false;
 }
@@ -313,7 +317,10 @@ export function canEditUsers(role: UserRole, matrix?: Record<UserRole, Permissio
   return hasAnyPermission(role, [PERMISSIONS.USER_MANAGE, PERMISSIONS.USER_EDIT], matrix);
 }
 
-export function canManageRolePermissions(role: UserRole, matrix?: Record<UserRole, Permission[]>): boolean {
+export function canManageRolePermissions(
+  role: UserRole,
+  matrix?: Record<UserRole, Permission[]>,
+): boolean {
   return hasPermission(role, PERMISSIONS.ROLE_PERMISSION_MANAGE, matrix);
 }
 

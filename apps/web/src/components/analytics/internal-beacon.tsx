@@ -7,8 +7,14 @@ function classifySource(referrer: string): string {
   if (!referrer) return 'direct';
   try {
     const host = new URL(referrer).hostname.toLowerCase();
-    if (host.includes('google') || host.includes('bing') || host.includes('yahoo')) return 'organic';
-    if (host.includes('t.me') || host.includes('instagram') || host.includes('twitter') || host.includes('x.com')) {
+    if (host.includes('google') || host.includes('bing') || host.includes('yahoo'))
+      return 'organic';
+    if (
+      host.includes('t.me') ||
+      host.includes('instagram') ||
+      host.includes('twitter') ||
+      host.includes('x.com')
+    ) {
       return 'social';
     }
     if (host.includes('mail')) return 'email';

@@ -14,7 +14,7 @@ export function MessagesNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-wrap gap-2 border-b border-border pb-3">
+    <div className="border-border flex flex-wrap gap-2 border-b pb-3">
       {TABS.map((tab) => {
         const active = tab.exact
           ? pathname === tab.href

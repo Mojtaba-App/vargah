@@ -103,12 +103,12 @@ export async function createIssue(formData: FormData) {
   await syncIssueArticles(issue.id, parsed.tableOfContents);
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.CREATE,
-      entity: 'Issue',
-      entityId: issue.id,
-      changes: { number: parsed.number, title: parsed.title },
-    });
+    userId: session.user.id,
+    action: AuditAction.CREATE,
+    entity: 'Issue',
+    entityId: issue.id,
+    changes: { number: parsed.number, title: parsed.title },
+  });
 
   await revalidateIssue(slug, parsed.status);
   redirect(`/content/issues/${issue.id}`);
@@ -156,12 +156,12 @@ export async function updateIssue(id: string, formData: FormData) {
   await syncIssueArticles(id, parsed.tableOfContents);
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'Issue',
-      entityId: id,
-      changes: { status: parsed.status, number: parsed.number },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'Issue',
+    entityId: id,
+    changes: { status: parsed.status, number: parsed.number },
+  });
 
   revalidatePath(`/content/issues/${id}`);
   await revalidateIssue(slug, parsed.status);
@@ -178,11 +178,11 @@ export async function deleteIssue(id: string) {
   await prisma.issue.delete({ where: { id } });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.DELETE,
-      entity: 'Issue',
-      entityId: id,
-    });
+    userId: session.user.id,
+    action: AuditAction.DELETE,
+    entity: 'Issue',
+    entityId: id,
+  });
 
   revalidatePath('/content/issues');
   await revalidateWeb({ tags: ['issues'], paths: ['/sitemap.xml'] });

@@ -27,7 +27,7 @@ export function BrandLogoMark({
       width={dimension}
       height={dimension}
       className={cn(
-        'shrink-0 rounded-full object-cover shadow-md ring-1 ring-primary/15',
+        'ring-primary/15 shrink-0 rounded-full object-cover shadow-md ring-1',
         className,
       )}
       priority

@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  buildIranCityCatalog,
-  buildIranCityId,
-  resolveIranCityId,
-} from '../src/iran-geo';
+import { buildIranCityCatalog, buildIranCityId, resolveIranCityId } from '../src/iran-geo';
 
 describe('iran-geo', () => {
   it('builds stable city ids', () => {

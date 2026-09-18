@@ -102,8 +102,9 @@ export function TwoFactorSetup({ enabled, onEnabled, redirectOnSuccess }: Props)
               <h4 className="font-semibold text-emerald-800 dark:text-emerald-200">2FA فعال است</h4>
               <Badge variant="default">محافظت شده</Badge>
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">
-              حساب شما با احراز هویت دو مرحله‌ای محافظت می‌شود. هنگام ورود، کد ۶ رقمی از اپلیکیشن احراز هویت لازم است.
+            <p className="text-muted-foreground mt-1 text-sm">
+              حساب شما با احراز هویت دو مرحله‌ای محافظت می‌شود. هنگام ورود، کد ۶ رقمی از اپلیکیشن
+              احراز هویت لازم است.
             </p>
           </div>
         </CardContent>
@@ -127,20 +128,27 @@ export function TwoFactorSetup({ enabled, onEnabled, redirectOnSuccess }: Props)
             <div
               className={cn(
                 'flex size-8 items-center justify-center rounded-full text-xs font-semibold',
-                i <= activeIndex ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
+                i <= activeIndex
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground',
               )}
             >
               {i + 1}
             </div>
-            <span className={cn('text-xs', i <= activeIndex ? 'text-foreground' : 'text-muted-foreground')}>
+            <span
+              className={cn(
+                'text-xs',
+                i <= activeIndex ? 'text-foreground' : 'text-muted-foreground',
+              )}
+            >
               {s.label}
             </span>
-            {i < steps.length - 1 && <div className="mx-1 h-px w-6 bg-border" />}
+            {i < steps.length - 1 && <div className="bg-border mx-1 h-px w-6" />}
           </div>
         ))}
       </div>
 
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         اپلیکیشن Google Authenticator، Authy یا مشابه را نصب کنید و کلید را اسکن یا وارد کنید.
       </p>
 
@@ -151,19 +159,25 @@ export function TwoFactorSetup({ enabled, onEnabled, redirectOnSuccess }: Props)
       )}
 
       {step === 'verify' && (
-        <div className="space-y-4 rounded-2xl border border-border bg-muted/20 p-4">
+        <div className="border-border bg-muted/20 space-y-4 rounded-2xl border p-4">
           <div>
             <p className="text-sm font-medium">کلید دستی</p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              <code className="rounded-lg bg-muted px-3 py-2 text-sm" dir="ltr">
+              <code className="bg-muted rounded-lg px-3 py-2 text-sm" dir="ltr">
                 {secret}
               </code>
-              <Button type="button" variant="outline" size="sm" className="rounded-lg" onClick={copySecret}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-lg"
+                onClick={copySecret}
+              >
                 {copied ? 'کپی شد' : 'کپی کلید'}
               </Button>
             </div>
           </div>
-          <p className="break-all text-xs text-muted-foreground" dir="ltr">
+          <p className="text-muted-foreground text-xs break-all" dir="ltr">
             {uri}
           </p>
           <div>
@@ -182,7 +196,12 @@ export function TwoFactorSetup({ enabled, onEnabled, redirectOnSuccess }: Props)
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button type="button" onClick={verifySetup} disabled={loading || token.length !== 6} className="rounded-xl">
+            <Button
+              type="button"
+              onClick={verifySetup}
+              disabled={loading || token.length !== 6}
+              className="rounded-xl"
+            >
               {loading ? 'در حال تأیید...' : 'فعال‌سازی 2FA'}
             </Button>
             <Button
@@ -203,7 +222,7 @@ export function TwoFactorSetup({ enabled, onEnabled, redirectOnSuccess }: Props)
         </div>
       )}
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-sm">{error}</p>}
     </div>
   );
 }

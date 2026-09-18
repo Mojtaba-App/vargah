@@ -19,7 +19,7 @@ export function HeaderCartButton({ label, className }: HeaderCartButtonProps) {
       className={cn(
         headerActionButtonClass,
         'relative',
-        pulse && 'animate-pulse text-primary',
+        pulse && 'text-primary animate-pulse',
         itemCount > 0 && 'text-primary',
         className,
       )}
@@ -28,7 +28,7 @@ export function HeaderCartButton({ label, className }: HeaderCartButtonProps) {
     >
       <CartIcon />
       {ready && itemCount > 0 && (
-        <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground shadow-sm">
+        <span className="bg-primary text-primary-foreground absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] leading-none font-bold shadow-sm">
           {itemCount > 99 ? '99+' : itemCount}
         </span>
       )}

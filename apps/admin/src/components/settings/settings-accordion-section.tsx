@@ -40,18 +40,18 @@ export function SettingsAccordionSection({
   const panelId = useId();
 
   return (
-    <section className={cn('overflow-hidden rounded-2xl border border-border bg-card', className)}>
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/70 px-4 py-3 sm:px-5">
+    <section className={cn('border-border bg-card overflow-hidden rounded-2xl border', className)}>
+      <div className="border-border/70 flex flex-wrap items-center gap-2 border-b px-4 py-3 sm:px-5">
         <button
           type="button"
-          className="flex min-w-0 flex-1 items-start gap-3 rounded-xl text-start transition-colors hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hover:bg-muted/30 focus-visible:ring-ring flex min-w-0 flex-1 items-start gap-3 rounded-xl text-start transition-colors focus-visible:ring-2 focus-visible:outline-none"
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((prev) => !prev)}
         >
           <span
             className={cn(
-              'mt-1 inline-flex size-7 shrink-0 items-center justify-center rounded-lg border border-border bg-muted/40 text-sm text-muted-foreground transition-transform',
+              'border-border bg-muted/40 text-muted-foreground mt-1 inline-flex size-7 shrink-0 items-center justify-center rounded-lg border text-sm transition-transform',
               open && 'rotate-90',
             )}
             aria-hidden
@@ -61,7 +61,9 @@ export function SettingsAccordionSection({
           <span className="min-w-0 py-0.5">
             <span className="block text-base font-semibold sm:text-lg">{title}</span>
             {description ? (
-              <span className="mt-0.5 block text-xs text-muted-foreground sm:text-sm">{description}</span>
+              <span className="text-muted-foreground mt-0.5 block text-xs sm:text-sm">
+                {description}
+              </span>
             ) : null}
           </span>
         </button>

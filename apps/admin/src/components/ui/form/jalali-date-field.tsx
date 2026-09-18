@@ -80,7 +80,10 @@ export function JalaliDateField({
     }
   }, [value, required]);
 
-  const maxDay = useMemo(() => getDaysInJalaliMonth(parts.year, parts.month), [parts.year, parts.month]);
+  const maxDay = useMemo(
+    () => getDaysInJalaliMonth(parts.year, parts.month),
+    [parts.year, parts.month],
+  );
   const years = useMemo(() => getJalaliYearOptions(parts.year), [parts.year]);
 
   const emit = (nextParts: JalaliDateParts) => {
@@ -135,17 +138,28 @@ export function JalaliDateField({
           {label}
           {required && <span className="text-destructive"> *</span>}
         </Label>
-        {!required && (
-          active ? (
-            <Button type="button" variant="ghost" size="sm" disabled={disabled} onClick={handleClear}>
+        {!required &&
+          (active ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={disabled}
+              onClick={handleClear}
+            >
               پاک کردن
             </Button>
           ) : (
-            <Button type="button" variant="outline" size="sm" disabled={disabled} onClick={handleEnable}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={disabled}
+              onClick={handleEnable}
+            >
               {enableLabel}
             </Button>
-          )
-        )}
+          ))}
       </div>
 
       {active && (
@@ -160,7 +174,9 @@ export function JalaliDateField({
                   variant="outline"
                   className="h-8 rounded-lg px-2.5 text-xs"
                   disabled={disabled}
-                  onClick={() => applyParts(addJalaliDays(getTodayJalaliParts(), preset.offsetDays))}
+                  onClick={() =>
+                    applyParts(addJalaliDays(getTodayJalaliParts(), preset.offsetDays))
+                  }
                 >
                   {preset.label}
                 </Button>
@@ -211,7 +227,7 @@ export function JalaliDateField({
             </Select>
           </div>
 
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {formatJalaliDateParts(parts)} — معادل میلادی:{' '}
             {formatGregorianDate(isoValue, boundary === 'end')}
             {boundary === 'end' && ' (پایان روز)'}

@@ -20,10 +20,7 @@ import { JalaliDateTimeField } from '@/components/ui/form/jalali-datetime-field'
 import { LoadingButton } from '@/components/ui/feedback/loading-button';
 import { StatusBanner } from '@/components/ui/feedback/status-banner';
 import { isNextRedirect } from '@/lib/action-state';
-import {
-  articleCreateFormSchema,
-  type ArticleCreateFormValues,
-} from '@/lib/schemas/article-form';
+import { articleCreateFormSchema, type ArticleCreateFormValues } from '@/lib/schemas/article-form';
 import { cn } from '@/lib/utils';
 
 type Category = { id: string; name: string };
@@ -120,7 +117,7 @@ export function ArticleForm({
                   <Label htmlFor="title" required>
                     عنوان مقاله
                   </Label>
-                  <span className="text-xs text-muted-foreground">{title?.length ?? 0}/300</span>
+                  <span className="text-muted-foreground text-xs">{title?.length ?? 0}/300</span>
                 </div>
                 <Input
                   id="title"
@@ -136,7 +133,7 @@ export function ArticleForm({
               <div>
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <Label htmlFor="excerpt">خلاصه / لید</Label>
-                  <span className="text-xs text-muted-foreground">{excerpt?.length ?? 0}/1000</span>
+                  <span className="text-muted-foreground text-xs">{excerpt?.length ?? 0}/1000</span>
                 </div>
                 <Textarea
                   id="excerpt"
@@ -197,7 +194,12 @@ export function ArticleForm({
 
               <div>
                 <Label htmlFor="categoryId">دسته‌بندی</Label>
-                <Select id="categoryId" disabled={isPending} className="mt-2 rounded-xl" {...register('categoryId')}>
+                <Select
+                  id="categoryId"
+                  disabled={isPending}
+                  className="mt-2 rounded-xl"
+                  {...register('categoryId')}
+                >
                   <option value="">بدون دسته</option>
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -268,14 +270,20 @@ export function ArticleForm({
           </Card>
 
           <Card className={cn('rounded-2xl border-dashed')}>
-            <CardContent className="space-y-2 pt-6 text-sm text-muted-foreground">
-              <p className="font-medium text-foreground">راهنمای سریع</p>
+            <CardContent className="text-muted-foreground space-y-2 pt-6 text-sm">
+              <p className="text-foreground font-medium">راهنمای سریع</p>
               <ul className="list-inside list-disc space-y-1">
                 <li>زمان مطالعه بر اساس محتوا به‌صورت خودکار محاسبه می‌شود</li>
                 <li>تصاویر را از کتابخانه رسانه انتخاب کنید</li>
                 <li>پس از ذخیره به صفحه ویرایش منتقل می‌شوید</li>
               </ul>
-              <Button type="button" variant="outline" size="sm" className="mt-2 rounded-xl" onClick={() => router.back()}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-2 rounded-xl"
+                onClick={() => router.back()}
+              >
                 انصراف
               </Button>
             </CardContent>

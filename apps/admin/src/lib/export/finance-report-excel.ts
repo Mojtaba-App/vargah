@@ -30,7 +30,13 @@ function styleHeaderRow(row: ExcelJS.Row, count: number) {
   row.height = 22;
 }
 
-function addKpi(sheet: ExcelJS.Worksheet, row: number, label: string, value: string, color: string) {
+function addKpi(
+  sheet: ExcelJS.Worksheet,
+  row: number,
+  label: string,
+  value: string,
+  color: string,
+) {
   const labelCell = sheet.getCell(row, 1);
   const valueCell = sheet.getCell(row, 2);
   labelCell.value = label;
@@ -110,7 +116,11 @@ export async function downloadFinanceReportExcel(payload: FinanceReportPayload) 
   dash.getCell(17, 1).font = { name: 'Vazirmatn', size: 13, bold: true, color: { argb: BRAND } };
   payload.typeBreakdown.forEach((row, index) => {
     const color =
-      row.type === 'SUBSCRIPTION' ? 'FF6366F1' : row.type === 'ADVERTISEMENT' ? 'FF06B6D4' : 'FF94A3B8';
+      row.type === 'SUBSCRIPTION'
+        ? 'FF6366F1'
+        : row.type === 'ADVERTISEMENT'
+          ? 'FF06B6D4'
+          : 'FF94A3B8';
     addBarSchematic(dash, 18 + index, row.label, row.share, color);
   });
 

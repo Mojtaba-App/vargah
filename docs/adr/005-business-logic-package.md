@@ -28,13 +28,13 @@
 
 ### ماژول‌ها
 
-| فایل | مسئولیت |
-|------|---------|
-| `finance.ts` | `calculateMonthlyRevenue` |
-| `subscription.ts` | انقضا، یادآور، قیمت سالانه |
-| `subscription-plans.ts` | پلن‌های اشتراک، تخفیف محصول |
-| `subscription-cart.ts` | سبد اشتراک (TTL) |
-| `discounts.ts` | کوپن، قیمت نهایی، پیش‌نمایش |
-| `workflow.ts` | `canTransition` کمیسیون |
-| `publication.ts` | `publishedAt`, revalidate |
-| `zarinpal.ts` / `subscription-activation.ts` | پرداخت و فعال‌سازی |
+| فایل                                         | مسئولیت                     |
+| -------------------------------------------- | --------------------------- |
+| `finance.ts`                                 | `calculateMonthlyRevenue`   |
+| `subscription.ts`                            | انقضا، یادآور، قیمت سالانه  |
+| `subscription-plans.ts`                      | پلن‌های اشتراک، تخفیف محصول |
+| `subscription-cart.ts`                       | سبد اشتراک (TTL)            |
+| `discounts.ts`                               | کوپن، قیمت نهایی، پیش‌نمایش |
+| `workflow.ts`                                | `canTransition` کمیسیون     |
+| `publication.ts`                             | `publishedAt`, revalidate   |
+| `zarinpal.ts` / `subscription-activation.ts` | پرداخت و فعال‌سازی          |

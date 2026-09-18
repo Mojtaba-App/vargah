@@ -43,7 +43,10 @@ function tagContent(xml: string, tag: string): string | null {
 }
 
 function stripTags(value: string): string {
-  return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return value
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function geometryFromFragment(fragment: string): GeoJsonGeometry | null {

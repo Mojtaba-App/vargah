@@ -9,7 +9,11 @@ import { DataTable } from '@/components/ui/data-table';
 import { WorkspaceSearchField } from '@/components/ui/workspace-search-field';
 import { ExportToolbar } from '@/components/ui/feedback/export-toolbar';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { getScoreBadgeTone, NPS_SCORE_LABELS, type NpsSegmentFilter } from '@/lib/crm/surveys/constants';
+import {
+  getScoreBadgeTone,
+  NPS_SCORE_LABELS,
+  type NpsSegmentFilter,
+} from '@/lib/crm/surveys/constants';
 import {
   classifyNpsScore,
   computeNpsMetrics,
@@ -75,19 +79,25 @@ function MetricCard({
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:bg-muted/30',
-        active && 'border-primary ring-1 ring-primary/20',
+        'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+        onClick && 'hover:border-primary/40 hover:bg-muted/30 cursor-pointer',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground text-xs">{label}</p>
       <p className={cn('mt-1 text-2xl font-bold tabular-nums', NPS_TONE_STYLES[tone])}>{value}</p>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
     </Comp>
   );
 }
 
-function ScoreDistribution({ distribution, total }: { distribution: ReturnType<typeof computeNpsMetrics>['distribution']; total: number }) {
+function ScoreDistribution({
+  distribution,
+  total,
+}: {
+  distribution: ReturnType<typeof computeNpsMetrics>['distribution'];
+  total: number;
+}) {
   const maxCount = Math.max(...distribution.map((d) => d.count), 1);
 
   return (
@@ -95,15 +105,18 @@ function ScoreDistribution({ distribution, total }: { distribution: ReturnType<t
       <CardContent className="space-y-4 pt-6">
         <div>
           <h3 className="font-semibold">توزیع امتیازها</h3>
-          <p className="text-sm text-muted-foreground">از ۰ تا ۱۰ — {formatNumber(total)} پاسخ</p>
+          <p className="text-muted-foreground text-sm">از ۰ تا ۱۰ — {formatNumber(total)} پاسخ</p>
         </div>
-        <div className="flex items-end justify-between gap-1 sm:gap-2" style={{ minHeight: '8rem' }}>
+        <div
+          className="flex items-end justify-between gap-1 sm:gap-2"
+          style={{ minHeight: '8rem' }}
+        >
           {distribution.map((item) => {
             const tone = getScoreBadgeTone(item.score);
             const heightPct = total > 0 ? (item.count / maxCount) * 100 : 0;
             return (
               <div key={item.score} className="flex flex-1 flex-col items-center gap-2">
-                <span className="text-[10px] tabular-nums text-muted-foreground sm:text-xs">
+                <span className="text-muted-foreground text-[10px] tabular-nums sm:text-xs">
                   {item.count > 0 ? formatNumber(item.count) : ''}
                 </span>
                 <div className="flex w-full flex-1 items-end">
@@ -114,7 +127,10 @@ function ScoreDistribution({ distribution, total }: { distribution: ReturnType<t
                       tone === 'passive' && 'bg-amber-500/70',
                       tone === 'detractor' && 'bg-rose-500/70',
                     )}
-                    style={{ height: `${Math.max(heightPct, item.count > 0 ? 8 : 2)}%`, minHeight: item.count > 0 ? '0.5rem' : '2px' }}
+                    style={{
+                      height: `${Math.max(heightPct, item.count > 0 ? 8 : 2)}%`,
+                      minHeight: item.count > 0 ? '0.5rem' : '2px',
+                    }}
                     title={`امتیاز ${item.score}: ${item.count} پاسخ (${item.pct.toFixed(0)}٪)`}
                   />
                 </div>
@@ -123,7 +139,7 @@ function ScoreDistribution({ distribution, total }: { distribution: ReturnType<t
             );
           })}
         </div>
-        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex flex-wrap gap-3 text-xs">
           <span className="inline-flex items-center gap-1.5">
             <span className="size-2 rounded-full bg-emerald-500/70" />
             مروج (۹–۱۰)
@@ -164,9 +180,9 @@ function SegmentBreakdown({
       <CardContent className="space-y-4 pt-6">
         <div>
           <h3 className="font-semibold">ترکیب پاسخ‌دهندگان</h3>
-          <p className="text-sm text-muted-foreground">طبقه‌بندی استاندارد NPS</p>
+          <p className="text-muted-foreground text-sm">طبقه‌بندی استاندارد NPS</p>
         </div>
-        <div className="flex h-3 overflow-hidden rounded-full bg-muted">
+        <div className="bg-muted flex h-3 overflow-hidden rounded-full">
           {segments.map((seg) =>
             seg.pct > 0 ? (
               <div
@@ -180,10 +196,10 @@ function SegmentBreakdown({
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           {segments.map((seg) => (
-            <div key={seg.key} className="rounded-xl border border-border bg-muted/20 p-3">
-              <p className="text-xs text-muted-foreground">{NPS_SEGMENT_LABELS[seg.key]}</p>
+            <div key={seg.key} className="border-border bg-muted/20 rounded-xl border p-3">
+              <p className="text-muted-foreground text-xs">{NPS_SEGMENT_LABELS[seg.key]}</p>
               <p className="mt-1 text-lg font-bold tabular-nums">{formatNumber(seg.count)}</p>
-              <p className="text-xs text-muted-foreground">{seg.pct.toFixed(0)}٪</p>
+              <p className="text-muted-foreground text-xs">{seg.pct.toFixed(0)}٪</p>
             </div>
           ))}
         </div>
@@ -234,7 +250,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
               >
                 {score}
               </span>
-              <p className="text-[10px] text-muted-foreground">{NPS_SCORE_LABELS[score]}</p>
+              <p className="text-muted-foreground text-[10px]">{NPS_SCORE_LABELS[score]}</p>
             </div>
           );
         },
@@ -242,9 +258,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
       {
         accessorKey: 'customerName',
         header: 'مشتری',
-        cell: ({ row }) => (
-          <span className="font-medium">{row.original.customerName ?? '—'}</span>
-        ),
+        cell: ({ row }) => <span className="font-medium">{row.original.customerName ?? '—'}</span>,
       },
       {
         id: 'segment',
@@ -263,7 +277,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
           return (
             <Link
               href={`/crm/tickets/${ticketId}`}
-              className="line-clamp-2 text-sm text-primary hover:underline"
+              className="text-primary line-clamp-2 text-sm hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
               {ticketSubject ?? 'مشاهده تیکت'}
@@ -275,7 +289,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
         accessorKey: 'comment',
         header: 'نظر',
         cell: ({ row }) => (
-          <p className="line-clamp-2 max-w-xs text-sm text-muted-foreground">
+          <p className="text-muted-foreground line-clamp-2 max-w-xs text-sm">
             {row.original.comment ?? '—'}
           </p>
         ),
@@ -284,7 +298,9 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
         accessorKey: 'createdAt',
         header: 'تاریخ',
         cell: ({ row }) => (
-          <span className="whitespace-nowrap text-sm">{formatJalali(row.original.createdAt, true)}</span>
+          <span className="text-sm whitespace-nowrap">
+            {formatJalali(row.original.createdAt, true)}
+          </span>
         ),
       },
     ],
@@ -292,8 +308,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
   );
 
   const npsTone = getNpsScoreTone(metrics.npsScore);
-  const averageLabel =
-    metrics.average !== null ? `${metrics.average.toFixed(1)} از ۱۰` : '— از ۱۰';
+  const averageLabel = metrics.average !== null ? `${metrics.average.toFixed(1)} از ۱۰` : '— از ۱۰';
 
   return (
     <div className="space-y-6">
@@ -308,17 +323,35 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
           label="میانگین امتیاز"
           value={metrics.average !== null ? metrics.average.toFixed(1) : '—'}
           hint={averageLabel}
-          tone={metrics.average !== null && metrics.average >= 8 ? 'excellent' : metrics.average !== null && metrics.average >= 6 ? 'good' : 'empty'}
+          tone={
+            metrics.average !== null && metrics.average >= 8
+              ? 'excellent'
+              : metrics.average !== null && metrics.average >= 6
+                ? 'good'
+                : 'empty'
+          }
         />
         <MetricCard
           label="کل پاسخ‌ها"
           value={formatNumber(metrics.total)}
-          hint={metrics.total === 0 ? 'هنوز پاسخی ثبت نشده' : `${formatNumber(filtered.length)} در نمای فعلی`}
+          hint={
+            metrics.total === 0
+              ? 'هنوز پاسخی ثبت نشده'
+              : `${formatNumber(filtered.length)} در نمای فعلی`
+          }
         />
         <MetricCard
           label="مروج / منتقد"
-          value={metrics.total > 0 ? `${formatNumber(metrics.promoters)} / ${formatNumber(metrics.detractors)}` : '—'}
-          hint={metrics.total > 0 ? `${metrics.promoterPct.toFixed(0)}٪ مروج — ${metrics.detractorPct.toFixed(0)}٪ منتقد` : undefined}
+          value={
+            metrics.total > 0
+              ? `${formatNumber(metrics.promoters)} / ${formatNumber(metrics.detractors)}`
+              : '—'
+          }
+          hint={
+            metrics.total > 0
+              ? `${metrics.promoterPct.toFixed(0)}٪ مروج — ${metrics.detractorPct.toFixed(0)}٪ منتقد`
+              : undefined
+          }
         />
       </div>
 
@@ -337,14 +370,16 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
       ) : (
         <Card className="rounded-2xl border-dashed">
           <CardContent className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-            <div className="flex size-14 items-center justify-center rounded-2xl bg-muted text-2xl">📊</div>
+            <div className="bg-muted flex size-14 items-center justify-center rounded-2xl text-2xl">
+              📊
+            </div>
             <div>
               <p className="font-semibold">هنوز پاسخی برای رضایت‌سنجی ثبت نشده</p>
-              <p className="mt-1 max-w-md text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 max-w-md text-sm">
                 پس از بسته شدن تیکت‌ها، می‌توانید از مشتریان امتیاز NPS (۰ تا ۱۰) دریافت کنید.
               </p>
             </div>
-            <Link href="/crm/tickets" className="text-sm text-primary hover:underline">
+            <Link href="/crm/tickets" className="text-primary text-sm hover:underline">
               رفتن به تیکت‌ها
             </Link>
           </CardContent>
@@ -356,7 +391,7 @@ export function SurveysWorkspace({ surveys }: SurveysWorkspaceProps) {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h3 className="font-semibold">لیست پاسخ‌ها</h3>
-              <p className="text-sm text-muted-foreground">فیلتر و جستجو در نظرات ثبت‌شده</p>
+              <p className="text-muted-foreground text-sm">فیلتر و جستجو در نظرات ثبت‌شده</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {(['ALL', 'promoter', 'passive', 'detractor'] as const).map((key) => (

@@ -29,7 +29,7 @@ export function SidebarFooter({ collapsed }: SidebarFooterProps) {
 
   return (
     <>
-      <div className="shrink-0 border-t border-brand-800/50 p-2">
+      <div className="border-brand-800/50 shrink-0 border-t p-2">
         <button
           type="button"
           onClick={() => setConfirmOpen(true)}

@@ -26,13 +26,20 @@ const rules = [
   },
 ];
 
-export default async function SubmissionRulesPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function SubmissionRulesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
 
   return (
     <>
-      <PageHeader title="قوانین ارسال آگهی و مقاله" description="شرایط و ضوابط ارسال محتوا به ماهنامه" />
+      <PageHeader
+        title="قوانین ارسال آگهی و مقاله"
+        description="شرایط و ضوابط ارسال محتوا به ماهنامه"
+      />
       <Container className="py-12">
         <div className="mx-auto max-w-3xl space-y-10">
           {rules.map((rule) => (
@@ -40,8 +47,8 @@ export default async function SubmissionRulesPage({ params }: { params: Promise<
               <h2 className="mb-4 text-lg font-bold">{rule.title}</h2>
               <ul className="space-y-2">
                 {rule.items.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-muted-foreground">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <li key={item} className="text-muted-foreground flex items-start gap-3">
+                    <span className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}

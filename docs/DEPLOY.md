@@ -45,20 +45,20 @@ pnpm install --frozen-lockfile
 
 ### الزامی
 
-| متغیر | نکته |
-|--------|------|
-| `NODE_ENV` | `production` |
-| `DATABASE_URL` | اتصال PostgreSQL |
-| `DIRECT_URL` | در صورت PgBouncer — برای migrate |
-| `AUTH_SECRET` | `openssl rand -base64 32` |
-| `CRON_SECRET` | جدا از AUTH |
-| `CMS_API_KEY` | جدا |
-| `REVALIDATE_SECRET` | جدا |
+| متغیر                    | نکته                                                                                    |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| `NODE_ENV`               | `production`                                                                            |
+| `DATABASE_URL`           | اتصال PostgreSQL                                                                        |
+| `DIRECT_URL`             | در صورت PgBouncer — برای migrate                                                        |
+| `AUTH_SECRET`            | `openssl rand -base64 32`                                                               |
+| `CRON_SECRET`            | جدا از AUTH                                                                             |
+| `CMS_API_KEY`            | جدا                                                                                     |
+| `REVALIDATE_SECRET`      | جدا                                                                                     |
 | `SECRETS_ENCRYPTION_KEY` | ۶۴ hex char: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
-| `AUTH_URL` | `https://YOUR_DOMAIN/admin/api/auth` |
-| `NEXT_PUBLIC_SITE_URL` | `https://YOUR_DOMAIN` |
-| `NEXT_PUBLIC_ADMIN_URL` | `https://YOUR_DOMAIN/admin` |
-| `ADMIN_INTERNAL_URL` | آدرس داخلی پنل (مثلاً `http://127.0.0.1:3001`) |
+| `AUTH_URL`               | `https://YOUR_DOMAIN/admin/api/auth`                                                    |
+| `NEXT_PUBLIC_SITE_URL`   | `https://YOUR_DOMAIN`                                                                   |
+| `NEXT_PUBLIC_ADMIN_URL`  | `https://YOUR_DOMAIN/admin`                                                             |
+| `ADMIN_INTERNAL_URL`     | آدرس داخلی پنل (مثلاً `http://127.0.0.1:3001`)                                          |
 
 ### خاموش در production
 

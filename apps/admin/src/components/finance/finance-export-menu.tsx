@@ -93,7 +93,7 @@ export function FinanceExportMenu({
             aria-label="بستن"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute end-0 top-[calc(100%+0.35rem)] z-50 min-w-[14rem] overflow-hidden rounded-xl border border-border bg-card p-1 shadow-xl">
+          <div className="border-border bg-card absolute end-0 top-[calc(100%+0.35rem)] z-50 min-w-[14rem] overflow-hidden rounded-xl border p-1 shadow-xl">
             <MenuItem
               label="Excel (.xlsx)"
               hint="داشبورد، شماتیک، روند و تراکنش‌ها"
@@ -104,11 +104,7 @@ export function FinanceExportMenu({
               hint="تحلیل، نمودار میله‌ای و جداول"
               onClick={() => run('pdf')}
             />
-            <MenuItem
-              label="تصویر (PNG)"
-              hint="گزارش بصری برای ارائه"
-              onClick={() => run('png')}
-            />
+            <MenuItem label="تصویر (PNG)" hint="گزارش بصری برای ارائه" onClick={() => run('png')} />
           </div>
         </>
       ) : null}
@@ -130,23 +126,15 @@ export function FinanceExportMenu({
   );
 }
 
-function MenuItem({
-  label,
-  hint,
-  onClick,
-}: {
-  label: string;
-  hint: string;
-  onClick: () => void;
-}) {
+function MenuItem({ label, hint, onClick }: { label: string; hint: string; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full flex-col rounded-lg px-3 py-2 text-start transition-colors hover:bg-muted"
+      className="hover:bg-muted flex w-full flex-col rounded-lg px-3 py-2 text-start transition-colors"
     >
       <span className="text-sm font-medium">{label}</span>
-      <span className="text-[11px] text-muted-foreground">{hint}</span>
+      <span className="text-muted-foreground text-[11px]">{hint}</span>
     </button>
   );
 }

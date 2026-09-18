@@ -1,4 +1,10 @@
-import { cellText, downloadBlob, type ExportColumn, type ExportMeta, type ExportRow } from './types';
+import {
+  cellText,
+  downloadBlob,
+  type ExportColumn,
+  type ExportMeta,
+  type ExportRow,
+} from './types';
 
 function escapeCsv(value: string): string {
   if (value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r')) {
@@ -27,11 +33,7 @@ export function buildCsvContent(
   return lines.join('\r\n');
 }
 
-export function downloadCsv(
-  columns: ExportColumn[],
-  rows: ExportRow[],
-  meta: ExportMeta,
-) {
+export function downloadCsv(columns: ExportColumn[], rows: ExportRow[], meta: ExportMeta) {
   const csv = buildCsvContent(columns, rows, {
     title: meta.title,
     subtitle: meta.subtitle,

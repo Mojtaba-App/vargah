@@ -1,19 +1,9 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-import {
-  logoutCustomer,
-  type CustomerSession,
-} from '@/actions/customer-auth';
+import { logoutCustomer, type CustomerSession } from '@/actions/customer-auth';
 import { LoginDialog } from '@/components/auth/login-dialog';
 
 export type LoginReason = 'comment' | 'subscription' | 'profile' | null;

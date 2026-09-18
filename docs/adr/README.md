@@ -13,11 +13,11 @@
 
 ## فهرست
 
-| شماره | عنوان | وضعیت |
-|-------|--------|--------|
-| [001](./001-monorepo-turborepo.md) | Monorepo با pnpm و Turborepo | پذیرفته‌شده |
-| [002](./002-prisma-postgresql.md) | Prisma + PostgreSQL | پذیرفته‌شده |
-| [003](./003-security-auth.md) | امنیت و احراز هویت پنل | پذیرفته‌شده |
-| [004](./004-seo-isr-analytics.md) | سئو، ISR و آنالیتیکس | پذیرفته‌شده |
-| [005](./005-business-logic-package.md) | بسته منطق کسب‌وکار | پذیرفته‌شده |
-| [006](./006-cms-api-role.md) | نقش apps/cms (API + jobs) | پذیرفته‌شده |
+| شماره                                  | عنوان                        | وضعیت       |
+| -------------------------------------- | ---------------------------- | ----------- |
+| [001](./001-monorepo-turborepo.md)     | Monorepo با pnpm و Turborepo | پذیرفته‌شده |
+| [002](./002-prisma-postgresql.md)      | Prisma + PostgreSQL          | پذیرفته‌شده |
+| [003](./003-security-auth.md)          | امنیت و احراز هویت پنل       | پذیرفته‌شده |
+| [004](./004-seo-isr-analytics.md)      | سئو، ISR و آنالیتیکس         | پذیرفته‌شده |
+| [005](./005-business-logic-package.md) | بسته منطق کسب‌وکار           | پذیرفته‌شده |
+| [006](./006-cms-api-role.md)           | نقش apps/cms (API + jobs)    | پذیرفته‌شده |

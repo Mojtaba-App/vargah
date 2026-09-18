@@ -115,7 +115,7 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
         <Badge variant="secondary">{PAYMENT_PROVIDER_LABELS.zarinpal}</Badge>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="border-border bg-card rounded-2xl border p-6">
         {(status || error) && (
           <StatusBanner
             type={error ? 'error' : 'success'}
@@ -127,7 +127,7 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h3 className="text-lg font-semibold">درگاه زرین‌پال</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               Merchant ID و آدرس callback برای پرداخت اشتراک در سایت
             </p>
           </div>
@@ -137,7 +137,7 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
               checked={config.enabled}
               disabled={!canEdit}
               onChange={(e) => setConfig((prev) => ({ ...prev, enabled: e.target.checked }))}
-              className="size-4 rounded border-border"
+              className="border-border size-4 rounded"
             />
             فعال
           </label>
@@ -161,7 +161,7 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
               dir="ltr"
             />
             {hasStoredMerchant && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Merchant ID ذخیره شده — برای تغییر مقدار جدید وارد کنید
               </p>
             )}
@@ -178,12 +178,12 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
               className="rounded-xl font-mono text-sm"
               dir="ltr"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               اگر خالی بماند، از NEXT_PUBLIC_SITE_URL یا در dev از localhost:3000 استفاده می‌شود.
             </p>
           </div>
 
-          <label className="flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm">
+          <label className="border-border flex items-center gap-2 rounded-xl border px-4 py-3 text-sm">
             <input
               type="checkbox"
               checked={config.zarinpal.sandbox}
@@ -194,16 +194,16 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
                   zarinpal: { ...prev.zarinpal, sandbox: e.target.checked },
                 }))
               }
-              className="size-4 rounded border-border"
+              className="border-border size-4 rounded"
             />
             حالت Sandbox (تست)
           </label>
         </div>
 
         {callbackUrl && (
-          <div className="mt-4 rounded-xl bg-muted/40 px-4 py-3 text-sm">
+          <div className="bg-muted/40 mt-4 rounded-xl px-4 py-3 text-sm">
             <p className="font-medium">آدرس Callback</p>
-            <p className="mt-1 break-all font-mono text-xs text-muted-foreground" dir="ltr">
+            <p className="text-muted-foreground mt-1 font-mono text-xs break-all" dir="ltr">
               {callbackUrl}
             </p>
           </div>
@@ -228,10 +228,10 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
         )}
       </div>
 
-      <div className="rounded-2xl border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+      <div className="border-border text-muted-foreground rounded-2xl border border-dashed px-4 py-3 text-sm">
         <p>
           پس از فعال‌سازی، صفحه{' '}
-          <span className={cn('font-medium text-foreground')}>/subscription</span> به‌صورت خودکار
+          <span className={cn('text-foreground font-medium')}>/subscription</span> به‌صورت خودکار
           پلن‌های فعال را نمایش می‌دهد و پرداخت از طریق زرین‌پال انجام می‌شود.
         </p>
       </div>

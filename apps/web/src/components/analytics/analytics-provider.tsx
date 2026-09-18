@@ -10,13 +10,7 @@ import {
   type CookieConsentValue,
 } from '@/components/privacy/cookie-consent-banner';
 
-export function AnalyticsProvider({
-  articleId,
-  nonce,
-}: {
-  articleId?: string;
-  nonce?: string;
-}) {
+export function AnalyticsProvider({ articleId, nonce }: { articleId?: string; nonce?: string }) {
   const [consent, setConsent] = useState<CookieConsentValue | null>(null);
 
   useEffect(() => {

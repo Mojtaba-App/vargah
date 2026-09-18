@@ -91,10 +91,10 @@ function MessageBodyContent({ body }: { body: string }) {
 
   return (
     <div className="space-y-4">
-      {text ? <p className="whitespace-pre-wrap text-sm leading-relaxed">{text}</p> : null}
+      {text ? <p className="text-sm leading-relaxed whitespace-pre-wrap">{text}</p> : null}
       {attachments.length > 0 ? (
-        <div className="space-y-2 border-t border-border pt-3">
-          <p className="text-xs font-semibold text-muted-foreground">پیوست‌ها</p>
+        <div className="border-border space-y-2 border-t pt-3">
+          <p className="text-muted-foreground text-xs font-semibold">پیوست‌ها</p>
           <ul className="space-y-2">
             {attachments.map((item) => {
               const href = publicAssetUrl(item.url);
@@ -107,7 +107,7 @@ function MessageBodyContent({ body }: { body: string }) {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-medium text-primary hover:underline"
+                      className="text-primary font-medium hover:underline"
                       dir="ltr"
                     >
                       {item.fileName || 'دانلود فایل'}
@@ -152,14 +152,14 @@ function StatCard({
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:bg-muted/30',
-        active && 'border-primary ring-1 ring-primary/20',
+        'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+        onClick && 'hover:border-primary/40 hover:bg-muted/30 cursor-pointer',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
-      {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
+      {hint && <p className="text-muted-foreground mt-0.5 text-xs">{hint}</p>}
     </Comp>
   );
 }
@@ -205,7 +205,7 @@ function MessageStatusSelect({
           </option>
         ))}
       </Select>
-      {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
+      {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
     </div>
   );
 }
@@ -272,7 +272,13 @@ function MessageQuickReplyDialog({
       onClose={onClose}
       footer={
         <div className="flex flex-wrap justify-end gap-2">
-          <Button type="button" variant="outline" className="rounded-xl" disabled={isPending} onClick={onClose}>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-xl"
+            disabled={isPending}
+            onClick={onClose}
+          >
             انصراف
           </Button>
           <LoadingButton type="button" className="rounded-xl" loading={isPending} onClick={submit}>
@@ -367,19 +373,22 @@ function MessageReplyPanel({
   };
 
   return (
-    <div className="space-y-4 border-t border-border pt-4">
+    <div className="border-border space-y-4 border-t pt-4">
       {canReply ? (
-        <form className="space-y-3 rounded-xl border border-border p-4" onSubmit={handleSubmit}>
+        <form className="border-border space-y-3 rounded-xl border p-4" onSubmit={handleSubmit}>
           <div>
             <p className="font-semibold">پاسخ به پیام</p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-xs">
               {message.senderEmail
                 ? 'با ارسال، ایمیل برای فرستنده فرستاده می‌شود و وضعیت به «پاسخ‌داده» تغییر می‌کند.'
                 : 'ایمیلی ثبت نشده؛ پاسخ فقط در پنل ذخیره و وضعیت به «پاسخ‌داده» تغییر می‌کند.'}
             </p>
           </div>
           {(localOk || localError) && (
-            <StatusBanner type={localError ? 'error' : 'success'} message={localError ?? localOk!} />
+            <StatusBanner
+              type={localError ? 'error' : 'success'}
+              message={localError ?? localOk!}
+            />
           )}
           <Textarea
             id={`reply-${message.id}`}
@@ -402,12 +411,17 @@ function MessageReplyPanel({
             />
             یادداشت داخلی (بدون ارسال ایمیل و بدون تغییر به پاسخ‌داده)
           </label>
-          <LoadingButton type="submit" className="rounded-xl" loading={pending} loadingText="در حال ارسال...">
+          <LoadingButton
+            type="submit"
+            className="rounded-xl"
+            loading={pending}
+            loadingText="در حال ارسال..."
+          >
             {isInternal ? 'ثبت یادداشت' : 'ارسال پاسخ'}
           </LoadingButton>
         </form>
       ) : archived ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           این پیام آرشیو شده است. برای پاسخ، ابتدا آن را از آرشیو خارج کنید.
         </p>
       ) : null}
@@ -415,7 +429,7 @@ function MessageReplyPanel({
       <div className="space-y-2">
         <p className="font-semibold">گفتگو ({formatNumber(message.replies.length)})</p>
         {message.replies.length === 0 ? (
-          <p className="text-sm text-muted-foreground">هنوز پاسخی ثبت نشده است.</p>
+          <p className="text-muted-foreground text-sm">هنوز پاسخی ثبت نشده است.</p>
         ) : (
           <ul className="max-h-72 space-y-2 overflow-y-auto">
             {message.replies.map((reply) => (
@@ -428,7 +442,7 @@ function MessageReplyPanel({
                     : 'border-border bg-muted/20',
                 )}
               >
-                <div className="mb-1 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                <div className="text-muted-foreground mb-1 flex flex-wrap items-center justify-between gap-2 text-xs">
                   <span>
                     {reply.authorName ?? 'کارشناس'}
                     {reply.isInternal ? ' · یادداشت داخلی' : ' · پاسخ به فرستنده'}
@@ -437,7 +451,7 @@ function MessageReplyPanel({
                   </span>
                   <span>{formatJalali(reply.createdAt, true)}</span>
                 </div>
-                <p className="whitespace-pre-wrap leading-relaxed">{reply.body}</p>
+                <p className="leading-relaxed whitespace-pre-wrap">{reply.body}</p>
               </li>
             ))}
           </ul>
@@ -447,7 +461,11 @@ function MessageReplyPanel({
   );
 }
 
-export function MessagesWorkspace({ messages: initialMessages, staff, canManage }: MessagesWorkspaceProps) {
+export function MessagesWorkspace({
+  messages: initialMessages,
+  staff,
+  canManage,
+}: MessagesWorkspaceProps) {
   const router = useRouter();
   const [messages, setMessages] = useState(initialMessages);
   const [selected, setSelected] = useState<MessageRow | null>(null);
@@ -586,10 +604,16 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
         id: 'sender',
         header: 'فرستنده',
         cell: ({ row }) => (
-          <button type="button" className="max-w-xs text-start" onClick={() => openMessage(row.original)}>
-            <p className="font-medium text-primary hover:underline">{row.original.senderName}</p>
+          <button
+            type="button"
+            className="max-w-xs text-start"
+            onClick={() => openMessage(row.original)}
+          >
+            <p className="text-primary font-medium hover:underline">{row.original.senderName}</p>
             {row.original.subject && (
-              <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{row.original.subject}</p>
+              <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
+                {row.original.subject}
+              </p>
             )}
             <div className="mt-1 flex flex-wrap gap-1">
               {row.original.status === MessageStatus.NEW && <Badge variant="default">جدید</Badge>}
@@ -604,7 +628,7 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
         id: 'contact',
         header: 'تماس',
         cell: ({ row }) => (
-          <div className="text-xs text-muted-foreground" dir="ltr">
+          <div className="text-muted-foreground text-xs" dir="ltr">
             {row.original.senderEmail && <p>{row.original.senderEmail}</p>}
             {row.original.senderPhone && <p>{row.original.senderPhone}</p>}
             {!row.original.senderEmail && !row.original.senderPhone && '—'}
@@ -629,7 +653,9 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
         accessorKey: 'createdAt',
         header: 'تاریخ',
         cell: ({ row }) => (
-          <span className="whitespace-nowrap text-sm">{formatJalali(row.original.createdAt, true)}</span>
+          <span className="text-sm whitespace-nowrap">
+            {formatJalali(row.original.createdAt, true)}
+          </span>
         ),
       },
     ],
@@ -755,26 +781,28 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
                 <button
                   type="button"
                   onClick={() => setSelected(row)}
-                  className="w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+                  className="border-border bg-card hover:border-primary/40 w-full rounded-2xl border p-4 text-start transition-colors"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold leading-snug">{row.subject ?? 'بدون موضوع'}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{row.senderName}</p>
+                      <p className="leading-snug font-semibold">{row.subject ?? 'بدون موضوع'}</p>
+                      <p className="text-muted-foreground mt-1 text-sm">{row.senderName}</p>
                     </div>
                     <Badge variant={MESSAGE_STATUS_VARIANT[row.status]}>
                       {MESSAGE_STATUS_LABELS[row.status]}
                     </Badge>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                    <Badge variant={MESSAGE_TYPE_VARIANT[row.type]}>{MESSAGE_TYPE_LABELS[row.type]}</Badge>
+                  <div className="text-muted-foreground mt-3 flex flex-wrap gap-2 text-xs">
+                    <Badge variant={MESSAGE_TYPE_VARIANT[row.type]}>
+                      {MESSAGE_TYPE_LABELS[row.type]}
+                    </Badge>
                     <span>{formatJalali(row.createdAt, true)}</span>
                   </div>
                 </button>
               </li>
             ))}
             {filtered.length === 0 && (
-              <li className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+              <li className="border-border text-muted-foreground rounded-2xl border border-dashed px-4 py-8 text-center text-sm">
                 پیامی یافت نشد.
               </li>
             )}
@@ -783,7 +811,7 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
       </Card>
 
       {selected && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -796,9 +824,17 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
                   </Badge>
                 </div>
                 <h3 className="mt-2 text-lg font-bold">{selected.subject ?? 'بدون موضوع'}</h3>
-                <p className="text-sm text-muted-foreground">{MESSAGE_TYPE_DESCRIPTIONS[selected.type]}</p>
+                <p className="text-muted-foreground text-sm">
+                  {MESSAGE_TYPE_DESCRIPTIONS[selected.type]}
+                </p>
               </div>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelected(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                onClick={() => setSelected(null)}
+              >
                 بستن
               </Button>
             </div>
@@ -812,7 +848,10 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
                 <p className="text-muted-foreground">ایمیل</p>
                 <p className="font-medium" dir="ltr">
                   {selected.senderEmail ? (
-                    <a href={`mailto:${selected.senderEmail}`} className="text-primary hover:underline">
+                    <a
+                      href={`mailto:${selected.senderEmail}`}
+                      className="text-primary hover:underline"
+                    >
                       {selected.senderEmail}
                     </a>
                   ) : (
@@ -824,7 +863,10 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
                 <p className="text-muted-foreground">موبایل</p>
                 <p className="font-medium" dir="ltr">
                   {selected.senderPhone ? (
-                    <a href={`tel:${selected.senderPhone}`} className="text-primary hover:underline">
+                    <a
+                      href={`tel:${selected.senderPhone}`}
+                      className="text-primary hover:underline"
+                    >
                       {selected.senderPhone}
                     </a>
                   ) : (
@@ -838,7 +880,7 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
               </div>
             </div>
 
-            <div className="rounded-2xl border border-border bg-muted/20 p-4">
+            <div className="border-border bg-muted/20 rounded-2xl border p-4">
               <p className="mb-2 text-sm font-semibold">متن پیام دریافتی</p>
               <MessageBodyContent body={selected.body} />
             </div>
@@ -916,27 +958,30 @@ export function MessagesWorkspace({ messages: initialMessages, staff, canManage 
                       آرشیو
                     </LoadingButton>
                   )}
-                  {selected.type !== MessageType.INTERNAL && selected.status !== MessageStatus.ARCHIVED && (
-                    <LoadingButton
-                      size="sm"
-                      className="rounded-xl"
-                      loading={isPending}
-                      onClick={() =>
-                        startTransition(async () => {
-                          setError(null);
-                          try {
-                            const ticketId = await convertMessageToTicket(selected.id);
-                            setMessage('تیکت ایجاد شد و پیام پاسخ‌داده علامت خورد.');
-                            router.push(`/crm/tickets/${ticketId}`);
-                          } catch (err) {
-                            setError(err instanceof Error ? err.message : 'تبدیل به تیکت ناموفق بود');
-                          }
-                        })
-                      }
-                    >
-                      تبدیل به تیکت
-                    </LoadingButton>
-                  )}
+                  {selected.type !== MessageType.INTERNAL &&
+                    selected.status !== MessageStatus.ARCHIVED && (
+                      <LoadingButton
+                        size="sm"
+                        className="rounded-xl"
+                        loading={isPending}
+                        onClick={() =>
+                          startTransition(async () => {
+                            setError(null);
+                            try {
+                              const ticketId = await convertMessageToTicket(selected.id);
+                              setMessage('تیکت ایجاد شد و پیام پاسخ‌داده علامت خورد.');
+                              router.push(`/crm/tickets/${ticketId}`);
+                            } catch (err) {
+                              setError(
+                                err instanceof Error ? err.message : 'تبدیل به تیکت ناموفق بود',
+                              );
+                            }
+                          })
+                        }
+                      >
+                        تبدیل به تیکت
+                      </LoadingButton>
+                    )}
                 </div>
               </div>
             )}

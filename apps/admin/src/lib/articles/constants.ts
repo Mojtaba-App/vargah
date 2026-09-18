@@ -30,10 +30,12 @@ export const WORKFLOW_STAGE_LABELS: Record<WorkflowStage, string> = {
   PUBLISHED: 'انتشار',
 };
 
-export const ARTICLE_STATUS_OPTIONS = Object.entries(ARTICLE_STATUS_LABELS).map(([value, label]) => ({
-  value: value as ArticleStatus,
-  label,
-}));
+export const ARTICLE_STATUS_OPTIONS = Object.entries(ARTICLE_STATUS_LABELS).map(
+  ([value, label]) => ({
+    value: value as ArticleStatus,
+    label,
+  }),
+);
 
 export function getPublicArticleUrl(slug: string) {
   const base = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';

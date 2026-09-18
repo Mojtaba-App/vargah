@@ -10,8 +10,7 @@ export function computeRenewalExpiry(
   periodMonths: number,
   now = new Date(),
 ): Date {
-  const base =
-    currentExpiresAt && currentExpiresAt > now ? currentExpiresAt : now;
+  const base = currentExpiresAt && currentExpiresAt > now ? currentExpiresAt : now;
   return calculateSubscriptionExpiry(base, periodMonths);
 }
 
@@ -49,8 +48,7 @@ export async function activateSubscriptionPayment(
       status: PaymentStatus.PAID,
       transactionId: String(params.refId),
       paidAt,
-      description:
-        params.description ?? formatSubscriptionPaymentDescription(params.plan),
+      description: params.description ?? formatSubscriptionPaymentDescription(params.plan),
     },
   });
 

@@ -43,7 +43,7 @@ async function parseJsonResponse<T>(res: Response): Promise<T | null> {
 
 function FieldIcon({ children }: { children: React.ReactNode }) {
   return (
-    <span className="pointer-events-none absolute start-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg bg-muted/80 text-muted-foreground">
+    <span className="bg-muted/80 text-muted-foreground pointer-events-none absolute start-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg">
       {children}
     </span>
   );
@@ -182,42 +182,42 @@ export function ProfileForm({ user }: ProfileFormProps) {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-border/80 bg-card shadow-sm">
+      <section className="border-border/80 bg-card relative overflow-hidden rounded-3xl border shadow-sm">
         <div
-          className="absolute inset-0 bg-gradient-to-bl from-primary/20 via-primary/5 to-transparent"
+          className="from-primary/20 via-primary/5 absolute inset-0 bg-gradient-to-bl to-transparent"
           aria-hidden="true"
         />
         <div
-          className="absolute -start-16 -top-16 size-56 rounded-full bg-primary/10 blur-3xl"
+          className="bg-primary/10 absolute -start-16 -top-16 size-56 rounded-full blur-3xl"
           aria-hidden="true"
         />
         <div
-          className="absolute -bottom-20 -end-10 size-48 rounded-full bg-violet-500/10 blur-3xl"
+          className="absolute -end-10 -bottom-20 size-48 rounded-full bg-violet-500/10 blur-3xl"
           aria-hidden="true"
         />
 
-        <div className="relative px-6 pb-6 pt-8 sm:px-8 sm:pb-8">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">حساب کاربری</p>
+        <div className="relative px-6 pt-8 pb-6 sm:px-8 sm:pb-8">
+          <p className="text-primary text-xs font-bold tracking-[0.2em] uppercase">حساب کاربری</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">پروفایل من</h1>
-          <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-2 max-w-lg text-sm">
             نام نمایشی و تصویر پروفایل خود را مدیریت کنید.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-5 sm:flex-row sm:items-end">
             <div className="relative">
-              <div className="rounded-full bg-gradient-to-br from-primary/30 to-violet-500/20 p-1">
+              <div className="from-primary/30 rounded-full bg-gradient-to-br to-violet-500/20 p-1">
                 <UserAvatar
                   name={name}
                   avatar={displayAvatar}
                   size="xl"
-                  className="ring-4 ring-card"
+                  className="ring-card ring-4"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isBusy}
-                className="absolute -bottom-1 -end-1 flex size-10 items-center justify-center rounded-full border-2 border-card bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 disabled:opacity-60"
+                className="border-card bg-primary text-primary-foreground absolute -end-1 -bottom-1 flex size-10 items-center justify-center rounded-full border-2 shadow-lg transition-transform hover:scale-105 disabled:opacity-60"
                 aria-label="تغییر تصویر پروفایل"
               >
                 <CameraIcon className="size-4" />
@@ -226,10 +226,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
             <div className="text-center sm:pb-1 sm:text-start">
               <h2 className="text-xl font-bold">{name || 'کاربر'}</h2>
-              <p className="mt-1 text-sm text-muted-foreground" dir="ltr">
+              <p className="text-muted-foreground mt-1 text-sm" dir="ltr">
                 {user.email}
               </p>
-              <span className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <span className="border-primary/20 bg-primary/10 text-primary mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold">
                 <ShieldIcon className="size-3.5" />
                 {ROLE_LABELS[user.role]}
               </span>
@@ -245,14 +245,14 @@ export function ProfileForm({ user }: ProfileFormProps) {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Avatar upload */}
         <section className="surface-card overflow-hidden lg:col-span-2">
-          <div className="border-b border-border/80 px-5 py-4">
+          <div className="border-border/80 border-b px-5 py-4">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <span className="bg-primary/10 text-primary flex size-9 items-center justify-center rounded-xl">
                 <ImageIcon className="size-4.5" />
               </span>
               <div>
                 <h2 className="font-bold">تصویر پروفایل</h2>
-                <p className="text-xs text-muted-foreground">JPG، PNG یا WebP — حداکثر ۲ مگابایت</p>
+                <p className="text-muted-foreground text-xs">JPG، PNG یا WebP — حداکثر ۲ مگابایت</p>
               </div>
             </div>
           </div>
@@ -276,9 +276,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
                 isBusy && 'pointer-events-none opacity-60',
               )}
             >
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <span className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-2xl">
                 {isUploading ? (
-                  <span className="size-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  <span className="border-primary size-5 animate-spin rounded-full border-2 border-t-transparent" />
                 ) : (
                   <CameraIcon className="size-5" />
                 )}
@@ -286,7 +286,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
               <span className="text-sm font-medium">
                 {isUploading ? 'در حال آپلود...' : 'کلیک کنید یا تصویر را بکشید'}
               </span>
-              <span className="text-xs text-muted-foreground">پیشنهاد: تصویر مربعی با حداقل ۲۵۶×۲۵۶</span>
+              <span className="text-muted-foreground text-xs">
+                پیشنهاد: تصویر مربعی با حداقل ۲۵۶×۲۵۶
+              </span>
             </button>
 
             <input
@@ -313,7 +315,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  className="text-destructive hover:bg-destructive/10 hover:text-destructive rounded-xl"
                   disabled={isBusy}
                   onClick={handleRemoveAvatar}
                 >
@@ -326,14 +328,14 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
         {/* Account info */}
         <section className="surface-card overflow-hidden lg:col-span-3">
-          <div className="border-b border-border/80 px-5 py-4">
+          <div className="border-border/80 border-b px-5 py-4">
             <div className="flex items-center gap-2.5">
               <span className="flex size-9 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
                 <UserIcon className="size-4.5" />
               </span>
               <div>
                 <h2 className="font-bold">اطلاعات حساب</h2>
-                <p className="text-xs text-muted-foreground">جزئیات نمایشی و دسترسی شما</p>
+                <p className="text-muted-foreground text-xs">جزئیات نمایشی و دسترسی شما</p>
               </div>
             </div>
           </div>
@@ -369,10 +371,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   value={user.email}
                   readOnly
                   dir="ltr"
-                  className="h-12 rounded-xl bg-muted/30 ps-14 text-start"
+                  className="bg-muted/30 h-12 rounded-xl ps-14 text-start"
                 />
               </div>
-              <p className="mt-1.5 text-xs text-muted-foreground">ایمیل قابل تغییر نیست.</p>
+              <p className="text-muted-foreground mt-1.5 text-xs">ایمیل قابل تغییر نیست.</p>
             </div>
 
             <div>
@@ -385,14 +387,14 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   id="profile-role"
                   value={ROLE_LABELS[user.role]}
                   readOnly
-                  className="h-12 rounded-xl bg-muted/30 ps-14"
+                  className="bg-muted/30 h-12 rounded-xl ps-14"
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col-reverse gap-3 border-t border-border/80 bg-muted/15 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-muted-foreground">
+          <div className="border-border/80 bg-muted/15 flex flex-col-reverse gap-3 border-t px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted-foreground text-xs">
               {hasNameChange ? 'تغییرات ذخیره‌نشده دارید' : 'همه تغییرات ذخیره شده‌اند'}
             </p>
             <LoadingButton

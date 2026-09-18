@@ -13,7 +13,5 @@ export const teamMembers = getActiveTeamMembers(DEFAULT_ABOUT_TEAM);
 export const editorialPolicy = {
   mission: DEFAULT_ABOUT_CONTENT.mission.body,
   history: DEFAULT_ABOUT_CONTENT.history.body,
-  ethics: DEFAULT_ABOUT_CONTENT.ethics.items.map(
-    (item) => `${item.title}: ${item.description}`,
-  ),
+  ethics: DEFAULT_ABOUT_CONTENT.ethics.items.map((item) => `${item.title}: ${item.description}`),
 };

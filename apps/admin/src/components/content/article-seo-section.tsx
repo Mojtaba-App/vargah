@@ -39,7 +39,8 @@ export function ArticleSeoSection({
 }: ArticleSeoSectionProps) {
   const displayTitle = previewTitle.trim() || 'عنوان مقاله در نتایج جستجو';
   const displayDesc =
-    previewDescription.trim() || 'توضیح کوتاه مقاله که در گوگل و شبکه‌های اجتماعی نمایش داده می‌شود.';
+    previewDescription.trim() ||
+    'توضیح کوتاه مقاله که در گوگل و شبکه‌های اجتماعی نمایش داده می‌شود.';
   const previewImage = ogImage || coverImage;
 
   return (
@@ -56,8 +57,8 @@ export function ArticleSeoSection({
 
         {open && (
           <div className="mt-4 space-y-4">
-            <div className="rounded-xl border border-border bg-muted/20 p-4">
-              <p className="mb-2 text-xs font-medium text-muted-foreground">پیش‌نمایش گوگل</p>
+            <div className="border-border bg-muted/20 rounded-xl border p-4">
+              <p className="text-muted-foreground mb-2 text-xs font-medium">پیش‌نمایش گوگل</p>
               <p className="truncate text-base text-[#1a0dab]">{displayTitle}</p>
               <p className="mt-0.5 truncate text-xs text-[#006621]" dir="ltr">
                 example.com › articles › ...
@@ -66,9 +67,13 @@ export function ArticleSeoSection({
             </div>
 
             {previewImage && isPreviewable(previewImage) && (
-              <div className="overflow-hidden rounded-xl border border-border">
+              <div className="border-border overflow-hidden rounded-xl border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={previewImage} alt="پیش‌نمایش OG" className="aspect-[1.91/1] w-full object-cover" />
+                <img
+                  src={previewImage}
+                  alt="پیش‌نمایش OG"
+                  className="aspect-[1.91/1] w-full object-cover"
+                />
               </div>
             )}
 
@@ -82,7 +87,9 @@ export function ArticleSeoSection({
                 {...register('metaTitle', { onChange: onMetaTitleChange })}
               />
               <FieldMessage message={errors.metaTitle?.message} />
-              <FieldHint>به‌صورت خودکار از عنوان پر می‌شود؛ برای گوگل حداکثر ~۶۰ کاراکتر توصیه می‌شود.</FieldHint>
+              <FieldHint>
+                به‌صورت خودکار از عنوان پر می‌شود؛ برای گوگل حداکثر ~۶۰ کاراکتر توصیه می‌شود.
+              </FieldHint>
             </div>
 
             <div>
@@ -96,7 +103,9 @@ export function ArticleSeoSection({
                 {...register('metaDescription')}
               />
               <FieldMessage message={errors.metaDescription?.message} />
-              <FieldHint>خلاصه‌ای که در نتایج جستجو نمایش داده می‌شود (حداکثر ~۱۶۰ کاراکتر).</FieldHint>
+              <FieldHint>
+                خلاصه‌ای که در نتایج جستجو نمایش داده می‌شود (حداکثر ~۱۶۰ کاراکتر).
+              </FieldHint>
             </div>
 
             <ArticleImageField

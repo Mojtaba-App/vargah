@@ -19,7 +19,7 @@ export function TagList({ activeSlug, tagIds, tags: tagsProp, className }: TagLi
           key={tag.id}
           href={`/articles/tag/${tag.slug}`}
           className={cn(
-            'rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:bg-muted',
+            'border-border hover:bg-muted rounded-full border px-3 py-1 text-xs font-medium transition-colors',
             activeSlug === tag.slug && 'border-primary bg-primary/10 text-primary',
           )}
         >

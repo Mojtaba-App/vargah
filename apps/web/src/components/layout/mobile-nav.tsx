@@ -42,9 +42,7 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
     setOpen(false);
   }, [pathname]);
 
-  const primaryLinks = links.filter(
-    (link) => !serviceNavItems.some((s) => s.href === link.href),
-  );
+  const primaryLinks = links.filter((link) => !serviceNavItems.some((s) => s.href === link.href));
 
   return (
     <>
@@ -65,7 +63,7 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
             <motion.button
               type="button"
               aria-label="بستن منو"
-              className="absolute inset-0 bg-foreground/25 backdrop-blur-sm"
+              className="bg-foreground/25 absolute inset-0 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -77,13 +75,13 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
               role="dialog"
               aria-modal="true"
               aria-label="منوی موبایل"
-              className="absolute end-0 top-0 flex h-full w-[min(100%,21rem)] flex-col border-s border-border bg-background shadow-2xl"
+              className="border-border bg-background absolute end-0 top-0 flex h-full w-[min(100%,21rem)] flex-col border-s shadow-2xl"
               initial={prefersReducedMotion ? false : { x: '100%' }}
               animate={{ x: 0 }}
               exit={prefersReducedMotion ? undefined : { x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 320 }}
             >
-              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <div className="border-border flex items-center justify-between border-b px-4 py-3">
                 <HeaderLogo
                   siteName={branding.siteName}
                   tagline={labels.tagline}
@@ -95,7 +93,7 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
                   <button
                     type="button"
                     onClick={() => setOpen(false)}
-                    className="inline-flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex size-9 items-center justify-center rounded-full"
                     aria-label="بستن منو"
                   >
                     <CloseIcon />
@@ -103,7 +101,7 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
                 </div>
               </div>
 
-              <div className="border-b border-border px-4 py-3">
+              <div className="border-border border-b px-4 py-3">
                 <HeaderSearch
                   variant="full"
                   placeholder={labels.searchPlaceholder}
@@ -112,7 +110,7 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
               </div>
 
               <div className="flex-1 overflow-y-auto px-3 py-4">
-                <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="text-muted-foreground mb-2 px-2 text-[11px] font-semibold tracking-wider uppercase">
                   ماهنامه
                 </p>
                 <ul className="space-y-0.5">
@@ -126,27 +124,26 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
                   ))}
                 </ul>
 
-                <p className="mb-2 mt-5 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="text-muted-foreground mt-5 mb-2 px-2 text-[11px] font-semibold tracking-wider uppercase">
                   {labels.services}
                 </p>
                 <ul className="space-y-2">
                   {serviceNavItems.map((item) => {
-                    const isActive =
-                      pathname === item.href || pathname.startsWith(item.href);
+                    const isActive = pathname === item.href || pathname.startsWith(item.href);
                     return (
                       <li key={item.href}>
                         <Link
                           href={item.href}
                           onClick={() => setOpen(false)}
                           className={cn(
-                            'flex gap-3 rounded-xl border border-border/70 p-3 transition-colors hover:bg-muted',
+                            'border-border/70 hover:bg-muted flex gap-3 rounded-xl border p-3 transition-colors',
                             isActive && 'border-primary/30 bg-primary/5',
                           )}
                         >
                           <ServiceIconWell icon={item.icon} size="sm" />
                           <div className="min-w-0">
                             <p className="text-sm font-semibold">{item.label}</p>
-                            <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                            <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
                               {item.description}
                             </p>
                           </div>
@@ -157,10 +154,13 @@ export function MobileNav({ links, serviceNavItems, labels, branding }: MobileNa
                 </ul>
               </div>
 
-              <div className="space-y-2 border-t border-border p-4">
+              <div className="border-border space-y-2 border-t p-4">
                 {isAuthenticated ? (
                   <Link href="/profile" onClick={() => setOpen(false)} className="block">
-                    <Button variant="outline" className="h-11 w-full rounded-xl text-sm font-semibold">
+                    <Button
+                      variant="outline"
+                      className="h-11 w-full rounded-xl text-sm font-semibold"
+                    >
                       پروفایل کاربری
                     </Button>
                   </Link>
@@ -200,8 +200,7 @@ function MobileNavItem({
   pathname: string;
   onNavigate: () => void;
 }) {
-  const isActive =
-    pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+  const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
 
   return (
     <li>
@@ -211,13 +210,11 @@ function MobileNavItem({
         aria-current={isActive ? 'page' : undefined}
         className={cn(
           'flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium transition-colors',
-          isActive
-            ? 'bg-primary/10 text-primary'
-            : 'text-foreground hover:bg-muted',
+          isActive ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted',
         )}
       >
         {link.label}
-        {isActive && <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />}
+        {isActive && <span className="bg-primary size-1.5 rounded-full" aria-hidden="true" />}
       </Link>
     </li>
   );

@@ -31,8 +31,8 @@ export function CustomerAvatar({
   return (
     <span
       className={cn(
-        'relative inline-flex shrink-0 overflow-hidden rounded-full bg-primary/10',
-        ring && 'ring-2 ring-background',
+        'bg-primary/10 relative inline-flex shrink-0 overflow-hidden rounded-full',
+        ring && 'ring-background ring-2',
         config.box,
         className,
       )}
@@ -49,7 +49,7 @@ export function CustomerAvatar({
       ) : (
         <span
           className={cn(
-            'flex size-full items-center justify-center font-bold text-primary',
+            'text-primary flex size-full items-center justify-center font-bold',
             config.text,
           )}
         >

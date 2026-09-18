@@ -50,6 +50,15 @@ jobs:
       - name: Format check
         run: pnpm format:check
 
+      # next-env.d.ts imports route types that only `next dev` generates
+      - name: Stub Next dev route types
+        run: |
+          for app in apps/web apps/admin; do
+            mkdir -p "$app/.next/dev/types"
+            printf 'export {}\n' > "$app/.next/dev/types/routes.d.ts"
+            printf 'export {}\n' > "$app/.next/dev/types/root-params.d.ts"
+          done
+
       - name: Lint
         run: pnpm lint
 

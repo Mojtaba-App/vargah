@@ -1,7 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { evaluatePasswordStrength, generateSecurePassword } from '@vargah/security/password-strength';
+import {
+  evaluatePasswordStrength,
+  generateSecurePassword,
+} from '@vargah/security/password-strength';
 import { Input, Label } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 import { FieldMessage } from '@/components/ui/form/field-message';
@@ -27,7 +30,17 @@ type PasswordFieldsProps = {
 
 function CopyIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
       <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
     </svg>
@@ -84,17 +97,23 @@ export function PasswordFields({
             {label}
           </Label>
           {showGenerator && (
-            <Button type="button" variant="outline" size="sm" onClick={handleGenerate} disabled={disabled}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleGenerate}
+              disabled={disabled}
+            >
               تولید رمز امن
             </Button>
           )}
         </div>
 
         {showGeneratedBanner && (
-          <div className="mb-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
-            <p className="text-xs font-medium text-primary">رمز تولید‌شده</p>
+          <div className="border-primary/20 bg-primary/5 mb-3 rounded-xl border px-4 py-3">
+            <p className="text-primary text-xs font-medium">رمز تولید‌شده</p>
             <div className="mt-2 flex items-center justify-between gap-3">
-              <p className="min-w-0 flex-1 truncate font-mono text-sm text-foreground" dir="ltr">
+              <p className="text-foreground min-w-0 flex-1 truncate font-mono text-sm" dir="ltr">
                 {lastGenerated}
               </p>
               <Button
@@ -135,7 +154,7 @@ export function PasswordFields({
 
         {value.length > 0 && (
           <div className="mt-3 space-y-2">
-            <div className="h-2 overflow-hidden rounded-full bg-muted">
+            <div className="bg-muted h-2 overflow-hidden rounded-full">
               <div
                 className="h-full rounded-full transition-all duration-300"
                 style={{ width: `${strength.score}%`, backgroundColor: strength.color }}

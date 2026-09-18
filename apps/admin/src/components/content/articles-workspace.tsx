@@ -67,11 +67,11 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
@@ -114,12 +114,12 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
       header: 'مقاله',
       cell: ({ row }) => (
         <div className="flex min-w-[220px] items-center gap-3">
-          <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40">
+          <div className="border-border bg-muted/40 relative size-12 shrink-0 overflow-hidden rounded-lg border">
             {row.original.coverImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={row.original.coverImage} alt="" className="size-full object-cover" />
             ) : (
-              <div className="flex size-full items-center justify-center text-[10px] text-muted-foreground">
+              <div className="text-muted-foreground flex size-full items-center justify-center text-[10px]">
                 بدون تصویر
               </div>
             )}
@@ -127,11 +127,11 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
           <div className="min-w-0">
             <Link
               href={`/content/articles/${row.original.id}`}
-              className="line-clamp-2 font-medium text-primary hover:underline"
+              className="text-primary line-clamp-2 font-medium hover:underline"
             >
               {row.original.title}
             </Link>
-            <p className="mt-0.5 truncate text-xs text-muted-foreground" dir="ltr">
+            <p className="text-muted-foreground mt-0.5 truncate text-xs" dir="ltr">
               /{row.original.slug}
             </p>
             <div className="mt-1 flex flex-wrap gap-1">
@@ -163,9 +163,10 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
       accessorKey: 'workflowStage',
       header: 'گردش کار',
       cell: ({ row }) => (
-        <span className="text-sm text-muted-foreground">
-          {WORKFLOW_STAGE_LABELS[row.original.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS] ??
-            row.original.workflowStage}
+        <span className="text-muted-foreground text-sm">
+          {WORKFLOW_STAGE_LABELS[
+            row.original.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS
+          ] ?? row.original.workflowStage}
         </span>
       ),
     },
@@ -187,8 +188,7 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
     {
       accessorKey: 'publishedAt',
       header: 'انتشار',
-      cell: ({ row }) =>
-        row.original.publishedAt ? formatJalali(row.original.publishedAt) : '—',
+      cell: ({ row }) => (row.original.publishedAt ? formatJalali(row.original.publishedAt) : '—'),
     },
     {
       accessorKey: 'updatedAt',
@@ -206,7 +206,11 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
             </Button>
           </Link>
           {row.original.status === ArticleStatus.PUBLISHED && (
-            <a href={getPublicArticleUrl(row.original.slug)} target="_blank" rel="noopener noreferrer">
+            <a
+              href={getPublicArticleUrl(row.original.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="outline" size="sm">
                 مشاهده
               </Button>
@@ -263,14 +267,14 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <label className="text-sm text-muted-foreground" htmlFor="categoryFilter">
+        <label className="text-muted-foreground text-sm" htmlFor="categoryFilter">
           فیلتر دسته:
         </label>
         <select
           id="categoryFilter"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="rounded-xl border border-border bg-background px-3 py-2 text-sm"
+          className="border-border bg-background rounded-xl border px-3 py-2 text-sm"
         >
           <option value="ALL">همه دسته‌ها</option>
           {categories.map((category) => (
@@ -279,7 +283,7 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
             </option>
           ))}
         </select>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {formatNumber(filtered.length)} مورد نمایش داده می‌شود
         </p>
         <ExportToolbar
@@ -298,7 +302,9 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
           rows={filtered.map((row) => ({
             title: row.title,
             status: ARTICLE_STATUS_LABELS[row.status],
-            stage: WORKFLOW_STAGE_LABELS[row.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS] ?? row.workflowStage,
+            stage:
+              WORKFLOW_STAGE_LABELS[row.workflowStage as keyof typeof WORKFLOW_STAGE_LABELS] ??
+              row.workflowStage,
             category: row.category?.name,
             author: row.author.name,
             views: row._count.pageViews,
@@ -307,7 +313,12 @@ export function ArticlesWorkspace({ articles, categories, canDelete }: ArticlesW
         />
       </div>
 
-      <DataTable columns={columns} data={filtered} searchKey="title" searchPlaceholder="جستجوی عنوان..." />
+      <DataTable
+        columns={columns}
+        data={filtered}
+        searchKey="title"
+        searchPlaceholder="جستجوی عنوان..."
+      />
 
       <ConfirmDialog
         open={Boolean(deleteTarget)}

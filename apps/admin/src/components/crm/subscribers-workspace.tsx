@@ -31,7 +31,10 @@ import {
   extendSubscriber,
   updateSubscriber,
 } from '@/actions/subscribers';
-import { getPlanLabelFromList, type SubscriptionPlanConfig } from '@vargah/business/subscription-plans';
+import {
+  getPlanLabelFromList,
+  type SubscriptionPlanConfig,
+} from '@vargah/business/subscription-plans';
 import {
   getExpiryHint,
   isExpiringSoon,
@@ -118,20 +121,28 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
 
-function StatusBadge({ status, expiresAt }: { status: SubscriptionStatus; expiresAt: Date | null }) {
+function StatusBadge({
+  status,
+  expiresAt,
+}: {
+  status: SubscriptionStatus;
+  expiresAt: Date | null;
+}) {
   const expiryHint = getExpiryHint(expiresAt);
   return (
     <div className="flex flex-wrap items-center gap-1">
-      <Badge variant={SUBSCRIPTION_STATUS_VARIANT[status]}>{SUBSCRIPTION_STATUS_LABELS[status]}</Badge>
+      <Badge variant={SUBSCRIPTION_STATUS_VARIANT[status]}>
+        {SUBSCRIPTION_STATUS_LABELS[status]}
+      </Badge>
       {status === SubscriptionStatus.ACTIVE && isExpiringSoon(expiresAt) && (
         <Badge variant="secondary">در حال انقضا</Badge>
       )}
@@ -142,12 +153,7 @@ function StatusBadge({ status, expiresAt }: { status: SubscriptionStatus; expire
   );
 }
 
-function buildFilterHref(next: {
-  q?: string;
-  status?: string;
-  province?: string;
-  city?: string;
-}) {
+function buildFilterHref(next: { q?: string; status?: string; province?: string; city?: string }) {
   const params = new URLSearchParams();
   if (next.q?.trim()) params.set('q', next.q.trim());
   if (next.status && next.status !== 'ALL') params.set('status', next.status);
@@ -197,7 +203,13 @@ export function SubscribersWorkspace({
     setSearch(initialFilters?.q ?? '');
     setProvinceFilter(initialFilters?.province ?? '');
     setCityFilter(initialFilters?.city ?? '');
-  }, [serverFiltered, initialFilters?.q, initialFilters?.status, initialFilters?.province, initialFilters?.city]);
+  }, [
+    serverFiltered,
+    initialFilters?.q,
+    initialFilters?.status,
+    initialFilters?.province,
+    initialFilters?.city,
+  ]);
 
   useEffect(() => {
     if (!serverFiltered) return;
@@ -249,7 +261,9 @@ export function SubscribersWorkspace({
     const q = debouncedSearch.trim().toLowerCase();
     return subscribers.filter((subscriber) => {
       if (statusFilter === 'EXPIRING_SOON') {
-        if (!(subscriber.status === SubscriptionStatus.ACTIVE && isExpiringSoon(subscriber.expiresAt))) {
+        if (!(
+          subscriber.status === SubscriptionStatus.ACTIVE && isExpiringSoon(subscriber.expiresAt)
+        )) {
           return false;
         }
       } else if (statusFilter !== 'ALL' && subscriber.status !== statusFilter) {
@@ -272,10 +286,20 @@ export function SubscribersWorkspace({
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [subscribers, statusFilter, debouncedSearch, provinceFilter, cityFilter, subscriptionPlans, serverFiltered]);
+  }, [
+    subscribers,
+    statusFilter,
+    debouncedSearch,
+    provinceFilter,
+    cityFilter,
+    subscriptionPlans,
+    serverFiltered,
+  ]);
 
   const form = useForm<SubscriberFormValues>({
-    resolver: zodResolver(subscriberFormSchema) as import('react-hook-form').Resolver<SubscriberFormValues>,
+    resolver: zodResolver(
+      subscriberFormSchema,
+    ) as import('react-hook-form').Resolver<SubscriberFormValues>,
     defaultValues: {
       name: '',
       email: '',
@@ -390,9 +414,15 @@ export function SubscribersWorkspace({
       accessorKey: 'name',
       header: 'مشترک',
       cell: ({ row }) => (
-        <button type="button" className="text-start" onClick={() => { resetForm(row.original); }}>
+        <button
+          type="button"
+          className="text-start"
+          onClick={() => {
+            resetForm(row.original);
+          }}
+        >
           <p className="font-medium">{row.original.name}</p>
-          <p className="text-xs text-muted-foreground" dir="ltr">
+          <p className="text-muted-foreground text-xs" dir="ltr">
             {row.original.email}
           </p>
         </button>
@@ -413,8 +443,7 @@ export function SubscribersWorkspace({
     {
       accessorKey: 'expiresAt',
       header: 'انقضا',
-      cell: ({ row }) =>
-        row.original.expiresAt ? formatJalali(row.original.expiresAt) : '—',
+      cell: ({ row }) => (row.original.expiresAt ? formatJalali(row.original.expiresAt) : '—'),
     },
     {
       id: 'payments',
@@ -450,7 +479,12 @@ export function SubscribersWorkspace({
       {error && <StatusBanner type="error" message={error} />}
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
-        <StatCard label="کل مشترکین" value={stats.total} active={statusFilter === 'ALL'} onClick={() => setStatusFilter('ALL')} />
+        <StatCard
+          label="کل مشترکین"
+          value={stats.total}
+          active={statusFilter === 'ALL'}
+          onClick={() => setStatusFilter('ALL')}
+        />
         <StatCard
           label="فعال"
           value={stats.active}
@@ -548,17 +582,31 @@ export function SubscribersWorkspace({
               <form onSubmit={submitForm} noValidate className="space-y-3">
                 <div>
                   <Label required>نام</Label>
-                  <Input className="mt-2 rounded-xl" disabled={isPending} {...form.register('name')} />
+                  <Input
+                    className="mt-2 rounded-xl"
+                    disabled={isPending}
+                    {...form.register('name')}
+                  />
                   <FieldMessage message={form.formState.errors.name?.message} />
                 </div>
                 <div>
                   <Label required>ایمیل</Label>
-                  <Input className="mt-2 rounded-xl" dir="ltr" disabled={isPending} {...form.register('email')} />
+                  <Input
+                    className="mt-2 rounded-xl"
+                    dir="ltr"
+                    disabled={isPending}
+                    {...form.register('email')}
+                  />
                   <FieldMessage message={form.formState.errors.email?.message} />
                 </div>
                 <div>
                   <Label>تلفن</Label>
-                  <Input className="mt-2 rounded-xl" dir="ltr" disabled={isPending} {...form.register('phone')} />
+                  <Input
+                    className="mt-2 rounded-xl"
+                    dir="ltr"
+                    disabled={isPending}
+                    {...form.register('phone')}
+                  />
                 </div>
                 <Controller
                   name="province"
@@ -583,11 +631,20 @@ export function SubscribersWorkspace({
                 />
                 <div>
                   <Label>آدرس (خیابان و پلاک)</Label>
-                  <Textarea rows={2} className="mt-2 rounded-xl" disabled={isPending} {...form.register('address')} />
+                  <Textarea
+                    rows={2}
+                    className="mt-2 rounded-xl"
+                    disabled={isPending}
+                    {...form.register('address')}
+                  />
                 </div>
                 <div>
                   <Label>پلن</Label>
-                  <Select className="mt-2 rounded-xl" disabled={isPending} {...form.register('planType')}>
+                  <Select
+                    className="mt-2 rounded-xl"
+                    disabled={isPending}
+                    {...form.register('planType')}
+                  >
                     <option value="">انتخاب پلن</option>
                     {planOptions.map((plan) => (
                       <option key={plan.value} value={plan.value}>
@@ -598,7 +655,11 @@ export function SubscribersWorkspace({
                 </div>
                 <div>
                   <Label>وضعیت</Label>
-                  <Select className="mt-2 rounded-xl" disabled={isPending} {...form.register('status')}>
+                  <Select
+                    className="mt-2 rounded-xl"
+                    disabled={isPending}
+                    {...form.register('status')}
+                  >
                     {Object.entries(SUBSCRIPTION_STATUS_LABELS).map(([value, label]) => (
                       <option key={value} value={value}>
                         {label}
@@ -637,7 +698,7 @@ export function SubscribersWorkspace({
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-lg font-semibold">{selected.name}</p>
-                    <p className="text-sm text-muted-foreground" dir="ltr">
+                    <p className="text-muted-foreground text-sm" dir="ltr">
                       {selected.email}
                     </p>
                     <div className="mt-2">
@@ -697,7 +758,7 @@ export function SubscribersWorkspace({
                   </div>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">
+                <div className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
                   <div>
                     <p className="text-muted-foreground">پلن</p>
                     <p className="font-medium">{planLabel(selected.planType)}</p>
@@ -727,7 +788,7 @@ export function SubscribersWorkspace({
                 </div>
 
                 {selected.address && (
-                  <p className="rounded-xl bg-muted/40 p-3 text-sm">
+                  <p className="bg-muted/40 rounded-xl p-3 text-sm">
                     <span className="text-muted-foreground">آدرس: </span>
                     {selected.address}
                   </p>
@@ -753,14 +814,16 @@ export function SubscribersWorkspace({
                       {selected.payments.map((payment) => (
                         <li
                           key={payment.id}
-                          className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-muted/40 px-3 py-2 text-sm"
+                          className="bg-muted/40 flex flex-wrap items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm"
                         >
                           <span>{payment.description ?? 'پرداخت اشتراک'}</span>
                           <div className="flex items-center gap-2">
                             <Badge variant="outline">{PAYMENT_STATUS_LABELS[payment.status]}</Badge>
                             <span className="font-medium">{formatPrice(payment.amount)} ت</span>
                             <span className="text-muted-foreground">
-                              {payment.paidAt ? formatJalali(payment.paidAt) : formatJalali(payment.createdAt)}
+                              {payment.paidAt
+                                ? formatJalali(payment.paidAt)
+                                : formatJalali(payment.createdAt)}
                             </span>
                           </div>
                         </li>

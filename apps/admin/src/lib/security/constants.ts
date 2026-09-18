@@ -64,7 +64,8 @@ export function getSessionStatus(
   now: Date = new Date(),
 ): SessionStatus {
   if (session.revokedAt) return SessionStatus.REVOKED;
-  const expires = session.expiresAt instanceof Date ? session.expiresAt : new Date(session.expiresAt);
+  const expires =
+    session.expiresAt instanceof Date ? session.expiresAt : new Date(session.expiresAt);
   if (expires <= now) return SessionStatus.EXPIRED;
   return SessionStatus.ACTIVE;
 }

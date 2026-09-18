@@ -23,18 +23,18 @@ export function ActivityFeed({
   showUserName = true,
 }: ActivityFeedProps) {
   return (
-    <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm">
+    <section className="border-border/80 bg-card rounded-2xl border p-5 shadow-sm">
       <div className="mb-4 flex items-center gap-2">
-        <ActivityIcon className="size-5 text-primary" />
+        <ActivityIcon className="text-primary size-5" />
         <h2 className="font-bold">{title}</h2>
       </div>
 
       {items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">فعالیتی ثبت نشده است.</p>
+        <p className="text-muted-foreground text-sm">فعالیتی ثبت نشده است.</p>
       ) : (
         <ul className="space-y-3">
           {items.map((item) => (
-            <li key={item.id} className="relative flex gap-3 border-s-2 border-primary/20 ps-4">
+            <li key={item.id} className="border-primary/20 relative flex gap-3 border-s-2 ps-4">
               <div className="min-w-0 flex-1">
                 <p className="text-sm">
                   {showUserName ? (
@@ -51,7 +51,7 @@ export function ActivityFeed({
                     })}
                   </span>
                 </p>
-                <time className="mt-1 block text-xs text-muted-foreground">
+                <time className="text-muted-foreground mt-1 block text-xs">
                   {formatJalali(item.createdAt, true)} · {formatRelativeTime(item.createdAt)}
                 </time>
               </div>

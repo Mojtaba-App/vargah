@@ -17,7 +17,11 @@ const createCommissionSchema = z.object({
   assigneeId: z.string().cuid().optional(),
   contributorId: z.string().cuid().optional(),
   issueId: z.string().cuid().optional(),
-  dueDate: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}/)).optional(),
+  dueDate: z
+    .string()
+    .datetime()
+    .or(z.string().regex(/^\d{4}-\d{2}-\d{2}/))
+    .optional(),
 });
 
 const transitionSchema = z.object({
@@ -54,11 +58,11 @@ export async function createCommission(data: {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.CREATE,
-      entity: 'ArticleCommission',
-      entityId: commission.id,
-    });
+    userId: session.user.id,
+    action: AuditAction.CREATE,
+    entity: 'ArticleCommission',
+    entityId: commission.id,
+  });
 
   if (parsed.assigneeId) {
     await fireWebhooks('commission.assigned', {
@@ -75,7 +79,11 @@ export async function createCommission(data: {
   return commission.id;
 }
 
-export async function transitionCommission(id: string, toStatus: CommissionStatus, reviewNote?: string) {
+export async function transitionCommission(
+  id: string,
+  toStatus: CommissionStatus,
+  reviewNote?: string,
+) {
   await verifyCsrfFromRequest();
   const session = await requirePermission(PERMISSIONS.COMMISSION_MANAGE);
   const parsed = transitionSchema.parse({ id, toStatus, reviewNote });
@@ -91,19 +99,24 @@ export async function transitionCommission(id: string, toStatus: CommissionStatu
     data: {
       status: parsed.toStatus,
       reviewNote: parsed.reviewNote ?? commission.reviewNote,
-      deadlineNotifiedAt: parsed.toStatus === CommissionStatus.IN_WRITING ? null : commission.deadlineNotifiedAt,
+      deadlineNotifiedAt:
+        parsed.toStatus === CommissionStatus.IN_WRITING ? null : commission.deadlineNotifiedAt,
     },
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: parsed.toStatus === CommissionStatus.APPROVED ? AuditAction.APPROVE : AuditAction.UPDATE,
-      entity: 'ArticleCommission',
-      entityId: parsed.id,
-      changes: { status: parsed.toStatus },
-    });
+    userId: session.user.id,
+    action:
+      parsed.toStatus === CommissionStatus.APPROVED ? AuditAction.APPROVE : AuditAction.UPDATE,
+    entity: 'ArticleCommission',
+    entityId: parsed.id,
+    changes: { status: parsed.toStatus },
+  });
 
-  if (parsed.toStatus === CommissionStatus.APPROVED || parsed.toStatus === CommissionStatus.REJECTED) {
+  if (
+    parsed.toStatus === CommissionStatus.APPROVED ||
+    parsed.toStatus === CommissionStatus.REJECTED
+  ) {
     await fireWebhooks('commission.reviewed', {
       title: parsed.toStatus === CommissionStatus.APPROVED ? 'مطلب تأیید شد' : 'مطلب رد شد',
       message: `«${commission.title}» — ${parsed.toStatus}`,
@@ -163,7 +176,12 @@ export async function assignCommissionWriter(
     },
   });
 
-  await recordAuditLog({ userId: session.user.id, action: AuditAction.UPDATE, entity: 'ArticleCommission', entityId: id });
+  await recordAuditLog({
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'ArticleCommission',
+    entityId: id,
+  });
 
   revalidatePath('/contributors');
   revalidatePath('/contributors/workflow');

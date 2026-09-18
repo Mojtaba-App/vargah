@@ -22,7 +22,10 @@ const columns: ColumnDef<CommissionRow>[] = [
     accessorKey: 'title',
     header: 'سوژه',
     cell: ({ row }) => (
-      <Link href={`/contributors/workflow/${row.original.id}`} className="font-medium text-primary hover:underline">
+      <Link
+        href={`/contributors/workflow/${row.original.id}`}
+        className="text-primary font-medium hover:underline"
+      >
         {row.original.title}
       </Link>
     ),
@@ -30,9 +33,15 @@ const columns: ColumnDef<CommissionRow>[] = [
   {
     accessorKey: 'status',
     header: 'مرحله',
-    cell: ({ row }) => <Badge variant="outline">{COMMISSION_STATUS_LABELS[row.original.status]}</Badge>,
+    cell: ({ row }) => (
+      <Badge variant="outline">{COMMISSION_STATUS_LABELS[row.original.status]}</Badge>
+    ),
   },
-  { accessorKey: 'assigneeName', header: 'نویسنده', cell: ({ row }) => row.original.assigneeName ?? '—' },
+  {
+    accessorKey: 'assigneeName',
+    header: 'نویسنده',
+    cell: ({ row }) => row.original.assigneeName ?? '—',
+  },
   {
     accessorKey: 'dueDate',
     header: 'مهلت',
@@ -46,5 +55,12 @@ const columns: ColumnDef<CommissionRow>[] = [
 ];
 
 export function CommissionsTable({ data }: { data: CommissionRow[] }) {
-  return <DataTable columns={columns} data={data} searchKey="title" searchPlaceholder="جستجوی سفارش..." />;
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      searchKey="title"
+      searchPlaceholder="جستجوی سفارش..."
+    />
+  );
 }

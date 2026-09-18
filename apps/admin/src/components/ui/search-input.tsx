@@ -49,7 +49,7 @@ export function SearchInput({
 }: SearchInputProps) {
   return (
     <div className={cn('relative max-w-md', className)}>
-      <SearchIcon className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <SearchIcon className="text-muted-foreground pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2" />
       <Input
         id={id}
         type="search"
@@ -62,13 +62,13 @@ export function SearchInput({
         disabled={disabled}
         onFocus={onFocus}
         onKeyDown={onKeyDown}
-        className="rounded-xl border-border/80 bg-muted/20 ps-9 pe-9"
+        className="border-border/80 bg-muted/20 rounded-xl ps-9 pe-9"
       />
       {value && (
         <button
           type="button"
           onClick={() => onChange('')}
-          className="absolute end-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="text-muted-foreground hover:bg-muted hover:text-foreground absolute end-2 top-1/2 -translate-y-1/2 rounded-md p-1 transition-colors"
           aria-label="پاک کردن جستجو"
         >
           ✕

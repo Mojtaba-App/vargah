@@ -52,13 +52,11 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
 
   const handleInvalid = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target;
-    if (
-      !(
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLTextAreaElement ||
-        target instanceof HTMLSelectElement
-      )
-    ) {
+    if (!(
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
+    )) {
       return;
     }
 
@@ -110,7 +108,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
   };
 
   return (
-    <Card className="rounded-2xl border-border/80 shadow-sm">
+    <Card className="border-border/80 rounded-2xl shadow-sm">
       <CardContent className="pt-6">
         <form
           onSubmit={handleSubmit}
@@ -135,7 +133,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
                 onChange={() => clearFieldError('company')}
               />
               {fieldErrors.company && (
-                <p className="mt-1 text-xs text-destructive">{fieldErrors.company}</p>
+                <p className="text-destructive mt-1 text-xs">{fieldErrors.company}</p>
               )}
             </div>
             <div>
@@ -153,7 +151,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
                 onChange={() => clearFieldError('contactName')}
               />
               {fieldErrors.contactName && (
-                <p className="mt-1 text-xs text-destructive">{fieldErrors.contactName}</p>
+                <p className="text-destructive mt-1 text-xs">{fieldErrors.contactName}</p>
               )}
             </div>
           </div>
@@ -179,7 +177,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
                 onChange={() => clearFieldError('phone')}
               />
               {fieldErrors.phone && (
-                <p className="mt-1 text-xs text-destructive">{fieldErrors.phone}</p>
+                <p className="text-destructive mt-1 text-xs">{fieldErrors.phone}</p>
               )}
             </div>
             <div>
@@ -198,7 +196,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
                 onChange={() => clearFieldError('email')}
               />
               {fieldErrors.email && (
-                <p className="mt-1 text-xs text-destructive">{fieldErrors.email}</p>
+                <p className="text-destructive mt-1 text-xs">{fieldErrors.email}</p>
               )}
             </div>
           </div>
@@ -235,7 +233,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
               ))}
             </Select>
             {fieldErrors.adType && (
-              <p className="mt-1 text-xs text-destructive">{fieldErrors.adType}</p>
+              <p className="text-destructive mt-1 text-xs">{fieldErrors.adType}</p>
             )}
           </div>
           <div>
@@ -257,7 +255,7 @@ export function AdRequestForm({ pricingOptions = [] }: AdRequestFormProps) {
             </p>
           )}
           {error && (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-destructive text-sm">
               {error}
             </p>
           )}

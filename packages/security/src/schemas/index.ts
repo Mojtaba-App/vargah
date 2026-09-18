@@ -60,10 +60,7 @@ const optionalGeoFields = {
     }),
 };
 
-function refineOptionalGeoPair(
-  data: { province?: string; city?: string },
-  ctx: z.RefinementCtx,
-) {
+function refineOptionalGeoPair(data: { province?: string; city?: string }, ctx: z.RefinementCtx) {
   const hasProvince = Boolean(data.province);
   const hasCity = Boolean(data.city);
   if (hasProvince === hasCity) return;
@@ -113,21 +110,13 @@ export const contactFormSchema = z
       .max(255)
       .transform((value) => value.trim().toLowerCase())
       .pipe(
-        z
-          .string()
-          .email('لطفاً یک ایمیل معتبر وارد کنید.')
-          .max(255, 'ایمیل واردشده طولانی است.'),
+        z.string().email('لطفاً یک ایمیل معتبر وارد کنید.').max(255, 'ایمیل واردشده طولانی است.'),
       ),
     subject: z
       .string()
       .max(200)
       .transform(normalizeFormText)
-      .pipe(
-        z
-          .string()
-          .min(3, 'لطفاً موضوع پیام را بنویسید.')
-          .max(200, 'موضوع پیام طولانی است.'),
-      ),
+      .pipe(z.string().min(3, 'لطفاً موضوع پیام را بنویسید.').max(200, 'موضوع پیام طولانی است.')),
     body: z
       .string()
       .max(5000)
@@ -219,20 +208,12 @@ export const adRequestFormSchema = z
       .string()
       .transform(normalizeFormText)
       .pipe(
-        z
-          .string()
-          .min(2, 'لطفاً نام شرکت یا برند را وارد کنید.')
-          .max(150, 'نام شرکت طولانی است.'),
+        z.string().min(2, 'لطفاً نام شرکت یا برند را وارد کنید.').max(150, 'نام شرکت طولانی است.'),
       ),
     contactName: z
       .string()
       .transform(normalizeFormText)
-      .pipe(
-        z
-          .string()
-          .min(2, 'لطفاً نام مسئول را وارد کنید.')
-          .max(100, 'نام مسئول طولانی است.'),
-      ),
+      .pipe(z.string().min(2, 'لطفاً نام مسئول را وارد کنید.').max(100, 'نام مسئول طولانی است.')),
     phone: z
       .string()
       .transform((value) => value.trim())
@@ -280,12 +261,7 @@ export const articleSubmissionFormSchema = z.object({
   authorName: z
     .string()
     .transform(normalizeFormText)
-    .pipe(
-      z
-        .string()
-        .min(2, 'لطفاً نام خود را وارد کنید.')
-        .max(100, 'نام واردشده طولانی است.'),
-    ),
+    .pipe(z.string().min(2, 'لطفاً نام خود را وارد کنید.').max(100, 'نام واردشده طولانی است.')),
   email: z
     .string()
     .transform((value) => value.trim().toLowerCase())
@@ -315,13 +291,17 @@ export const articleSubmissionFormSchema = z.object({
     .string()
     .max(255)
     .optional()
-    .transform((value) => (value && value.trim() ? value.replace(/[/\\]/g, '').slice(0, 255) : undefined)),
+    .transform((value) =>
+      value && value.trim() ? value.replace(/[/\\]/g, '').slice(0, 255) : undefined,
+    ),
   fileUrl: z
     .string()
     .max(500)
     .optional()
     .refine(
-      (value) => !value || /^\/uploads\/submissions\/\d{4}\/\d{2}\/[A-Za-z0-9._\u0600-\u06FF-]+$/.test(value),
+      (value) =>
+        !value ||
+        /^\/uploads\/submissions\/\d{4}\/\d{2}\/[A-Za-z0-9._\u0600-\u06FF-]+$/.test(value),
       'آدرس فایل مقاله نامعتبر است.',
     ),
 });
@@ -399,7 +379,9 @@ export const collaborationApplicationFormSchema = z.object({
     .string()
     .max(255)
     .optional()
-    .transform((value) => (value && value.trim() ? value.replace(/[/\\]/g, '').slice(0, 255) : undefined)),
+    .transform((value) =>
+      value && value.trim() ? value.replace(/[/\\]/g, '').slice(0, 255) : undefined,
+    ),
   resumeUrl: z
     .string()
     .min(1, 'لطفاً فایل رزومه را پیوست کنید.')
@@ -416,10 +398,7 @@ export const commentSchema = z.object({
   content: z.string().min(3).max(2000),
 });
 
-export function parseFormData<T extends z.ZodType>(
-  schema: T,
-  formData: FormData,
-): z.infer<T> {
+export function parseFormData<T extends z.ZodType>(schema: T, formData: FormData): z.infer<T> {
   const raw = Object.fromEntries(formData.entries());
   return schema.parse(raw);
 }

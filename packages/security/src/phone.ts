@@ -70,7 +70,9 @@ export function isValidUsername(input: string): boolean {
 }
 
 /** @deprecated Admin login uses email/username — not phone */
-export function normalizeLoginIdentifier(input: string): { kind: 'email'; value: string } | { kind: 'phone'; value: string } {
+export function normalizeLoginIdentifier(
+  input: string,
+): { kind: 'email'; value: string } | { kind: 'phone'; value: string } {
   const trimmed = input.trim();
   if (isEmailIdentifier(trimmed)) {
     return { kind: 'email', value: trimmed.toLowerCase() };

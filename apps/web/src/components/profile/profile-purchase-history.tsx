@@ -71,34 +71,32 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">اشتراک و سوابق خرید</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-2 text-sm">
           وضعیت اشتراک فعلی و تاریخچه پرداخت‌های شما
         </p>
       </div>
 
-      <Card className="overflow-hidden border-primary/15 bg-gradient-to-br from-primary/8 via-background to-background">
+      <Card className="border-primary/15 from-primary/8 via-background to-background overflow-hidden bg-gradient-to-br">
         <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
           <SummaryItem label="وضعیت اشتراک" value={subscription.statusLabel} highlight />
           <SummaryItem label="پلن فعلی" value={subscription.planName ?? 'بدون اشتراک'} />
           <SummaryItem
             label="تاریخ انقضا"
             value={
-              subscription.expiresAt
-                ? formatJalaliDate(subscription.expiresAt, 'D MMMM YYYY')
-                : '—'
+              subscription.expiresAt ? formatJalaliDate(subscription.expiresAt, 'D MMMM YYYY') : '—'
             }
           />
-          <SummaryItem
-            label="مجموع پرداخت‌های موفق"
-            value={`${formatPrice(paidTotal)} تومان`}
-          />
+          <SummaryItem label="مجموع پرداخت‌های موفق" value={`${formatPrice(paidTotal)} تومان`} />
         </div>
         {(subscription.showExpiredNotice || subscription.showPendingNotice) && (
-          <div className="border-t border-border/70 bg-sky-50/80 px-5 py-3 text-sm dark:bg-sky-950/25">
+          <div className="border-border/70 border-t bg-sky-50/80 px-5 py-3 text-sm dark:bg-sky-950/25">
             {subscription.showExpiredNotice
               ? 'اشتراک شما منقضی شده است.'
               : 'پرداخت اشتراک در انتظار تأیید است.'}{' '}
-            <Link href="/subscription" className="font-semibold text-primary underline-offset-2 hover:underline">
+            <Link
+              href="/subscription"
+              className="text-primary font-semibold underline-offset-2 hover:underline"
+            >
               تمدید یا خرید اشتراک
             </Link>
           </div>
@@ -106,34 +104,47 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
       </Card>
 
       {hasOpenCart && (
-        <Card className="relative overflow-hidden border-violet-500/25 bg-gradient-to-br from-violet-500/8 via-background to-background p-4 sm:p-5">
+        <Card className="via-background to-background relative overflow-hidden border-violet-500/25 bg-gradient-to-br from-violet-500/8 p-4 sm:p-5">
           <div className="absolute inset-y-0 start-0 w-1 bg-violet-500/70" aria-hidden="true" />
           <div className="flex flex-col gap-4 ps-2 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0 space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="font-semibold">سبد خرید اشتراک</p>
-                <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold', STATUS_STYLES.cart.badge)}>
+                <span
+                  className={cn(
+                    'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                    STATUS_STYLES.cart.badge,
+                  )}
+                >
                   {STATUS_STYLES.cart.label}
                 </span>
-                <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold', STATUS_STYLES.pending.badge)}>
+                <span
+                  className={cn(
+                    'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                    STATUS_STYLES.pending.badge,
+                  )}
+                >
                   {STATUS_STYLES.pending.label}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                {itemCount} مورد · نگهداری تا {SUBSCRIPTION_CART_TTL_DAYS} روز · پس از حذف از این فهرست
-                پاک می‌شود
+              <p className="text-muted-foreground text-xs">
+                {itemCount} مورد · نگهداری تا {SUBSCRIPTION_CART_TTL_DAYS} روز · پس از حذف از این
+                فهرست پاک می‌شود
               </p>
               <ul className="space-y-1.5 text-sm">
                 {items.map((item) => (
-                  <li key={item.planSlug} className="flex flex-wrap items-baseline justify-between gap-2">
+                  <li
+                    key={item.planSlug}
+                    className="flex flex-wrap items-baseline justify-between gap-2"
+                  >
                     <span>
                       {item.name}
-                      <span className="ms-1 text-xs text-muted-foreground">
+                      <span className="text-muted-foreground ms-1 text-xs">
                         ({PLAN_TYPE_LABELS[item.type]} · {PLAN_PERIOD_LABELS[item.period]}) ×{' '}
                         {item.quantity}
                       </span>
                     </span>
-                    <span className="tabular-nums text-muted-foreground">
+                    <span className="text-muted-foreground tabular-nums">
                       {formatPrice(item.unitPrice * item.quantity)} تومان
                     </span>
                   </li>
@@ -174,7 +185,7 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
 
       {history.length === 0 && !hasOpenCart ? (
         <Card className="border-dashed p-10 text-center">
-          <p className="text-sm text-muted-foreground">هنوز خرید یا پرداختی ثبت نشده است.</p>
+          <p className="text-muted-foreground text-sm">هنوز خرید یا پرداختی ثبت نشده است.</p>
           <Link href="/subscription" className="mt-4 inline-block">
             <FormActionButton type="button">مشاهده پلن‌های اشتراک</FormActionButton>
           </Link>
@@ -192,25 +203,35 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
                   key={payment.id}
                   className="relative overflow-hidden p-4 transition-shadow hover:shadow-md sm:p-5"
                 >
-                  <div className="absolute inset-y-0 start-0 w-1 bg-primary/70" aria-hidden="true" />
+                  <div
+                    className="bg-primary/70 absolute inset-y-0 start-0 w-1"
+                    aria-hidden="true"
+                  />
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0 ps-2">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="font-semibold">{payment.plan}</p>
-                        <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold', style.badge)}>
+                        <span
+                          className={cn(
+                            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                            style.badge,
+                          )}
+                        >
                           {style.label}
                         </span>
                       </div>
-                      <p className="mt-1 text-xs text-muted-foreground">
+                      <p className="text-muted-foreground mt-1 text-xs">
                         {formatJalaliDate(payment.date, 'dddd D MMMM YYYY — HH:mm')}
                       </p>
                       {index === 0 && payment.status === 'paid' && (
-                        <p className="mt-2 text-xs text-primary">آخرین خرید موفق</p>
+                        <p className="text-primary mt-2 text-xs">آخرین خرید موفق</p>
                       )}
                     </div>
                     <div className="ps-2 text-start sm:text-end">
-                      <p className="text-lg font-bold tabular-nums">{formatPrice(payment.amount)}</p>
-                      <p className="text-xs text-muted-foreground">تومان</p>
+                      <p className="text-lg font-bold tabular-nums">
+                        {formatPrice(payment.amount)}
+                      </p>
+                      <p className="text-muted-foreground text-xs">تومان</p>
                     </div>
                   </div>
                 </Card>
@@ -233,8 +254,8 @@ function SummaryItem({
   highlight?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-background/70 px-4 py-3">
-      <p className="text-xs text-muted-foreground">{label}</p>
+    <div className="border-border/60 bg-background/70 rounded-xl border px-4 py-3">
+      <p className="text-muted-foreground text-xs">{label}</p>
       <p className={cn('mt-1 text-sm font-bold', highlight && 'text-primary')}>{value}</p>
     </div>
   );

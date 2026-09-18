@@ -6,7 +6,7 @@ export default async function LoginPage() {
   const { branding } = await getSiteConfig();
 
   return (
-    <div className="grid min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-background lg:grid-cols-2">
+    <div className="bg-background grid min-h-screen w-full max-w-[100vw] overflow-x-hidden lg:grid-cols-2">
       <LoginBrandPanel
         siteName={branding.siteName}
         siteTagline={branding.siteTagline}
@@ -20,7 +20,7 @@ export default async function LoginPage() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,var(--accent),transparent_40%)]"
           aria-hidden="true"
         />
-        <div className="relative z-[1] w-full min-w-0 max-w-md">
+        <div className="relative z-[1] w-full max-w-md min-w-0">
           <LoginForm
             siteName={branding.siteName}
             siteTagline={branding.siteTagline}

@@ -67,14 +67,14 @@ export function CustomerAuthMenu({ className }: CustomerAuthMenuProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={prefersReducedMotion ? undefined : { opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.18 }}
-            className="absolute end-0 top-[calc(100%+0.5rem)] z-[70] w-[min(18rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-border bg-background shadow-xl"
+            className="border-border bg-background absolute end-0 top-[calc(100%+0.5rem)] z-[70] w-[min(18rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border shadow-xl"
           >
-            <div className="border-b border-border bg-gradient-to-br from-primary/8 to-transparent px-4 py-4">
+            <div className="border-border from-primary/8 border-b bg-gradient-to-br to-transparent px-4 py-4">
               <div className="flex items-center gap-3">
                 <CustomerAvatar name={customer.name} avatar={customer.avatar} size="md" />
                 <div className="min-w-0">
                   <p className="truncate font-semibold">{customer.name}</p>
-                  <p className="truncate text-xs text-muted-foreground" dir="ltr">
+                  <p className="text-muted-foreground truncate text-xs" dir="ltr">
                     {maskPhone(customer.phone)}
                   </p>
                 </div>
@@ -108,11 +108,11 @@ export function CustomerAuthMenu({ className }: CustomerAuthMenuProps) {
                     setOpen(false);
                     setDrawerOpen(true);
                   }}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                  className="hover:bg-muted flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
                 >
                   <CartMenuIcon />
                   <span className="flex-1 text-start">سبد اشتراک</span>
-                  <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
+                  <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-[11px] font-bold">
                     {itemCount}
                   </span>
                 </button>
@@ -124,7 +124,7 @@ export function CustomerAuthMenu({ className }: CustomerAuthMenuProps) {
                   setOpen(false);
                   setLogoutConfirmOpen(true);
                 }}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
+                className="text-destructive hover:bg-destructive/10 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
               >
                 <LogoutIcon />
                 خروج از حساب
@@ -177,12 +177,12 @@ function MenuLink({
       href={href}
       role="menuitem"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+      className="hover:bg-muted flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
     >
       {icon}
       <span className="flex-1">{children}</span>
       {badge != null && badge > 0 && (
-        <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-bold text-primary">
+        <span className="bg-primary/15 text-primary rounded-full px-2 py-0.5 text-[11px] font-bold">
           {badge}
         </span>
       )}
@@ -192,35 +192,91 @@ function MenuLink({
 
 function ProfileIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-muted-foreground">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="text-muted-foreground"
+    >
       <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M5 20c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path
+        d="M5 20c0-3.314 3.134-6 7-6s7 2.686 7 6"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 function SubscriptionIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-muted-foreground">
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" strokeWidth="1.75" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="text-muted-foreground"
+    >
+      <path
+        d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
     </svg>
   );
 }
 
 function PurchasesIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-muted-foreground">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M14 2v6h6M9 15h6M9 11h6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="text-muted-foreground"
+    >
+      <path
+        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M14 2v6h6M9 15h6M9 11h6"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 function CartMenuIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-muted-foreground">
-      <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="text-muted-foreground"
+    >
+      <path
+        d="M6 6h15l-1.5 9h-12z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
       <path d="M6 6 5 3H2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
       <circle cx="9" cy="20" r="1.5" fill="currentColor" />
       <circle cx="18" cy="20" r="1.5" fill="currentColor" />
@@ -231,8 +287,19 @@ function CartMenuIcon() {
 function LogoutIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M10 7V5a2 2 0 0 1 2-2h7v18h-7a2 2 0 0 1-2-2v-2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-      <path d="M14 12H4m0 0 3-3M4 12l3 3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M10 7V5a2 2 0 0 1 2-2h7v18h-7a2 2 0 0 1-2-2v-2"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 12H4m0 0 3-3M4 12l3 3"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

@@ -71,10 +71,7 @@ export function calculateMonthlyRevenueDetailed(
   referenceDate = new Date(),
 ): MonthlyRevenue {
   const monthly = payments.filter(
-    (p) =>
-      p.status === PaymentStatus.PAID &&
-      p.paidAt &&
-      isInMonth(p.paidAt, referenceDate),
+    (p) => p.status === PaymentStatus.PAID && p.paidAt && isInMonth(p.paidAt, referenceDate),
   );
 
   const subscription = monthly
@@ -165,10 +162,7 @@ export function groupRevenueByType(
   referenceDate = new Date(),
 ): { type: PaymentType; amount: number }[] {
   const monthly = payments.filter(
-    (p) =>
-      p.status === PaymentStatus.PAID &&
-      p.paidAt &&
-      isInMonth(p.paidAt, referenceDate),
+    (p) => p.status === PaymentStatus.PAID && p.paidAt && isInMonth(p.paidAt, referenceDate),
   );
 
   return [PaymentType.SUBSCRIPTION, PaymentType.ADVERTISEMENT, PaymentType.OTHER].map((type) => ({
@@ -177,15 +171,20 @@ export function groupRevenueByType(
   }));
 }
 
-export function groupByStatus(payments: PaymentLike[]): { status: PaymentStatus; count: number; amount: number }[] {
-  return [PaymentStatus.PAID, PaymentStatus.PENDING, PaymentStatus.FAILED, PaymentStatus.REFUNDED].map(
-    (status) => {
-      const rows = payments.filter((p) => p.status === status);
-      return {
-        status,
-        count: rows.length,
-        amount: rows.reduce((sum, p) => sum + amountOf(p), 0),
-      };
-    },
-  );
+export function groupByStatus(
+  payments: PaymentLike[],
+): { status: PaymentStatus; count: number; amount: number }[] {
+  return [
+    PaymentStatus.PAID,
+    PaymentStatus.PENDING,
+    PaymentStatus.FAILED,
+    PaymentStatus.REFUNDED,
+  ].map((status) => {
+    const rows = payments.filter((p) => p.status === status);
+    return {
+      status,
+      count: rows.length,
+      amount: rows.reduce((sum, p) => sum + amountOf(p), 0),
+    };
+  });
 }

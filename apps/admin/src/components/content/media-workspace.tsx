@@ -68,11 +68,13 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-2xl font-bold tabular-nums">{typeof value === 'number' ? formatNumber(value) : value}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-2xl font-bold tabular-nums">
+        {typeof value === 'number' ? formatNumber(value) : value}
+      </p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
@@ -81,11 +83,15 @@ function MediaPreview({ asset, className }: { asset: MediaRow; className?: strin
   if (isImageMime(asset.mimeType)) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={asset.url} alt={asset.alt ?? asset.originalName} className={cn('object-cover', className)} />
+      <img
+        src={asset.url}
+        alt={asset.alt ?? asset.originalName}
+        className={cn('object-cover', className)}
+      />
     );
   }
   return (
-    <div className={cn('flex items-center justify-center bg-muted text-2xl', className)}>
+    <div className={cn('bg-muted flex items-center justify-center text-2xl', className)}>
       {asset.mimeType === 'application/pdf' ? '📄' : '📎'}
     </div>
   );
@@ -145,7 +151,9 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
   }, [assets, typeFilter, tagFilter, debouncedSearch]);
 
   const editForm = useForm<MediaUpdateValues>({
-    resolver: zodResolver(mediaUpdateSchema) as import('react-hook-form').Resolver<MediaUpdateValues>,
+    resolver: zodResolver(
+      mediaUpdateSchema,
+    ) as import('react-hook-form').Resolver<MediaUpdateValues>,
     defaultValues: { alt: '', tags: [] },
   });
 
@@ -189,9 +197,7 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
         await updateMediaAsset(selected.id, formData);
         const tags = values.tags ?? [];
         const alt = values.alt || null;
-        setAssets((prev) =>
-          prev.map((a) => (a.id === selected.id ? { ...a, alt, tags } : a)),
-        );
+        setAssets((prev) => prev.map((a) => (a.id === selected.id ? { ...a, alt, tags } : a)));
         setSelected((prev) => (prev ? { ...prev, alt, tags } : prev));
         setMessage('اطلاعات فایل ذخیره شد.');
         router.refresh();
@@ -236,7 +242,11 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
       accessorKey: 'originalName',
       header: 'فایل',
       cell: ({ row }) => (
-        <button type="button" className="flex items-center gap-2 text-start" onClick={() => openEditor(row.original)}>
+        <button
+          type="button"
+          className="flex items-center gap-2 text-start"
+          onClick={() => openEditor(row.original)}
+        >
           <MediaPreview asset={row.original} className="h-10 w-10 rounded-lg" />
           <span className="font-medium">{row.original.originalName}</span>
         </button>
@@ -297,7 +307,12 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
       {error && <StatusBanner type="error" message={error} />}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="کل فایل‌ها" value={stats.total} active={typeFilter === 'ALL'} onClick={() => setTypeFilter('ALL')} />
+        <StatCard
+          label="کل فایل‌ها"
+          value={stats.total}
+          active={typeFilter === 'ALL'}
+          onClick={() => setTypeFilter('ALL')}
+        />
         <StatCard
           label="تصاویر"
           value={stats.images}
@@ -369,7 +384,7 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
           <select
             value={tagFilter}
             onChange={(e) => setTagFilter(e.target.value)}
-            className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
+            className="border-border bg-background h-10 rounded-xl border px-3 text-sm"
             aria-label="فیلتر برچسب"
           >
             <option value="ALL">همه برچسب‌ها</option>
@@ -385,7 +400,7 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
       <div className="grid gap-6 xl:grid-cols-3">
         <div className={cn('space-y-4', selected ? 'xl:col-span-2' : 'xl:col-span-3')}>
           {filtered.length === 0 ? (
-            <div className="surface-card rounded-2xl p-12 text-center text-muted-foreground">
+            <div className="surface-card text-muted-foreground rounded-2xl p-12 text-center">
               {assets.length === 0 ? 'هنوز فایلی آپلود نشده است.' : 'نتیجه‌ای یافت نشد.'}
             </div>
           ) : viewMode === 'grid' ? (
@@ -395,18 +410,18 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
                   key={asset.id}
                   className={cn(
                     'surface-card overflow-hidden rounded-2xl transition-colors',
-                    selected?.id === asset.id && 'border-primary ring-1 ring-primary/20',
+                    selected?.id === asset.id && 'border-primary ring-primary/20 ring-1',
                   )}
                 >
                   <button
                     type="button"
                     onClick={() => openEditor(asset)}
-                    className="w-full text-start hover:bg-muted/20"
+                    className="hover:bg-muted/20 w-full text-start"
                   >
                     <MediaPreview asset={asset} className="aspect-video w-full" />
                     <div className="space-y-2 p-3 pb-2">
                       <p className="truncate text-sm font-medium">{asset.originalName}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         {formatFileSize(asset.size)} · {formatJalali(asset.createdAt)}
                       </p>
                       {asset.tags.length > 0 && (
@@ -425,7 +440,7 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
                       )}
                     </div>
                   </button>
-                  <div className="flex items-center gap-1 border-t border-border/60 px-2 py-2">
+                  <div className="border-border/60 flex items-center gap-1 border-t px-2 py-2">
                     <Button
                       type="button"
                       variant="ghost"
@@ -439,7 +454,7 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="flex-1 rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive flex-1 rounded-lg"
                       onClick={() => setDeleteTarget(asset)}
                     >
                       حذف
@@ -473,14 +488,20 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
               </div>
 
               <div className="flex gap-2">
-                <Button type="button" variant="outline" size="sm" className="rounded-lg" onClick={() => void copyUrl()}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="rounded-lg"
+                  onClick={() => void copyUrl()}
+                >
                   {copied ? 'کپی شد ✓' : 'کپی لینک'}
                 </Button>
                 <a
                   href={selected.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-8 items-center rounded-lg border border-border px-3 text-sm hover:bg-muted"
+                  className="border-border hover:bg-muted inline-flex h-8 items-center rounded-lg border px-3 text-sm"
                 >
                   باز کردن
                 </a>
@@ -497,7 +518,11 @@ export function MediaWorkspace({ assets: initialAssets }: MediaWorkspaceProps) {
                   <Input
                     className="mt-2 rounded-xl"
                     value={tagsInputValue}
-                    onChange={(e) => editForm.setValue('tags', parseTagsInput(e.target.value), { shouldDirty: true })}
+                    onChange={(e) =>
+                      editForm.setValue('tags', parseTagsInput(e.target.value), {
+                        shouldDirty: true,
+                      })
+                    }
                     placeholder="برچسب۱، برچسب۲"
                   />
                   <FieldHint>با ویرگول (،) جدا کنید — حداکثر ۲۰ برچسب</FieldHint>

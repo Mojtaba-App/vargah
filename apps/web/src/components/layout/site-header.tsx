@@ -47,15 +47,13 @@ function NavItem({ href, label }: NavLink) {
       aria-current={isActive ? 'page' : undefined}
       className={cn(
         'relative rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-        isActive
-          ? 'text-primary'
-          : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground',
+        isActive ? 'text-primary' : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground',
       )}
     >
       {label}
       {isActive && (
         <span
-          className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-primary"
+          className="bg-primary absolute inset-x-2 -bottom-px h-0.5 rounded-full"
           aria-hidden="true"
         />
       )}
@@ -63,12 +61,7 @@ function NavItem({ href, label }: NavLink) {
   );
 }
 
-export function SiteHeader({
-  primaryLinks,
-  serviceNavItems,
-  labels,
-  branding,
-}: SiteHeaderProps) {
+export function SiteHeader({ primaryLinks, serviceNavItems, labels, branding }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -86,8 +79,8 @@ export function SiteHeader({
       className={cn(
         'sticky top-0 z-50 h-[var(--site-header-height)] transition-[background-color,border-color,box-shadow] duration-300',
         scrolled
-          ? 'border-b border-border/80 bg-background/95 shadow-sm backdrop-blur-xl'
-          : 'border-b border-transparent bg-background/45 backdrop-blur-md',
+          ? 'border-border/80 bg-background/95 border-b shadow-sm backdrop-blur-xl'
+          : 'bg-background/45 border-b border-transparent backdrop-blur-md',
       )}
     >
       <Container className="h-full">
@@ -100,10 +93,7 @@ export function SiteHeader({
             compact={scrolled}
           />
 
-          <nav
-            className="hidden items-center gap-0.5 lg:flex"
-            aria-label="ناوبری اصلی"
-          >
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="ناوبری اصلی">
             {primaryLinks.map((link) => (
               <NavItem key={link.href} {...link} />
             ))}
@@ -139,4 +129,3 @@ export function SiteHeader({
     </header>
   );
 }
-

@@ -49,7 +49,7 @@ export function PaginationLinks({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm',
+        'border-border bg-card flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm',
         className,
       )}
     >
@@ -62,7 +62,7 @@ export function PaginationLinks({
           href={buildHref(basePath, searchParams, prev)}
           aria-disabled={page <= 1}
           className={cn(
-            'rounded-xl border border-border px-3 py-1.5 transition-colors hover:bg-muted',
+            'border-border hover:bg-muted rounded-xl border px-3 py-1.5 transition-colors',
             page <= 1 && 'pointer-events-none opacity-40',
           )}
         >
@@ -72,7 +72,7 @@ export function PaginationLinks({
           href={buildHref(basePath, searchParams, next)}
           aria-disabled={page >= totalPages}
           className={cn(
-            'rounded-xl border border-border px-3 py-1.5 transition-colors hover:bg-muted',
+            'border-border hover:bg-muted rounded-xl border px-3 py-1.5 transition-colors',
             page >= totalPages && 'pointer-events-none opacity-40',
           )}
         >

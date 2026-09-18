@@ -11,7 +11,17 @@ import { cn } from '@/lib/utils';
 
 function UserIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -20,7 +30,17 @@ function UserIcon({ className }: { className?: string }) {
 
 function LockIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
@@ -29,7 +49,17 @@ function LockIcon({ className }: { className?: string }) {
 
 function ShieldIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
     </svg>
   );
@@ -37,7 +67,17 @@ function ShieldIcon({ className }: { className?: string }) {
 
 function EyeIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -46,7 +86,17 @@ function EyeIcon({ className }: { className?: string }) {
 
 function EyeOffIcon({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
       <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
       <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
       <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
@@ -57,9 +107,19 @@ function EyeOffIcon({ className }: { className?: string }) {
 
 function Spinner({ className }: { className?: string }) {
   return (
-    <svg className={cn('animate-spin', className)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className={cn('animate-spin', className)}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z" />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"
+      />
     </svg>
   );
 }
@@ -74,11 +134,11 @@ type FieldProps = {
 function Field({ id, label, icon, children }: FieldProps) {
   return (
     <div>
-      <Label htmlFor={id} required className="mb-2 text-foreground/90">
+      <Label htmlFor={id} required className="text-foreground/90 mb-2">
         {label}
       </Label>
       <div className="relative">
-        <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+        <span className="text-muted-foreground pointer-events-none absolute start-3 top-1/2 -translate-y-1/2">
           {icon}
         </span>
         {children}
@@ -310,13 +370,17 @@ export function LoginForm({
   };
 
   const formSubmit =
-    step === 'credentials' ? handleCredentialsSubmit : step === 'sms' ? handleSmsSubmit : handleTotpSubmit;
+    step === 'credentials'
+      ? handleCredentialsSubmit
+      : step === 'sms'
+        ? handleSmsSubmit
+        : handleTotpSubmit;
 
   const stepHint =
     step === 'sms' ? (
       <>
         <span>کد تأیید به شماره </span>
-        <span dir="ltr" className="inline-block font-medium text-foreground">
+        <span dir="ltr" className="text-foreground inline-block font-medium">
           {maskedPhone}
         </span>
         <span> ارسال شد.</span>
@@ -328,28 +392,45 @@ export function LoginForm({
     );
 
   return (
-    <div className="w-full min-w-0 max-w-[26rem]">
+    <div className="w-full max-w-[26rem] min-w-0">
       <div className="mb-8 flex items-center gap-3 lg:hidden">
         <BrandLogoMark size="md" src={loginLogo} fallbackSrc={adminLogo} />
         <div className="min-w-0">
-          <p className="font-bold text-foreground">{siteName}</p>
-          <p className="text-xs text-muted-foreground">{siteTagline}</p>
+          <p className="text-foreground font-bold">{siteName}</p>
+          <p className="text-muted-foreground text-xs">{siteTagline}</p>
         </div>
       </div>
 
       <div className="mb-8 overflow-hidden">
         <p className="section-eyebrow mb-3">ورود امن</p>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">پنل مدیریت</h1>
-        <p className="mt-2 text-start text-sm leading-relaxed text-muted-foreground">{stepHint}</p>
+        <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+          پنل مدیریت
+        </h1>
+        <p className="text-muted-foreground mt-2 text-start text-sm leading-relaxed">{stepHint}</p>
       </div>
 
       <div className="mb-6 flex gap-2" aria-hidden="true">
-        <span className={cn('h-1 flex-1 rounded-full transition-colors', step === 'credentials' ? 'bg-primary' : 'bg-primary/25')} />
-        <span className={cn('h-1 flex-1 rounded-full transition-colors', step === 'sms' ? 'bg-primary' : step === 'totp' ? 'bg-primary/25' : 'bg-muted')} />
-        <span className={cn('h-1 flex-1 rounded-full transition-colors', step === 'totp' ? 'bg-primary' : 'bg-muted')} />
+        <span
+          className={cn(
+            'h-1 flex-1 rounded-full transition-colors',
+            step === 'credentials' ? 'bg-primary' : 'bg-primary/25',
+          )}
+        />
+        <span
+          className={cn(
+            'h-1 flex-1 rounded-full transition-colors',
+            step === 'sms' ? 'bg-primary' : step === 'totp' ? 'bg-primary/25' : 'bg-muted',
+          )}
+        />
+        <span
+          className={cn(
+            'h-1 flex-1 rounded-full transition-colors',
+            step === 'totp' ? 'bg-primary' : 'bg-muted',
+          )}
+        />
       </div>
 
-      <div className="rounded-3xl border border-border/80 bg-card p-6 shadow-lg shadow-primary/5 sm:p-8">
+      <div className="border-border/80 bg-card shadow-primary/5 rounded-3xl border p-6 shadow-lg sm:p-8">
         {step === 'sms' && sandboxMode && devCode && (
           <div className="mb-5">
             <DevOtpBanner
@@ -366,7 +447,11 @@ export function LoginForm({
         <form onSubmit={formSubmit} className="space-y-5" aria-label="فرم ورود">
           {step === 'credentials' ? (
             <>
-              <Field id="identifier" label="ایمیل یا نام کاربری" icon={<UserIcon className="size-4" />}>
+              <Field
+                id="identifier"
+                label="ایمیل یا نام کاربری"
+                icon={<UserIcon className="size-4" />}
+              >
                 <Input
                   id="identifier"
                   type="text"
@@ -390,16 +475,20 @@ export function LoginForm({
                   autoComplete="current-password"
                   required
                   aria-invalid={Boolean(error)}
-                  className="h-12 rounded-xl pe-11 ps-10 text-left"
+                  className="h-12 rounded-xl ps-10 pe-11 text-left"
                   dir="ltr"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute end-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="text-muted-foreground hover:bg-muted hover:text-foreground absolute end-2 top-1/2 -translate-y-1/2 rounded-lg p-2 transition-colors"
                   aria-label={showPassword ? 'پنهان کردن رمز عبور' : 'نمایش رمز عبور'}
                 >
-                  {showPassword ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
+                  {showPassword ? (
+                    <EyeOffIcon className="size-4" />
+                  ) : (
+                    <EyeIcon className="size-4" />
+                  )}
                 </button>
               </Field>
             </>
@@ -423,7 +512,11 @@ export function LoginForm({
               />
             </Field>
           ) : (
-            <Field id="totpCode" label="کد احراز دو مرحله‌ای (۶ رقم)" icon={<ShieldIcon className="size-4" />}>
+            <Field
+              id="totpCode"
+              label="کد احراز دو مرحله‌ای (۶ رقم)"
+              icon={<ShieldIcon className="size-4" />}
+            >
               <Input
                 id="totpCode"
                 type="text"
@@ -446,13 +539,18 @@ export function LoginForm({
           {error && (
             <div
               role="alert"
-              className="rounded-xl border border-destructive/25 bg-destructive/8 px-4 py-3 text-sm leading-relaxed text-destructive"
+              className="border-destructive/25 bg-destructive/8 text-destructive rounded-xl border px-4 py-3 text-sm leading-relaxed"
             >
               {error}
             </div>
           )}
 
-          <Button type="submit" className="h-12 w-full rounded-xl text-base shadow-md" size="lg" disabled={loading}>
+          <Button
+            type="submit"
+            className="h-12 w-full rounded-xl text-base shadow-md"
+            size="lg"
+            disabled={loading}
+          >
             {loading ? (
               <>
                 <Spinner className="size-4" />
@@ -476,7 +574,7 @@ export function LoginForm({
                   setDevCode(null);
                   setError('');
                 }}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 بازگشت
               </button>
@@ -505,7 +603,7 @@ export function LoginForm({
                   setDevCode(null);
                   setError('');
                 }}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 بازگشت به ابتدا
               </button>
@@ -514,12 +612,12 @@ export function LoginForm({
         </form>
       </div>
 
-      <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
+      <p className="text-muted-foreground mt-6 text-center text-xs leading-relaxed">
         فقط کاربران مجاز می‌توانند وارد شوند.
         <br />
         <a
           href={siteUrl}
-          className="mt-1 inline-block font-medium text-primary underline-offset-4 hover:underline"
+          className="text-primary mt-1 inline-block font-medium underline-offset-4 hover:underline"
         >
           بازگشت به وب‌سایت وارگه
         </a>

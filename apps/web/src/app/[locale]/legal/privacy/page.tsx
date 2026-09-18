@@ -38,16 +38,19 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
 
   return (
     <>
-      <PageHeader title="حریم خصوصی داده‌ها" description="نحوه جمع‌آوری، استفاده و محافظت از اطلاعات شما" />
+      <PageHeader
+        title="حریم خصوصی داده‌ها"
+        description="نحوه جمع‌آوری، استفاده و محافظت از اطلاعات شما"
+      />
       <Container className="py-12">
         <div className="mx-auto max-w-3xl space-y-8">
           {sections.map((section) => (
             <section key={section.title}>
               <h2 className="mb-3 text-lg font-bold">{section.title}</h2>
-              <p className="leading-relaxed text-muted-foreground">{section.content}</p>
+              <p className="text-muted-foreground leading-relaxed">{section.content}</p>
             </section>
           ))}
-          <p className="text-sm text-muted-foreground">آخرین به‌روزرسانی: شهریور ۱۴۰۵</p>
+          <p className="text-muted-foreground text-sm">آخرین به‌روزرسانی: شهریور ۱۴۰۵</p>
           <DataDeletionForm />
         </div>
       </Container>

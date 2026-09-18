@@ -60,15 +60,15 @@ export default async function IssuesPage({ params, searchParams }: IssuesPagePro
         />
 
         {filteredIssues.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+          <div className="border-border rounded-2xl border border-dashed px-6 py-16 text-center">
             <p className="text-lg font-medium">شماره‌ای با این فیلتر یافت نشد</p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-sm">
               سال یا ماه دیگری انتخاب کنید یا فیلترها را پاک کنید.
             </p>
           </div>
         ) : (
           <>
-            <p className="mb-6 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mb-6 text-sm">
               نمایش {formatNumber(filteredIssues.length)} شماره
               {selectedYear || selectedMonth ? ' (فیلترشده)' : ''}
             </p>

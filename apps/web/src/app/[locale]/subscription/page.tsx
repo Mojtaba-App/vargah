@@ -19,10 +19,7 @@ export default async function SubscriptionPage({
   const query = await searchParams;
   setRequestLocale(locale);
 
-  const [plans, paymentConfig] = await Promise.all([
-    getSubscriptionPlans(),
-    getPaymentConfig(),
-  ]);
+  const [plans, paymentConfig] = await Promise.all([getSubscriptionPlans(), getPaymentConfig()]);
 
   return (
     <>

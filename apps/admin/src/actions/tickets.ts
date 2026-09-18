@@ -194,7 +194,9 @@ export async function submitSatisfactionSurvey(ticketId: string, score: number, 
 
   const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id: parsed.ticketId } });
 
-  const existing = await prisma.satisfactionSurvey.findFirst({ where: { ticketId: parsed.ticketId } });
+  const existing = await prisma.satisfactionSurvey.findFirst({
+    where: { ticketId: parsed.ticketId },
+  });
   if (existing) throw new Error('برای این تیکت قبلاً نظرسنجی ثبت شده است');
 
   await prisma.satisfactionSurvey.create({

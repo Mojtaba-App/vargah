@@ -18,7 +18,10 @@ const ADMIN_PUBLIC = path.resolve(process.cwd(), 'public');
 export async function POST(request: Request) {
   verifyCsrfFromHttpRequest(request);
   const session = await auth();
-  if (!session?.user?.id || !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))) {
+  if (
+    !session?.user?.id ||
+    !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))
+  ) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

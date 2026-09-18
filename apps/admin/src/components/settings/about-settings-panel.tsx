@@ -11,7 +11,12 @@ import {
   type SetStateAction,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import type { AboutContent, AboutEthicsItem, AboutMilestone, AboutTeamMember } from '@vargah/business/about-content';
+import type {
+  AboutContent,
+  AboutEthicsItem,
+  AboutMilestone,
+  AboutTeamMember,
+} from '@vargah/business/about-content';
 import { Input, Label, Textarea } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 
@@ -149,13 +154,17 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="Eyebrow"
             value={content.page.eyebrow}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, page: { ...prev.page, eyebrow: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, page: { ...prev.page, eyebrow: value } }))
+            }
           />
           <Field
             label="عنوان"
             value={content.page.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, page: { ...prev.page, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, page: { ...prev.page, title: value } }))
+            }
           />
           <div className="md:col-span-2">
             <TextField
@@ -184,25 +193,33 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="Eyebrow"
             value={content.intro.eyebrow}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, intro: { ...prev.intro, eyebrow: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, intro: { ...prev.intro, eyebrow: value } }))
+            }
           />
           <Field
             label="عنوان دکمه"
             value={content.intro.ctaLabel}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, intro: { ...prev.intro, ctaLabel: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, intro: { ...prev.intro, ctaLabel: value } }))
+            }
           />
           <Field
             label="عنوان"
             value={content.intro.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, intro: { ...prev.intro, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, intro: { ...prev.intro, title: value } }))
+            }
           />
           <Field
             label="زیرعنوان"
             value={content.intro.subtitle}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, intro: { ...prev.intro, subtitle: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, intro: { ...prev.intro, subtitle: value } }))
+            }
           />
           <div className="md:col-span-2">
             <TextField
@@ -210,7 +227,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
               value={content.intro.body}
               disabled={!canEdit}
               rows={3}
-              onChange={(value) => setContent((prev) => ({ ...prev, intro: { ...prev.intro, body: value } }))}
+              onChange={(value) =>
+                setContent((prev) => ({ ...prev, intro: { ...prev.intro, body: value } }))
+              }
             />
           </div>
         </div>
@@ -229,13 +248,17 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="شماره منتشرشده"
             value={content.stats.issueCount}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, stats: { ...prev.stats, issueCount: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, stats: { ...prev.stats, issueCount: value } }))
+            }
           />
           <NumberField
             label="سال فعالیت"
             value={content.stats.activeYears}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, stats: { ...prev.stats, activeYears: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, stats: { ...prev.stats, activeYears: value } }))
+            }
           />
           <NumberField
             label="مخاطب فعال"
@@ -249,7 +272,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="سال تأسیس"
             value={content.stats.foundedYear}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, stats: { ...prev.stats, foundedYear: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, stats: { ...prev.stats, foundedYear: value } }))
+            }
           />
         </div>
       </SectionCard>
@@ -267,14 +292,18 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="عنوان"
             value={content.mission.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, mission: { ...prev.mission, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, mission: { ...prev.mission, title: value } }))
+            }
           />
           <TextField
             label="متن مأموریت"
             value={content.mission.body}
             disabled={!canEdit}
             rows={4}
-            onChange={(value) => setContent((prev) => ({ ...prev, mission: { ...prev.mission, body: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, mission: { ...prev.mission, body: value } }))
+            }
           />
         </div>
       </SectionCard>
@@ -292,14 +321,18 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="عنوان"
             value={content.history.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, history: { ...prev.history, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, history: { ...prev.history, title: value } }))
+            }
           />
           <TextField
             label="متن تاریخچه"
             value={content.history.body}
             disabled={!canEdit}
             rows={4}
-            onChange={(value) => setContent((prev) => ({ ...prev, history: { ...prev.history, body: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, history: { ...prev.history, body: value } }))
+            }
           />
         </div>
       </SectionCard>
@@ -323,7 +356,12 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
                   ...prev,
                   milestones: [
                     ...prev.milestones,
-                    { id: newId('ms'), year: '', title: '', description: '' } satisfies AboutMilestone,
+                    {
+                      id: newId('ms'),
+                      year: '',
+                      title: '',
+                      description: '',
+                    } satisfies AboutMilestone,
                   ],
                 }))
               }
@@ -334,7 +372,10 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
         }
       >
         {content.milestones.map((item, index) => (
-          <div key={item.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-3">
+          <div
+            key={item.id}
+            className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-3"
+          >
             <Field
               label="سال"
               value={item.year}
@@ -342,7 +383,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
               onChange={(value) =>
                 setContent((prev) => ({
                   ...prev,
-                  milestones: prev.milestones.map((row, i) => (i === index ? { ...row, year: value } : row)),
+                  milestones: prev.milestones.map((row, i) =>
+                    i === index ? { ...row, year: value } : row,
+                  ),
                 }))
               }
             />
@@ -353,7 +396,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
               onChange={(value) =>
                 setContent((prev) => ({
                   ...prev,
-                  milestones: prev.milestones.map((row, i) => (i === index ? { ...row, title: value } : row)),
+                  milestones: prev.milestones.map((row, i) =>
+                    i === index ? { ...row, title: value } : row,
+                  ),
                 }))
               }
             />
@@ -435,19 +480,26 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="عنوان بخش"
             value={content.team.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, team: { ...prev.team, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, team: { ...prev.team, title: value } }))
+            }
           />
           <Field
             label="زیرعنوان"
             value={content.team.subtitle}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, team: { ...prev.team, subtitle: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, team: { ...prev.team, subtitle: value } }))
+            }
           />
         </div>
 
         <div className="mt-4 space-y-4">
           {content.team.members.map((member, index) => (
-            <div key={member.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-[112px_1fr]">
+            <div
+              key={member.id}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-[112px_1fr]"
+            >
               <AvatarUploader
                 avatar={member.avatar}
                 name={member.name || 'عضو تیم'}
@@ -508,7 +560,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
                     type="checkbox"
                     checked={member.isActive !== false}
                     disabled={!canEdit}
-                    onChange={(e) => updateMember(setContent, index, { isActive: e.target.checked })}
+                    onChange={(e) =>
+                      updateMember(setContent, index, { isActive: e.target.checked })
+                    }
                   />
                   نمایش در سایت
                 </label>
@@ -568,7 +622,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="عنوان بخش"
             value={content.ethics.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, ethics: { ...prev.ethics, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, ethics: { ...prev.ethics, title: value } }))
+            }
           />
           <Field
             label="زیرعنوان"
@@ -580,7 +636,10 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
           />
         </div>
         {content.ethics.items.map((item, index) => (
-          <div key={item.id} className="mt-4 grid gap-3 rounded-xl border border-border p-4 md:grid-cols-2">
+          <div
+            key={item.id}
+            className="border-border mt-4 grid gap-3 rounded-xl border p-4 md:grid-cols-2"
+          >
             <Field
               label="عنوان اصل"
               value={item.title}
@@ -590,7 +649,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
                   ...prev,
                   ethics: {
                     ...prev.ethics,
-                    items: prev.ethics.items.map((row, i) => (i === index ? { ...row, title: value } : row)),
+                    items: prev.ethics.items.map((row, i) =>
+                      i === index ? { ...row, title: value } : row,
+                    ),
                   },
                 }))
               }
@@ -644,7 +705,9 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
             label="عنوان"
             value={content.cta.title}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, cta: { ...prev.cta, title: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, cta: { ...prev.cta, title: value } }))
+            }
           />
           <div className="md:col-span-2">
             <TextField
@@ -652,20 +715,26 @@ export function AboutSettingsPanel({ initialContent, canEdit }: AboutSettingsPan
               value={content.cta.description}
               disabled={!canEdit}
               rows={2}
-              onChange={(value) => setContent((prev) => ({ ...prev, cta: { ...prev.cta, description: value } }))}
+              onChange={(value) =>
+                setContent((prev) => ({ ...prev, cta: { ...prev.cta, description: value } }))
+              }
             />
           </div>
           <Field
             label="دکمه اصلی"
             value={content.cta.primaryLabel}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, cta: { ...prev.cta, primaryLabel: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, cta: { ...prev.cta, primaryLabel: value } }))
+            }
           />
           <Field
             label="لینک دکمه اصلی"
             value={content.cta.primaryHref}
             disabled={!canEdit}
-            onChange={(value) => setContent((prev) => ({ ...prev, cta: { ...prev.cta, primaryHref: value } }))}
+            onChange={(value) =>
+              setContent((prev) => ({ ...prev, cta: { ...prev.cta, primaryHref: value } }))
+            }
           />
           <Field
             label="دکمه ثانویه"
@@ -799,7 +868,7 @@ function AvatarUploader({
             : avatar || '/images/mock/placeholder-avatar.svg'
         }
         alt={name}
-        className="size-24 rounded-full border border-border object-cover bg-muted"
+        className="border-border bg-muted size-24 rounded-full border object-cover"
       />
       <input
         ref={inputRef}
@@ -824,7 +893,7 @@ function AvatarUploader({
       >
         انتخاب عکس
       </LoadingButton>
-      <p className="text-[11px] text-muted-foreground">JPG / PNG / WebP</p>
+      <p className="text-muted-foreground text-[11px]">JPG / PNG / WebP</p>
     </div>
   );
 }

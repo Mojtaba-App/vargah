@@ -79,11 +79,11 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{value}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
@@ -183,18 +183,18 @@ export function UsersWorkspace({
             {canManage ? (
               <Link
                 href={`/users/${row.original.id}`}
-                className="font-medium text-primary hover:underline"
+                className="text-primary font-medium hover:underline"
               >
                 {row.original.name ?? '—'}
               </Link>
             ) : (
               <p className="font-medium">{row.original.name ?? '—'}</p>
             )}
-            <p className="mt-0.5 text-xs text-muted-foreground" dir="ltr">
+            <p className="text-muted-foreground mt-0.5 text-xs" dir="ltr">
               {row.original.email}
             </p>
             {row.original.phone && (
-              <p className="text-xs text-muted-foreground" dir="ltr">
+              <p className="text-muted-foreground text-xs" dir="ltr">
                 {row.original.phone}
               </p>
             )}
@@ -275,7 +275,11 @@ export function UsersWorkspace({
   return (
     <div className="space-y-6">
       {deleteSuccess && (
-        <StatusBanner type="success" message={deleteSuccess} onDismiss={() => setDeleteSuccess(null)} />
+        <StatusBanner
+          type="success"
+          message={deleteSuccess}
+          onDismiss={() => setDeleteSuccess(null)}
+        />
       )}
       {deleteError && (
         <StatusBanner type="error" message={deleteError} onDismiss={() => setDeleteError(null)} />
@@ -300,14 +304,14 @@ export function UsersWorkspace({
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <label className="text-sm text-muted-foreground" htmlFor="statusFilter">
+        <label className="text-muted-foreground text-sm" htmlFor="statusFilter">
           وضعیت:
         </label>
         <select
           id="statusFilter"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          className="rounded-xl border border-border bg-background px-3 py-2 text-sm"
+          className="border-border bg-background rounded-xl border px-3 py-2 text-sm"
         >
           <option value="ALL">همه</option>
           {Object.entries(STATUS_LABELS).map(([value, label]) => (
@@ -344,7 +348,12 @@ export function UsersWorkspace({
         )}
       </div>
 
-      <DataTable columns={columns} data={filtered} searchKeys={['name', 'email']} searchPlaceholder="جستجوی نام یا ایمیل..." />
+      <DataTable
+        columns={columns}
+        data={filtered}
+        searchKeys={['name', 'email']}
+        searchPlaceholder="جستجوی نام یا ایمیل..."
+      />
 
       <ReasonConfirmDialog
         open={Boolean(deleteTarget)}

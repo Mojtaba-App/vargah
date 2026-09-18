@@ -19,7 +19,12 @@ type GeoPageProps = {
 };
 
 function parseEntitySource(value?: string): GeoEntitySource | undefined {
-  if (value === 'subscribers' || value === 'advertisers' || value === 'messages' || value === 'all') {
+  if (
+    value === 'subscribers' ||
+    value === 'advertisers' ||
+    value === 'messages' ||
+    value === 'all'
+  ) {
     return value;
   }
   return undefined;
@@ -61,7 +66,9 @@ export default async function GeoPage({ searchParams }: GeoPageProps) {
   ] = await Promise.all([
     getGeoStats('subscribers', 'active'),
     getGeoStats('subscribers', 'all'),
-    mapConfig.showAdvertisersOnMap ? getGeoStats('advertisers', 'all') : Promise.resolve(emptyStats()),
+    mapConfig.showAdvertisersOnMap
+      ? getGeoStats('advertisers', 'all')
+      : Promise.resolve(emptyStats()),
     mapConfig.showMessagesOnMap ? getGeoStats('messages', 'all') : Promise.resolve(emptyStats()),
     getGeoStats('all', 'active'),
     getGeoStats('all', 'all'),

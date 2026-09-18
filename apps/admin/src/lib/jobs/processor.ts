@@ -66,7 +66,9 @@ async function handleJob(type: string, payload: Record<string, unknown>) {
   }
 }
 
-export async function processBackgroundJobs(limit = Number(process.env.JOB_WORKER_CONCURRENCY || 5)) {
+export async function processBackgroundJobs(
+  limit = Number(process.env.JOB_WORKER_CONCURRENCY || 5),
+) {
   await releaseStaleLocks();
   const jobs = await claimJobs(workerId(), limit);
   const results: Array<{ id: string; type: string; ok: boolean; error?: string }> = [];
@@ -94,7 +96,8 @@ export async function enqueueNotificationDelivery(input: {
   subject?: string;
   body: string;
 }) {
-  const type = input.channel === NotificationChannel.SMS ? JOB_TYPES.SMS_SEND : JOB_TYPES.EMAIL_SEND;
+  const type =
+    input.channel === NotificationChannel.SMS ? JOB_TYPES.SMS_SEND : JOB_TYPES.EMAIL_SEND;
   return enqueueJob(type, {
     to: input.to,
     subject: input.subject,

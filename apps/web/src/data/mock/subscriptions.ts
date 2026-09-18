@@ -37,11 +37,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     type: 'print',
     price: 250000,
     period: 'monthly',
-    features: [
-      'ارسال نسخه چاپی به آدرس شما',
-      'بسته‌بندی ویژه',
-      'کارت تشکر در هر شماره',
-    ],
+    features: ['ارسال نسخه چاپی به آدرس شما', 'بسته‌بندی ویژه', 'کارت تشکر در هر شماره'],
   },
   {
     id: 'plan-4',
@@ -61,7 +57,25 @@ export const subscriptionPlans: SubscriptionPlan[] = [
 ];
 
 export const mockPaymentHistory = [
-  { id: 'pay-1', date: '2026-08-01', amount: 990000, plan: 'اشتراک دیجیتال سالانه', status: 'paid' as const },
-  { id: 'pay-2', date: '2025-08-01', amount: 990000, plan: 'اشتراک دیجیتال سالانه', status: 'paid' as const },
-  { id: 'pay-3', date: '2024-08-01', amount: 792000, plan: 'اشتراک دیجیتال سالانه', status: 'paid' as const },
+  {
+    id: 'pay-1',
+    date: '2026-08-01',
+    amount: 990000,
+    plan: 'اشتراک دیجیتال سالانه',
+    status: 'paid' as const,
+  },
+  {
+    id: 'pay-2',
+    date: '2025-08-01',
+    amount: 990000,
+    plan: 'اشتراک دیجیتال سالانه',
+    status: 'paid' as const,
+  },
+  {
+    id: 'pay-3',
+    date: '2024-08-01',
+    amount: 792000,
+    plan: 'اشتراک دیجیتال سالانه',
+    status: 'paid' as const,
+  },
 ];

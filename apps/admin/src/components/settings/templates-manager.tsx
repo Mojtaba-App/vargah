@@ -83,7 +83,9 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
     () =>
       channel === NotificationChannel.EMAIL
         ? []
-        : SMS_TEMPLATE_PRESETS.filter((preset) => !scopedTemplates.some((t) => t.key === preset.key)),
+        : SMS_TEMPLATE_PRESETS.filter(
+            (preset) => !scopedTemplates.some((t) => t.key === preset.key),
+          ),
     [scopedTemplates, channel],
   );
 
@@ -147,7 +149,10 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
           key: form.key.trim(),
           name: form.name.trim(),
           channel: channel ?? form.channel,
-          subject: form.channel === NotificationChannel.EMAIL ? form.subject.trim() || undefined : undefined,
+          subject:
+            form.channel === NotificationChannel.EMAIL
+              ? form.subject.trim() || undefined
+              : undefined,
           body: form.body,
           externalTemplateId: form.externalTemplateId.trim() || undefined,
           variables: form.variables
@@ -230,13 +235,15 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
               type="button"
               onClick={() => item.filter && setChannelFilter(item.filter)}
               className={cn(
-                'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-                item.filter && channelFilter === item.filter && 'border-primary ring-1 ring-primary/20',
+                'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+                item.filter &&
+                  channelFilter === item.filter &&
+                  'border-primary ring-primary/20 ring-1',
                 item.filter && 'hover:border-primary/40',
               )}
             >
               <p className="text-2xl font-bold tabular-nums">{formatNumber(item.value)}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{item.label}</p>
+              <p className="text-muted-foreground mt-1 text-sm">{item.label}</p>
             </button>
           ))}
         </div>
@@ -253,17 +260,21 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
           <select
             value={channelFilter}
             onChange={(e) => setChannelFilter(e.target.value as TemplateChannelFilter)}
-            className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
+            className="border-border bg-background h-10 rounded-xl border px-3 text-sm"
           >
             <option value="ALL">همه کانال‌ها</option>
-            <option value={NotificationChannel.SMS}>{CHANNEL_LABELS[NotificationChannel.SMS]}</option>
-            <option value={NotificationChannel.EMAIL}>{CHANNEL_LABELS[NotificationChannel.EMAIL]}</option>
+            <option value={NotificationChannel.SMS}>
+              {CHANNEL_LABELS[NotificationChannel.SMS]}
+            </option>
+            <option value={NotificationChannel.EMAIL}>
+              {CHANNEL_LABELS[NotificationChannel.EMAIL]}
+            </option>
           </select>
         )}
       </div>
 
       {canEdit && availablePresets.length > 0 && (
-        <div className="flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-border/80 p-4">
+        <div className="border-border/80 flex flex-wrap items-end gap-3 rounded-xl border border-dashed p-4">
           <div className="min-w-[220px] flex-1">
             <Label>افزودن از الگوهای آماده پیامک</Label>
             <select
@@ -273,7 +284,7 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
                 setPresetKey(value);
                 if (value) applyPresetToForm(value);
               }}
-              className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
+              className="border-border bg-background mt-2 w-full rounded-xl border px-3 py-2 text-sm"
             >
               <option value="">انتخاب الگو...</option>
               {availablePresets.map((preset) => (
@@ -298,11 +309,9 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
       )}
 
       <div className="space-y-3">
-        {filtered.length === 0 && (
-          <p className="text-sm text-muted-foreground">الگویی یافت نشد.</p>
-        )}
+        {filtered.length === 0 && <p className="text-muted-foreground text-sm">الگویی یافت نشد.</p>}
         {filtered.map((template) => (
-          <div key={template.id} className="rounded-xl border border-border/80 p-4">
+          <div key={template.id} className="border-border/80 rounded-xl border p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -312,27 +321,33 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
                     {template.isActive ? 'فعال' : 'غیرفعال'}
                   </Badge>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground" dir="ltr">
+                <p className="text-muted-foreground mt-1 text-xs" dir="ltr">
                   {template.key}
                 </p>
                 {template.subject && (
-                  <p className="mt-1 text-sm text-muted-foreground">موضوع: {template.subject}</p>
+                  <p className="text-muted-foreground mt-1 text-sm">موضوع: {template.subject}</p>
                 )}
-                <p className="mt-1 text-sm text-muted-foreground">{template.body}</p>
+                <p className="text-muted-foreground mt-1 text-sm">{template.body}</p>
                 {template.variables.length > 0 && (
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="text-muted-foreground mt-1 text-xs">
                     متغیرها: {template.variables.join('، ')}
                   </p>
                 )}
                 {template.externalTemplateId && (
-                  <p className="mt-1 text-xs text-muted-foreground" dir="ltr">
+                  <p className="text-muted-foreground mt-1 text-xs" dir="ltr">
                     SMS.ir Template ID: {template.externalTemplateId}
                   </p>
                 )}
               </div>
               {canEdit && (
                 <div className="flex flex-wrap gap-2">
-                  <Button type="button" size="sm" variant="outline" className="rounded-lg" onClick={() => loadTemplate(template)}>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className="rounded-lg"
+                    onClick={() => loadTemplate(template)}
+                  >
                     ویرایش
                   </Button>
                   <Button
@@ -349,7 +364,7 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
                     type="button"
                     size="sm"
                     variant="outline"
-                    className="rounded-lg text-destructive"
+                    className="text-destructive rounded-lg"
                     onClick={() => setDeleteTarget(template)}
                   >
                     حذف
@@ -362,7 +377,7 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
       </div>
 
       {canEdit && (
-        <div className="space-y-4 rounded-2xl border border-border/80 p-5">
+        <div className="border-border/80 space-y-4 rounded-2xl border p-5">
           <h3 className="font-semibold">{editingId ? 'ویرایش الگو' : 'الگوی جدید'}</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -395,15 +410,20 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, channel: e.target.value as NotificationChannel }))
                   }
-                  className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
+                  className="border-border bg-background mt-2 w-full rounded-xl border px-3 py-2 text-sm"
                   disabled={Boolean(editingId) || isPending}
                 >
-                  <option value={NotificationChannel.SMS}>{CHANNEL_LABELS[NotificationChannel.SMS]}</option>
-                  <option value={NotificationChannel.EMAIL}>{CHANNEL_LABELS[NotificationChannel.EMAIL]}</option>
+                  <option value={NotificationChannel.SMS}>
+                    {CHANNEL_LABELS[NotificationChannel.SMS]}
+                  </option>
+                  <option value={NotificationChannel.EMAIL}>
+                    {CHANNEL_LABELS[NotificationChannel.EMAIL]}
+                  </option>
                 </select>
               </div>
             )}
-            {(channel === NotificationChannel.EMAIL || form.channel === NotificationChannel.EMAIL) && (
+            {(channel === NotificationChannel.EMAIL ||
+              form.channel === NotificationChannel.EMAIL) && (
               <div>
                 <Label htmlFor="tplSubject">موضوع ایمیل</Label>
                 <Input
@@ -423,7 +443,9 @@ export function TemplatesManager({ templates, canEdit, channel }: TemplatesManag
                   id="tplExternalId"
                   dir="ltr"
                   value={form.externalTemplateId}
-                  onChange={(e) => setForm((prev) => ({ ...prev, externalTemplateId: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, externalTemplateId: e.target.value }))
+                  }
                   placeholder="برای SMS.ir الزامی"
                   className="mt-2 rounded-xl"
                   disabled={isPending}

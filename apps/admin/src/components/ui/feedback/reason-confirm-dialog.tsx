@@ -58,8 +58,7 @@ export function ReasonConfirmDialog({
     setValidationError(null);
   }, [open, reasons]);
 
-  const resolvedReason =
-    selectedReason === 'other' ? customReason.trim() : selectedReason.trim();
+  const resolvedReason = selectedReason === 'other' ? customReason.trim() : selectedReason.trim();
 
   function handleConfirm() {
     if (!resolvedReason) {
@@ -80,7 +79,7 @@ export function ReasonConfirmDialog({
     <dialog
       ref={dialogRef}
       className={cn(
-        'fixed inset-0 z-50 m-auto w-[min(100%-2rem,30rem)] rounded-2xl border border-border bg-card p-0 shadow-2xl backdrop:bg-black/50',
+        'border-border bg-card fixed inset-0 z-50 m-auto w-[min(100%-2rem,30rem)] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/50',
       )}
       onCancel={(event) => {
         event.preventDefault();
@@ -92,8 +91,8 @@ export function ReasonConfirmDialog({
     >
       <div className="space-y-4 p-6">
         <div>
-          <h2 className="text-lg font-bold text-destructive">{title}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+          <h2 className="text-destructive text-lg font-bold">{title}</h2>
+          <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{description}</p>
           <p className="mt-2 rounded-xl border border-amber-200/70 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-100">
             این عمل قابل بازگشت نیست.
           </p>
@@ -105,7 +104,7 @@ export function ReasonConfirmDialog({
             {reasons.map((reason) => (
               <label
                 key={reason}
-                className="flex cursor-pointer items-start gap-2 rounded-xl border border-border/70 px-3 py-2 text-sm"
+                className="border-border/70 flex cursor-pointer items-start gap-2 rounded-xl border px-3 py-2 text-sm"
               >
                 <input
                   type="radio"
@@ -118,7 +117,7 @@ export function ReasonConfirmDialog({
                 <span>{reason}</span>
               </label>
             ))}
-            <label className="flex cursor-pointer items-start gap-2 rounded-xl border border-border/70 px-3 py-2 text-sm">
+            <label className="border-border/70 flex cursor-pointer items-start gap-2 rounded-xl border px-3 py-2 text-sm">
               <input
                 type="radio"
                 name="delete-reason"
@@ -148,7 +147,7 @@ export function ReasonConfirmDialog({
         )}
 
         {displayError && (
-          <p className="text-sm text-destructive" role="alert">
+          <p className="text-destructive text-sm" role="alert">
             {displayError}
           </p>
         )}

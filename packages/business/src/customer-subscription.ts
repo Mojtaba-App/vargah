@@ -51,8 +51,7 @@ export function resolveCustomerSubscriptionView(input: {
     hasPurchases,
     hasActiveSubscription: input.status === 'ACTIVE',
     showExpiredNotice: input.status === 'EXPIRED' && hasPurchases,
-    showPendingNotice:
-      input.status === 'PENDING_PAYMENT' && hasPurchases && hasPendingPurchase,
+    showPendingNotice: input.status === 'PENDING_PAYMENT' && hasPurchases && hasPendingPurchase,
   };
 }
 

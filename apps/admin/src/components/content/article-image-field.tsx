@@ -4,10 +4,7 @@ import { useState } from 'react';
 import { Button } from '@vargah/ui/components/button';
 import { Input, Label } from '@vargah/ui/components/input';
 import { FieldHint, FieldMessage } from '@/components/ui/form/field-message';
-import {
-  MediaPickerDialog,
-  type MediaPickerAsset,
-} from '@/components/content/media-picker-dialog';
+import { MediaPickerDialog, type MediaPickerAsset } from '@/components/content/media-picker-dialog';
 import { cn } from '@/lib/utils';
 import { publicAssetUrl } from '@/lib/articles/constants';
 
@@ -61,7 +58,7 @@ export function ArticleImageField({
               type="button"
               variant="ghost"
               size="sm"
-              className="rounded-lg text-destructive"
+              className="text-destructive rounded-lg"
               disabled={disabled}
               onClick={() => onChange('')}
             >
@@ -84,7 +81,7 @@ export function ArticleImageField({
       </div>
 
       {value && isPreviewableUrl(value) ? (
-        <div className="overflow-hidden rounded-xl border border-border">
+        <div className="border-border overflow-hidden rounded-xl border">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={publicAssetUrl(value)}
@@ -101,7 +98,7 @@ export function ArticleImageField({
           disabled={disabled}
           onClick={() => setPickerOpen(true)}
           className={cn(
-            'flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-muted/20 p-6 text-center transition-colors hover:border-primary/50',
+            'border-border bg-muted/20 hover:border-primary/50 flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors',
             aspect === 'video' ? 'aspect-video' : 'aspect-square max-w-xs',
             disabled && 'pointer-events-none opacity-60',
           )}
@@ -109,8 +106,8 @@ export function ArticleImageField({
           <span className="text-3xl" aria-hidden>
             ＋
           </span>
-          <span className="text-sm font-medium text-foreground">انتخاب یا آپلود تصویر کاور</span>
-          <span className="text-xs text-muted-foreground">JPG، PNG، WebP یا GIF — نسبت ۱۶:۹</span>
+          <span className="text-foreground text-sm font-medium">انتخاب یا آپلود تصویر کاور</span>
+          <span className="text-muted-foreground text-xs">JPG، PNG، WebP یا GIF — نسبت ۱۶:۹</span>
         </button>
       )}
 

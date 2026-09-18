@@ -17,11 +17,10 @@ export async function getPublishedIssueBySlug(slug: string) {
 }
 
 export const getCachedPublishedIssueBySlug = (slug: string) =>
-  unstable_cache(
-    () => getPublishedIssueBySlug(slug),
-    ['issue', slug],
-    { tags: ['issues', `issue:${slug}`], revalidate: 3600 },
-  )();
+  unstable_cache(() => getPublishedIssueBySlug(slug), ['issue', slug], {
+    tags: ['issues', `issue:${slug}`],
+    revalidate: 3600,
+  })();
 
 export async function getPublishedIssueSlugs() {
   const rows = await prisma.issue.findMany({

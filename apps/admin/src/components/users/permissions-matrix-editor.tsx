@@ -109,7 +109,7 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="text-lg font-semibold">دسترسی‌های {ROLE_LABELS[selectedRole]}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {canEdit
                   ? isFullAccessRole(selectedRole)
                     ? `نقش «${ROLE_LABELS[selectedRole]}» همیشه تمام دسترسی‌ها را دارد.`
@@ -119,7 +119,12 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
             </div>
             {canEdit && !isFullAccessRole(selectedRole) && (
               <div className="flex gap-2">
-                <Button type="button" variant="outline" className="rounded-xl" onClick={handleResetRole}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-xl"
+                  onClick={handleResetRole}
+                >
                   بازنشانی
                 </Button>
                 <LoadingButton
@@ -137,7 +142,7 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
           <div className="space-y-6">
             {PERMISSION_GROUPS.map((group) => (
               <section key={group.label} className="space-y-3">
-                <h4 className="text-sm font-bold text-muted-foreground">{group.label}</h4>
+                <h4 className="text-muted-foreground text-sm font-bold">{group.label}</h4>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {group.permissions.map((permission) => {
                     const checked = selectedPermissions.has(permission);
@@ -147,14 +152,14 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
                       <label
                         key={permission}
                         className={cn(
-                          'flex cursor-pointer items-center gap-3 rounded-xl border border-border px-3 py-2.5 transition-colors',
+                          'border-border flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 transition-colors',
                           checked && 'border-primary/40 bg-primary/5',
                           locked && 'cursor-default opacity-80',
                         )}
                       >
                         <input
                           type="checkbox"
-                          className="size-4 rounded border-border"
+                          className="border-border size-4 rounded"
                           checked={checked}
                           disabled={locked}
                           onChange={() => togglePermission(permission)}
@@ -170,11 +175,11 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
         </CardContent>
       </Card>
 
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <div className="border-border overflow-x-auto rounded-xl border">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-muted/50">
-              <th className="sticky start-0 bg-muted/50 px-4 py-3 text-start">دسترسی</th>
+            <tr className="border-border bg-muted/50 border-b">
+              <th className="bg-muted/50 sticky start-0 px-4 py-3 text-start">دسترسی</th>
               {EDITABLE_ROLES.map((role) => (
                 <th key={role} className="px-3 py-3 text-center whitespace-nowrap">
                   {ROLE_LABELS[role]}
@@ -184,8 +189,8 @@ export function PermissionsMatrixEditor({ initialMatrix, canEdit }: PermissionsM
           </thead>
           <tbody>
             {Object.entries(PERMISSION_LABELS).map(([perm, label]) => (
-              <tr key={perm} className="border-b border-border last:border-0 hover:bg-muted/20">
-                <td className="sticky start-0 bg-card px-4 py-2 font-medium">{label}</td>
+              <tr key={perm} className="border-border hover:bg-muted/20 border-b last:border-0">
+                <td className="bg-card sticky start-0 px-4 py-2 font-medium">{label}</td>
                 {EDITABLE_ROLES.map((role) => {
                   const has = isFullAccessRole(role) || draft[role]?.includes(perm as Permission);
                   return (

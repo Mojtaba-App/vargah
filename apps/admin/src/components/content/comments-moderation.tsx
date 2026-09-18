@@ -62,7 +62,7 @@ export function CommentsModeration({ comments, canModerate }: Props) {
   if (comments.length === 0) {
     return (
       <Card className="rounded-2xl">
-        <CardContent className="py-10 text-center text-sm text-muted-foreground">
+        <CardContent className="text-muted-foreground py-10 text-center text-sm">
           نظری برای بررسی وجود ندارد.
         </CardContent>
       </Card>
@@ -80,72 +80,74 @@ export function CommentsModeration({ comments, canModerate }: Props) {
 
       {filteredComments.length === 0 ? (
         <Card className="rounded-2xl">
-          <CardContent className="py-10 text-center text-sm text-muted-foreground">
+          <CardContent className="text-muted-foreground py-10 text-center text-sm">
             نظری با این عبارت یافت نشد.
           </CardContent>
         </Card>
       ) : (
         filteredComments.map((comment) => (
-        <Card key={comment.id} className="rounded-2xl">
-          <CardContent className="space-y-3 pt-6">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="font-semibold">{comment.authorName}</p>
-                <p className="text-xs text-muted-foreground">
-                  {formatRelativeTime(comment.createdAt)} — {formatJalali(comment.createdAt)}
-                </p>
+          <Card key={comment.id} className="rounded-2xl">
+            <CardContent className="space-y-3 pt-6">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="font-semibold">{comment.authorName}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {formatRelativeTime(comment.createdAt)} — {formatJalali(comment.createdAt)}
+                  </p>
+                </div>
+                <Badge variant={STATUS_VARIANT[comment.status]}>
+                  {STATUS_LABELS[comment.status]}
+                </Badge>
               </div>
-              <Badge variant={STATUS_VARIANT[comment.status]}>{STATUS_LABELS[comment.status]}</Badge>
-            </div>
 
-            <p className="whitespace-pre-wrap text-sm leading-relaxed">{comment.content}</p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">{comment.content}</p>
 
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-muted-foreground">مقاله:</span>
-              <Link
-                href={`/content/articles/${comment.article.id}`}
-                className="font-medium text-primary hover:underline"
-              >
-                {comment.article.title}
-              </Link>
-            </div>
-
-            {canModerate && (
-              <div className="flex flex-wrap gap-2 border-t border-border pt-3">
-                {comment.status !== 'APPROVED' && (
-                  <Button
-                    size="sm"
-                    className="rounded-xl"
-                    disabled={pending}
-                    onClick={() => run(() => approveComment(comment.id))}
-                  >
-                    تأیید
-                  </Button>
-                )}
-                {comment.status !== 'REJECTED' && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="rounded-xl"
-                    disabled={pending}
-                    onClick={() => run(() => rejectComment(comment.id))}
-                  >
-                    رد
-                  </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="rounded-xl text-destructive"
-                  disabled={pending}
-                  onClick={() => run(() => deleteComment(comment.id))}
+              <div className="flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-muted-foreground">مقاله:</span>
+                <Link
+                  href={`/content/articles/${comment.article.id}`}
+                  className="text-primary font-medium hover:underline"
                 >
-                  حذف
-                </Button>
+                  {comment.article.title}
+                </Link>
               </div>
-            )}
-          </CardContent>
-        </Card>
+
+              {canModerate && (
+                <div className="border-border flex flex-wrap gap-2 border-t pt-3">
+                  {comment.status !== 'APPROVED' && (
+                    <Button
+                      size="sm"
+                      className="rounded-xl"
+                      disabled={pending}
+                      onClick={() => run(() => approveComment(comment.id))}
+                    >
+                      تأیید
+                    </Button>
+                  )}
+                  {comment.status !== 'REJECTED' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="rounded-xl"
+                      disabled={pending}
+                      onClick={() => run(() => rejectComment(comment.id))}
+                    >
+                      رد
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-destructive rounded-xl"
+                    disabled={pending}
+                    onClick={() => run(() => deleteComment(comment.id))}
+                  >
+                    حذف
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         ))
       )}
     </div>

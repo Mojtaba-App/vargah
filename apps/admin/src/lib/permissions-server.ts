@@ -1,11 +1,7 @@
 import { cache } from 'react';
 import { prisma, UserRole } from '@vargah/database';
 
-import {
-  DEFAULT_ROLE_PERMISSIONS,
-  type Permission,
-  PERMISSIONS,
-} from '@/lib/permissions';
+import { DEFAULT_ROLE_PERMISSIONS, type Permission, PERMISSIONS } from '@/lib/permissions';
 
 const ALL_PERMISSIONS = Object.values(PERMISSIONS);
 

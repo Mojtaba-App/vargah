@@ -53,7 +53,11 @@ export async function enqueueJob(
 }
 
 export async function enqueueJobs(
-  items: Array<{ type: JobType | string; payload: Record<string, unknown>; options?: EnqueueOptions }>,
+  items: Array<{
+    type: JobType | string;
+    payload: Record<string, unknown>;
+    options?: EnqueueOptions;
+  }>,
 ) {
   const created = [];
   for (const item of items) {
@@ -91,9 +95,7 @@ export async function claimJobs(workerId: string, limit = 20) {
       },
     });
     if (updated.count === 1) {
-      claimed.push(
-        await prisma.backgroundJob.findUniqueOrThrow({ where: { id: job.id } }),
-      );
+      claimed.push(await prisma.backgroundJob.findUniqueOrThrow({ where: { id: job.id } }));
     }
   }
   return claimed;

@@ -1,4 +1,10 @@
-import { createCipheriv, createDecipheriv, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
+import {
+  createCipheriv,
+  createDecipheriv,
+  randomBytes,
+  scryptSync,
+  timingSafeEqual,
+} from 'node:crypto';
 
 const PREFIX = 'enc:v1:';
 

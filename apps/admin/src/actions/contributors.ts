@@ -14,11 +14,7 @@ import { recordAuditLog } from '@/lib/audit/record';
 import { requirePermission } from '@/lib/auth-utils';
 import { PERMISSIONS } from '@/lib/permissions';
 import { verifyCsrfFromRequest } from '@/lib/security/request';
-import {
-  CommissionStatus,
-  ContributorType,
-  TaskStatus,
-} from '@/lib/contributors/constants';
+import { CommissionStatus, ContributorType, TaskStatus } from '@/lib/contributors/constants';
 
 const REVALIDATE_PATHS = [
   '/contributors',

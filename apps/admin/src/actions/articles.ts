@@ -68,7 +68,11 @@ export async function createArticle(formData: FormData) {
   const parsed = parseArticleForm(formData);
   const flags = parseArticleFlags(formData);
   if (parsed.scheduledAt) {
-    await assertArticleStatusPermission(session.user.role as UserRole, ArticleStatus.SCHEDULED, ArticleStatus.DRAFT);
+    await assertArticleStatusPermission(
+      session.user.role as UserRole,
+      ArticleStatus.SCHEDULED,
+      ArticleStatus.DRAFT,
+    );
   }
   const slug = await uniqueArticleSlug(parsed.title);
   const content = sanitizeArticleHtml(parsed.content);
@@ -106,11 +110,11 @@ export async function createArticle(formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.CREATE,
-      entity: 'Article',
-      entityId: article.id,
-    });
+    userId: session.user.id,
+    action: AuditAction.CREATE,
+    entity: 'Article',
+    entityId: article.id,
+  });
 
   revalidatePath('/content/articles');
   redirect(`/content/articles/${article.id}`);
@@ -170,11 +174,11 @@ export async function updateArticle(id: string, formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'Article',
-      entityId: id,
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'Article',
+    entityId: id,
+  });
 
   revalidatePath('/content/articles');
   revalidatePath(`/content/articles/${id}`);
@@ -197,7 +201,12 @@ export async function deleteArticle(id: string) {
   const session = await requirePermission(PERMISSIONS.ARTICLE_DELETE);
   const article = await prisma.article.findUnique({ where: { id }, select: { slug: true } });
   await prisma.article.delete({ where: { id } });
-  await recordAuditLog({ userId: session.user.id, action: AuditAction.DELETE, entity: 'Article', entityId: id });
+  await recordAuditLog({
+    userId: session.user.id,
+    action: AuditAction.DELETE,
+    entity: 'Article',
+    entityId: id,
+  });
   revalidatePath('/content/articles');
   if (article?.slug) {
     await revalidateWeb({ tags: ['articles'], paths: ['/sitemap.xml'] });

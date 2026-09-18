@@ -40,7 +40,9 @@ export function JalaliDateTimeField({
   hint,
   className,
 }: JalaliDateTimeFieldProps) {
-  const [parts, setParts] = useState<JalaliDateTimeParts>(() => isoToJalaliParts(value) ?? defaultParts());
+  const [parts, setParts] = useState<JalaliDateTimeParts>(
+    () => isoToJalaliParts(value) ?? defaultParts(),
+  );
   const [active, setActive] = useState(Boolean(value));
 
   useEffect(() => {
@@ -55,11 +57,17 @@ export function JalaliDateTimeField({
     }
   }, [value]);
 
-  const maxDay = useMemo(() => getDaysInJalaliMonth(parts.year, parts.month), [parts.year, parts.month]);
+  const maxDay = useMemo(
+    () => getDaysInJalaliMonth(parts.year, parts.month),
+    [parts.year, parts.month],
+  );
   const years = useMemo(() => getJalaliYearOptions(parts.year), [parts.year]);
 
   const applyParts = (next: JalaliDateTimeParts) => {
-    const clamped = { ...next, day: Math.min(next.day, getDaysInJalaliMonth(next.year, next.month)) };
+    const clamped = {
+      ...next,
+      day: Math.min(next.day, getDaysInJalaliMonth(next.year, next.month)),
+    };
     setParts(clamped);
     if (active) onChange(jalaliPartsToIso(clamped));
   };
@@ -83,7 +91,13 @@ export function JalaliDateTimeField({
             پاک کردن
           </Button>
         ) : (
-          <Button type="button" variant="outline" size="sm" disabled={disabled} onClick={handleEnable}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={disabled}
+            onClick={handleEnable}
+          >
             تنظیم تاریخ
           </Button>
         )}
@@ -156,8 +170,9 @@ export function JalaliDateTimeField({
               />
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">
-            {formatJalaliParts(parts)} — معادل میلادی: {formatGregorianDate(jalaliPartsToIso(parts), true)}
+          <p className="text-muted-foreground text-xs">
+            {formatJalaliParts(parts)} — معادل میلادی:{' '}
+            {formatGregorianDate(jalaliPartsToIso(parts), true)}
           </p>
         </>
       )}

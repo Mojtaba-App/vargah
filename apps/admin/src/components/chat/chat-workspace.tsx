@@ -17,7 +17,11 @@ import {
 import { LoadingButton } from '@/components/ui/feedback/loading-button';
 import { StatusBanner } from '@/components/ui/feedback/status-banner';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { CHAT_STATUS_LABELS, CHAT_STATUS_VARIANT, type ChatStatusFilter } from '@/lib/chat/constants';
+import {
+  CHAT_STATUS_LABELS,
+  CHAT_STATUS_VARIANT,
+  type ChatStatusFilter,
+} from '@/lib/chat/constants';
 import { cn, formatJalali } from '@/lib/utils';
 
 const POLL_MS = 2000;
@@ -36,7 +40,7 @@ function MessageBubble({ message }: { message: AdminChatMessageDto }) {
 
   if (isSystem) {
     return (
-      <p className="px-2 py-1 text-center text-[11px] text-muted-foreground">{message.body}</p>
+      <p className="text-muted-foreground px-2 py-1 text-center text-[11px]">{message.body}</p>
     );
   }
 
@@ -46,12 +50,12 @@ function MessageBubble({ message }: { message: AdminChatMessageDto }) {
         className={cn(
           'max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed',
           isGuest
-            ? 'rounded-ss-md bg-muted text-foreground'
-            : 'rounded-se-md bg-primary text-primary-foreground',
+            ? 'bg-muted text-foreground rounded-ss-md'
+            : 'bg-primary text-primary-foreground rounded-se-md',
         )}
       >
         <p className="mb-0.5 text-[10px] opacity-80">
-          {isGuest ? 'مهمان' : message.agentName ?? 'کارشناس'}
+          {isGuest ? 'مهمان' : (message.agentName ?? 'کارشناس')}
         </p>
         <p className="whitespace-pre-wrap">{message.body}</p>
         <p className={cn('mt-1 text-[10px]', isGuest ? 'text-muted-foreground' : 'opacity-70')}>
@@ -131,8 +135,8 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
 
   return (
     <div className="grid gap-4 lg:grid-cols-[20rem_minmax(0,1fr)]">
-      <aside className="flex min-h-[32rem] flex-col overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="space-y-2 border-b border-border p-3">
+      <aside className="border-border bg-card flex min-h-[32rem] flex-col overflow-hidden rounded-2xl border">
+        <div className="border-border space-y-2 border-b p-3">
           <Select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as ChatStatusFilter)}
@@ -152,7 +156,7 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
         </div>
         <div className="flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
-            <p className="p-4 text-sm text-muted-foreground">گفتگویی یافت نشد.</p>
+            <p className="text-muted-foreground p-4 text-sm">گفتگویی یافت نشد.</p>
           ) : (
             conversations.map((item) => (
               <button
@@ -160,14 +164,14 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
                 type="button"
                 onClick={() => setSelectedId(item.id)}
                 className={cn(
-                  'w-full border-b border-border px-3 py-3 text-start transition-colors hover:bg-muted/50',
+                  'border-border hover:bg-muted/50 w-full border-b px-3 py-3 text-start transition-colors',
                   selectedId === item.id && 'bg-muted/70',
                 )}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">{item.guestName}</p>
-                    <p className="truncate text-xs text-muted-foreground" dir="ltr">
+                    <p className="text-muted-foreground truncate text-xs" dir="ltr">
                       {item.guestPhone}
                     </p>
                   </div>
@@ -176,9 +180,9 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
                   </Badge>
                 </div>
                 {item.preview ? (
-                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{item.preview}</p>
+                  <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{item.preview}</p>
                 ) : null}
-                <p className="mt-1 text-[10px] text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-[10px]">
                   {formatJalali(item.lastMessageAt, true)}
                 </p>
               </button>
@@ -187,14 +191,14 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
         </div>
       </aside>
 
-      <section className="flex min-h-[32rem] flex-col overflow-hidden rounded-2xl border border-border bg-card">
+      <section className="border-border bg-card flex min-h-[32rem] flex-col overflow-hidden rounded-2xl border">
         {!selected ? (
-          <div className="flex flex-1 items-center justify-center p-8 text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex flex-1 items-center justify-center p-8 text-sm">
             یک گفتگو را از فهرست انتخاب کنید.
           </div>
         ) : (
           <>
-            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-border p-4">
+            <header className="border-border flex flex-wrap items-start justify-between gap-3 border-b p-4">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <h2 className="text-base font-bold">{selected.guestName}</h2>
@@ -202,10 +206,10 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
                     {CHAT_STATUS_LABELS[selected.status]}
                   </Badge>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground" dir="ltr">
+                <p className="text-muted-foreground mt-1 text-sm" dir="ltr">
                   {selected.guestPhone}
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-xs">
                   مسئول: {selected.assigneeName ?? 'بدون مسئول'} ·{' '}
                   {selected.messageCount.toLocaleString('fa-IR')} پیام
                 </p>
@@ -216,12 +220,9 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
                     value={selected.assignedToId ?? ''}
                     onChange={(e) => {
                       const value = e.target.value || null;
-                      runAction(
-                        async () => {
-                          await assignChat(selected.id, value);
-                        },
-                        'مسئول گفتگو به‌روز شد.',
-                      );
+                      runAction(async () => {
+                        await assignChat(selected.id, value);
+                      }, 'مسئول گفتگو به‌روز شد.');
                     }}
                     disabled={pending || selected.status === 'CLOSED'}
                     aria-label="مسئول گفتگو"
@@ -268,8 +269,10 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
             </header>
 
             {(error || notice) && (
-              <div className="px-4 pt-3 space-y-2">
-                {error ? <StatusBanner type="error" message={error} onDismiss={() => setError(null)} /> : null}
+              <div className="space-y-2 px-4 pt-3">
+                {error ? (
+                  <StatusBanner type="error" message={error} onDismiss={() => setError(null)} />
+                ) : null}
                 {notice ? (
                   <StatusBanner type="success" message={notice} onDismiss={() => setNotice(null)} />
                 ) : null}
@@ -284,7 +287,7 @@ export function ChatWorkspace({ initialConversations, staff, canManage }: ChatWo
 
             {canManage && selected.status !== 'CLOSED' ? (
               <form
-                className="border-t border-border p-4"
+                className="border-border border-t p-4"
                 onSubmit={(e) => {
                   e.preventDefault();
                   const text = draft.trim();

@@ -1,12 +1,15 @@
 import ExcelJS from 'exceljs';
 
-import { cellText, downloadBlob, stampFilename, type ExportColumn, type ExportMeta, type ExportRow } from './types';
+import {
+  cellText,
+  downloadBlob,
+  stampFilename,
+  type ExportColumn,
+  type ExportMeta,
+  type ExportRow,
+} from './types';
 
-export async function downloadExcel(
-  columns: ExportColumn[],
-  rows: ExportRow[],
-  meta: ExportMeta,
-) {
+export async function downloadExcel(columns: ExportColumn[], rows: ExportRow[], meta: ExportMeta) {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'وارگه';
   workbook.created = new Date();

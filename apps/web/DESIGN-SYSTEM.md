@@ -4,15 +4,15 @@
 
 ## ساختار توکن‌ها
 
-| دسته | محل | توضیح |
-|------|-----|--------|
+| دسته             | محل               | توضیح                                       |
+| ---------------- | ----------------- | ------------------------------------------- |
 | رنگ‌های semantic | `:root` / `.dark` | `--background`, `--primary`, `--muted`, ... |
-| پالت brand | `:root` / `.dark` | `--brand-50` تا `--brand-900` |
-| تایپوگرافی | `@theme` | `--text-xs` تا `--text-5xl` + line-height |
-| فاصله‌گذاری | `:root` | `--section-padding`, `--container-padding` |
-| Radius | `:root` | `--radius` + `--radius-sm/md/lg/xl` |
-| Shadow | `:root` / `.dark` | `--shadow-xs` تا `--shadow-xl` |
-| Motion | `:root` | `--motion-duration-*`, `--motion-ease` |
+| پالت brand       | `:root` / `.dark` | `--brand-50` تا `--brand-900`               |
+| تایپوگرافی       | `@theme`          | `--text-xs` تا `--text-5xl` + line-height   |
+| فاصله‌گذاری      | `:root`           | `--section-padding`, `--container-padding`  |
+| Radius           | `:root`           | `--radius` + `--radius-sm/md/lg/xl`         |
+| Shadow           | `:root` / `.dark` | `--shadow-xs` تا `--shadow-xl`              |
+| Motion           | `:root`           | `--motion-duration-*`, `--motion-ease`      |
 
 ## فایل‌های کلیدی
 

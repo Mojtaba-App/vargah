@@ -9,21 +9,21 @@ type TeamCardProps = {
 };
 
 export function TeamCard({ member, className }: TeamCardProps) {
-  const socialEntries = Object.entries(member.social ?? {}).filter(
-    ([, url]) => Boolean(url && url !== '#'),
+  const socialEntries = Object.entries(member.social ?? {}).filter(([, url]) =>
+    Boolean(url && url !== '#'),
   );
   const social = Object.fromEntries(socialEntries) as SocialLinksMap;
 
   return (
     <article
       className={cn(
-        'group relative overflow-hidden rounded-3xl border border-border/80 bg-card/80 p-6 text-center shadow-sm transition-all duration-300',
-        'hover:-translate-y-1 hover:border-primary/30 hover:shadow-md',
+        'group border-border/80 bg-card/80 relative overflow-hidden rounded-3xl border p-6 text-center shadow-sm transition-all duration-300',
+        'hover:border-primary/30 hover:-translate-y-1 hover:shadow-md',
         className,
       )}
     >
       <div
-        className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-accent/70 to-transparent opacity-80 transition-opacity group-hover:opacity-100"
+        className="from-accent/70 absolute inset-x-0 top-0 h-24 bg-gradient-to-b to-transparent opacity-80 transition-opacity group-hover:opacity-100"
         aria-hidden="true"
       />
       <OptimizedImage
@@ -36,8 +36,8 @@ export function TeamCard({ member, className }: TeamCardProps) {
         sizes="112px"
       />
       <h3 className="relative text-lg font-bold tracking-tight">{member.name}</h3>
-      <p className="relative mt-1 text-sm font-medium text-primary">{member.role}</p>
-      <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">{member.bio}</p>
+      <p className="text-primary relative mt-1 text-sm font-medium">{member.role}</p>
+      <p className="text-muted-foreground relative mt-3 text-sm leading-relaxed">{member.bio}</p>
       <SocialLinks links={social} className="relative mt-5 justify-center" size="sm" />
     </article>
   );

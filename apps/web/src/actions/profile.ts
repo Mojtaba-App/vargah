@@ -70,8 +70,7 @@ async function loadSubscriberDashboard(subscriberId: string): Promise<Subscriber
   if (!subscriber) return null;
 
   const plans = getActiveSubscriptionPlans(plansRaw.length ? plansRaw : []);
-  const planName =
-    plans.find((p) => p.slug === subscriber.planType)?.name ?? subscriber.planType;
+  const planName = plans.find((p) => p.slug === subscriber.planType)?.name ?? subscriber.planType;
 
   return {
     id: subscriber.id,
@@ -190,10 +189,7 @@ export async function updateCustomerAddress(input: {
       name: sanitizePlainText(parsed.name),
       deliveryPhone: sanitizePlainText(parsed.deliveryPhone),
       address: sanitizePlainText(parsed.address),
-      ...subscriberCityUpdate(
-        sanitizePlainText(parsed.province),
-        sanitizePlainText(parsed.city),
-      ),
+      ...subscriberCityUpdate(sanitizePlainText(parsed.province), sanitizePlainText(parsed.city)),
     },
   });
 

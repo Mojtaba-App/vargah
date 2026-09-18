@@ -159,7 +159,11 @@ export async function testSmsConnection(config: SmsConfig) {
       url.searchParams.set('username', config.username);
       url.searchParams.set('password', config.password);
       const res = await fetch(url.toString());
-      const data = (await res.json()) as { RetStatus?: number; StrRetStatus?: string; Value?: string };
+      const data = (await res.json()) as {
+        RetStatus?: number;
+        StrRetStatus?: string;
+        Value?: string;
+      };
       if (!res.ok || String(data.RetStatus) !== '1') {
         throw new Error(data.StrRetStatus ?? data.Value ?? 'اتصال به ملی‌پیامک برقرار نشد');
       }

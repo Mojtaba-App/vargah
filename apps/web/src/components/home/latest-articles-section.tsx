@@ -19,7 +19,7 @@ export function LatestArticlesSection({ groups }: LatestArticlesSectionProps) {
           title="جدیدترین مقالات"
           subtitle="مرور سریع مطالب تازه بر اساس موضوع"
           action={
-            <Link href="/articles" className="text-sm font-semibold text-primary hover:underline">
+            <Link href="/articles" className="text-primary text-sm font-semibold hover:underline">
               همه مقالات
             </Link>
           }
@@ -29,14 +29,14 @@ export function LatestArticlesSection({ groups }: LatestArticlesSectionProps) {
             <div key={group.categoryId}>
               <div className="mb-5 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                  <span className="bg-primary/10 text-primary flex size-8 items-center justify-center rounded-full text-sm font-bold">
                     {index + 1}
                   </span>
                   <h3 className="text-lg font-bold sm:text-xl">{group.categoryName}</h3>
                 </div>
                 <Link
                   href={`/articles/category/${group.categorySlug}`}
-                  className="text-xs font-semibold text-primary hover:underline sm:text-sm"
+                  className="text-primary text-xs font-semibold hover:underline sm:text-sm"
                 >
                   بیشتر
                 </Link>

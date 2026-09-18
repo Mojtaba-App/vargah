@@ -47,7 +47,7 @@ export function ConfirmDialog({
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-description"
       className={cn(
-        'fixed inset-0 z-50 m-auto w-[min(100%-2rem,28rem)] rounded-2xl border border-border bg-card p-0 shadow-2xl backdrop:bg-black/50',
+        'border-border bg-card fixed inset-0 z-50 m-auto w-[min(100%-2rem,28rem)] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/50',
         'open:animate-in open:fade-in-0',
       )}
       onCancel={(event) => {
@@ -60,11 +60,20 @@ export function ConfirmDialog({
         <h2 id="confirm-dialog-title" className="text-lg font-bold">
           {title}
         </h2>
-        <p id="confirm-dialog-description" className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        <p
+          id="confirm-dialog-description"
+          className="text-muted-foreground mt-2 text-sm leading-relaxed"
+        >
           {description}
         </p>
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <LoadingButton type="button" variant="outline" className="rounded-xl" disabled={loading} onClick={onCancel}>
+          <LoadingButton
+            type="button"
+            variant="outline"
+            className="rounded-xl"
+            disabled={loading}
+            onClick={onCancel}
+          >
             {cancelLabel}
           </LoadingButton>
           <LoadingButton

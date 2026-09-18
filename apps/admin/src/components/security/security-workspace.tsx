@@ -109,16 +109,16 @@ function StatCard({
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:bg-muted/30',
-        active && 'border-primary ring-1 ring-primary/20',
+        'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+        onClick && 'hover:border-primary/40 hover:bg-muted/30 cursor-pointer',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground text-sm">{label}</p>
       <p className={cn('mt-1 text-2xl font-bold tabular-nums', toneClass)}>
         {typeof value === 'number' ? formatNumber(value) : value}
       </p>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
     </Comp>
   );
 }
@@ -201,7 +201,13 @@ export function SecurityWorkspace({
     return enrichedSessions.filter((s) => {
       if (sessionStatusFilter !== 'ALL' && s.status !== sessionStatusFilter) return false;
       if (!q) return true;
-      return [s.userName, s.userEmail ?? '', s.ipAddress ?? '', s.client.osLabel, s.client.browserLabel]
+      return [
+        s.userName,
+        s.userEmail ?? '',
+        s.ipAddress ?? '',
+        s.client.osLabel,
+        s.client.browserLabel,
+      ]
         .join(' ')
         .toLowerCase()
         .includes(q);
@@ -214,14 +220,14 @@ export function SecurityWorkspace({
       const result = l.success ? LoginResult.SUCCESS : LoginResult.FAILED;
       if (loginResultFilter !== 'ALL' && result !== loginResultFilter) return false;
       if (!q) return true;
-      return [l.email ?? '', l.ipAddress ?? '', LOGIN_RESULT_LABELS[result]].join(' ').toLowerCase().includes(q);
+      return [l.email ?? '', l.ipAddress ?? '', LOGIN_RESULT_LABELS[result]]
+        .join(' ')
+        .toLowerCase()
+        .includes(q);
     });
   }, [logins, loginResultFilter, debouncedLoginSearch]);
 
-  const recentFailedLogins = useMemo(
-    () => logins.filter((l) => !l.success).slice(0, 5),
-    [logins],
-  );
+  const recentFailedLogins = useMemo(() => logins.filter((l) => !l.success).slice(0, 5), [logins]);
 
   const refresh = () => {
     setMessage('به‌روزرسانی شد.');
@@ -250,7 +256,11 @@ export function SecurityWorkspace({
         id: 'user',
         header: 'کاربر',
         cell: ({ row }) => (
-          <button type="button" className="flex items-center gap-3 text-start" onClick={() => setSelectedSession(row.original)}>
+          <button
+            type="button"
+            className="flex items-center gap-3 text-start"
+            onClick={() => setSelectedSession(row.original)}
+          >
             <UserAvatar
               name={row.original.userName}
               email={row.original.userEmail}
@@ -258,8 +268,8 @@ export function SecurityWorkspace({
               online={row.original.status === SessionStatus.ACTIVE}
             />
             <div>
-              <p className="font-medium text-primary hover:underline">{row.original.userName}</p>
-              <p className="text-xs text-muted-foreground">{ROLE_LABELS[row.original.userRole]}</p>
+              <p className="text-primary font-medium hover:underline">{row.original.userName}</p>
+              <p className="text-muted-foreground text-xs">{ROLE_LABELS[row.original.userRole]}</p>
               {row.original.isCurrentUser && (
                 <Badge variant="secondary" className="mt-1">
                   نشست شما
@@ -297,7 +307,9 @@ export function SecurityWorkspace({
         cell: ({ row }) => (
           <div className="text-sm">
             <p>{formatJalali(row.original.createdAt, true)}</p>
-            <p className="text-xs text-muted-foreground">{formatRelativeTime(row.original.createdAt)}</p>
+            <p className="text-muted-foreground text-xs">
+              {formatRelativeTime(row.original.createdAt)}
+            </p>
           </div>
         ),
       },
@@ -311,7 +323,11 @@ export function SecurityWorkspace({
         accessorKey: 'email',
         header: 'ایمیل',
         cell: ({ row }) => (
-          <button type="button" className="text-start hover:underline" onClick={() => setSelectedLogin(row.original)}>
+          <button
+            type="button"
+            className="text-start hover:underline"
+            onClick={() => setSelectedLogin(row.original)}
+          >
             <span dir="ltr">{row.original.email ?? '—'}</span>
           </button>
         ),
@@ -321,7 +337,9 @@ export function SecurityWorkspace({
         header: 'نتیجه',
         cell: ({ row }) => {
           const result = row.original.success ? LoginResult.SUCCESS : LoginResult.FAILED;
-          return <Badge variant={LOGIN_RESULT_VARIANT[result]}>{LOGIN_RESULT_LABELS[result]}</Badge>;
+          return (
+            <Badge variant={LOGIN_RESULT_VARIANT[result]}>{LOGIN_RESULT_LABELS[result]}</Badge>
+          );
         },
       },
       {
@@ -339,7 +357,9 @@ export function SecurityWorkspace({
         cell: ({ row }) => (
           <div className="text-sm">
             <p>{formatJalali(row.original.createdAt, true)}</p>
-            <p className="text-xs text-muted-foreground">{formatRelativeTime(row.original.createdAt)}</p>
+            <p className="text-muted-foreground text-xs">
+              {formatRelativeTime(row.original.createdAt)}
+            </p>
           </div>
         ),
       },
@@ -348,7 +368,7 @@ export function SecurityWorkspace({
   );
 
   const selectedSessionEnriched = selectedSession
-    ? enrichedSessions.find((s) => s.id === selectedSession.id) ?? null
+    ? (enrichedSessions.find((s) => s.id === selectedSession.id) ?? null)
     : null;
 
   return (
@@ -412,8 +432,10 @@ export function SecurityWorkspace({
               <CardContent className="pt-6">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-semibold text-rose-900 dark:text-rose-300">آخرین تلاش‌های ناموفق</h3>
-                    <p className="mt-1 text-xs text-rose-800/80 dark:text-muted-foreground">
+                    <h3 className="font-semibold text-rose-900 dark:text-rose-300">
+                      آخرین تلاش‌های ناموفق
+                    </h3>
+                    <p className="dark:text-muted-foreground mt-1 text-xs text-rose-800/80">
                       پایش سریع حملات brute-force احتمالی
                     </p>
                   </div>
@@ -421,7 +443,7 @@ export function SecurityWorkspace({
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="rounded-xl border-rose-400 text-rose-900 hover:bg-rose-200/70 dark:border-border dark:text-foreground dark:hover:bg-muted"
+                    className="dark:border-border dark:text-foreground dark:hover:bg-muted rounded-xl border-rose-400 text-rose-900 hover:bg-rose-200/70"
                     onClick={() => {
                       setTab(SecurityTab.LOGINS);
                       setLoginResultFilter(LoginResult.FAILED);
@@ -434,15 +456,18 @@ export function SecurityWorkspace({
                   {recentFailedLogins.map((l) => (
                     <li
                       key={l.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-rose-300/80 bg-white px-3 py-2 text-sm text-foreground dark:border-border/60 dark:bg-card"
+                      className="text-foreground dark:border-border/60 dark:bg-card flex flex-wrap items-center justify-between gap-2 rounded-xl border border-rose-300/80 bg-white px-3 py-2 text-sm"
                     >
                       <span dir="ltr" className="font-mono text-xs">
                         {l.email ?? '—'}
                       </span>
-                      <span className="font-mono text-xs text-rose-800/70 dark:text-muted-foreground" dir="ltr">
+                      <span
+                        className="dark:text-muted-foreground font-mono text-xs text-rose-800/70"
+                        dir="ltr"
+                      >
                         {l.ipAddress ?? '—'}
                       </span>
-                      <span className="text-xs text-rose-800/70 dark:text-muted-foreground">
+                      <span className="dark:text-muted-foreground text-xs text-rose-800/70">
                         {formatRelativeTime(l.createdAt)}
                       </span>
                     </li>
@@ -460,24 +485,24 @@ export function SecurityWorkspace({
             <CardContent className="space-y-4 pt-6">
               <div>
                 <h3 className="font-semibold">ورود دو مرحله‌ای حساب شما</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  پس از ایمیل/نام کاربری و رمز، کد تأیید به موبایل ثبت‌شده ارسال می‌شود — همان
-                  روش ورود کاربران سایت.
+                <p className="text-muted-foreground mt-1 text-sm">
+                  پس از ایمیل/نام کاربری و رمز، کد تأیید به موبایل ثبت‌شده ارسال می‌شود — همان روش
+                  ورود کاربران سایت.
                 </p>
               </div>
-              <div className="rounded-xl border border-border bg-muted/30 p-4">
+              <div className="border-border bg-muted/30 rounded-xl border p-4">
                 <p className="text-sm font-medium">وضعیت تأیید پیامکی</p>
                 {hasAdminSmsVerification(currentUserPhone) ? (
                   <div className="mt-2 space-y-1">
                     <Badge>فعال</Badge>
-                    <p className="text-sm text-muted-foreground" dir="ltr">
+                    <p className="text-muted-foreground text-sm" dir="ltr">
                       {maskPhone(currentUserPhone!)}
                     </p>
                   </div>
                 ) : (
                   <div className="mt-2 space-y-2">
                     <Badge variant="outline">غیرفعال</Badge>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       برای فعال‌سازی، موبایل را در صفحه ویرایش کاربر ثبت کنید.
                     </p>
                   </div>
@@ -490,36 +515,37 @@ export function SecurityWorkspace({
             <CardContent className="space-y-4 pt-6">
               <div>
                 <h3 className="font-semibold">وضعیت تأیید پیامکی تیم</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {formatNumber(summary.smsPhoneEnabled)} از {formatNumber(summary.twoFactorTotal)} مدیر
-                  موبایل ثبت‌شده برای OTP ورود دارند ({formatNumber(summary.smsPhoneAdoptionPercent)}٪)
+                <p className="text-muted-foreground mt-1 text-sm">
+                  {formatNumber(summary.smsPhoneEnabled)} از {formatNumber(summary.twoFactorTotal)}{' '}
+                  مدیر موبایل ثبت‌شده برای OTP ورود دارند (
+                  {formatNumber(summary.smsPhoneAdoptionPercent)}٪)
                 </p>
               </div>
               <div className="space-y-2">
                 {adminUsers.map((u) => {
                   const smsEnabled = hasAdminSmsVerification(u.phone);
                   return (
-                  <div
-                    key={u.id}
-                    className={cn(
-                      'flex items-center justify-between gap-3 rounded-xl border border-border px-3 py-3 transition-colors',
-                      u.id === currentUserId && 'border-primary/30 bg-primary/5',
-                    )}
-                  >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <UserAvatar name={u.name} email={u.email} />
-                      <div className="min-w-0">
-                        <p className="truncate font-medium">{u.name ?? u.email}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {ROLE_LABELS[u.role]}
-                          {u.lastLoginAt && ` · آخرین ورود ${formatRelativeTime(u.lastLoginAt)}`}
-                        </p>
+                    <div
+                      key={u.id}
+                      className={cn(
+                        'border-border flex items-center justify-between gap-3 rounded-xl border px-3 py-3 transition-colors',
+                        u.id === currentUserId && 'border-primary/30 bg-primary/5',
+                      )}
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <UserAvatar name={u.name} email={u.email} />
+                        <div className="min-w-0">
+                          <p className="truncate font-medium">{u.name ?? u.email}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {ROLE_LABELS[u.role]}
+                            {u.lastLoginAt && ` · آخرین ورود ${formatRelativeTime(u.lastLoginAt)}`}
+                          </p>
+                        </div>
                       </div>
+                      <Badge variant={smsEnabled ? 'default' : 'outline'}>
+                        {smsEnabled ? 'فعال' : 'بدون موبایل'}
+                      </Badge>
                     </div>
-                    <Badge variant={smsEnabled ? 'default' : 'outline'}>
-                      {smsEnabled ? 'فعال' : 'بدون موبایل'}
-                    </Badge>
-                  </div>
                   );
                 })}
               </div>
@@ -558,7 +584,7 @@ export function SecurityWorkspace({
                 </div>
               </div>
               <DataTable columns={sessionColumns} data={filteredSessions} showSearch={false} />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {formatNumber(filteredSessions.length)} نشست از {formatNumber(sessions.length)}
               </p>
             </CardContent>
@@ -566,7 +592,7 @@ export function SecurityWorkspace({
 
           <aside className="space-y-4">
             {selectedSessionEnriched ? (
-              <Card className="rounded-2xl border-primary/20">
+              <Card className="border-primary/20 rounded-2xl">
                 <CardContent className="space-y-4 pt-6">
                   <div className="flex items-start gap-3">
                     <UserAvatar
@@ -577,10 +603,13 @@ export function SecurityWorkspace({
                     />
                     <div>
                       <h3 className="font-semibold">{selectedSessionEnriched.userName}</h3>
-                      <p className="text-sm text-muted-foreground" dir="ltr">
+                      <p className="text-muted-foreground text-sm" dir="ltr">
                         {selectedSessionEnriched.userEmail}
                       </p>
-                      <Badge variant={SESSION_STATUS_VARIANT[selectedSessionEnriched.status]} className="mt-2">
+                      <Badge
+                        variant={SESSION_STATUS_VARIANT[selectedSessionEnriched.status]}
+                        className="mt-2"
+                      >
                         {SESSION_STATUS_LABELS[selectedSessionEnriched.status]}
                       </Badge>
                     </div>
@@ -615,7 +644,10 @@ export function SecurityWorkspace({
                   </dl>
 
                   {selectedSessionEnriched.userAgent && (
-                    <p className="break-all rounded-lg bg-muted/50 p-2 font-mono text-[11px] text-muted-foreground" dir="ltr">
+                    <p
+                      className="bg-muted/50 text-muted-foreground rounded-lg p-2 font-mono text-[11px] break-all"
+                      dir="ltr"
+                    >
                       {selectedSessionEnriched.userAgent}
                     </p>
                   )}
@@ -635,7 +667,7 @@ export function SecurityWorkspace({
               </Card>
             ) : (
               <Card className="rounded-2xl border-dashed">
-                <CardContent className="py-12 text-center text-sm text-muted-foreground">
+                <CardContent className="text-muted-foreground py-12 text-center text-sm">
                   یک نشست را از جدول انتخاب کنید
                 </CardContent>
               </Card>
@@ -662,8 +694,12 @@ export function SecurityWorkspace({
                     onChange={(e) => setLoginResultFilter(e.target.value as LoginResultFilter)}
                   >
                     <option value="ALL">همه نتایج</option>
-                    <option value={LoginResult.SUCCESS}>{LOGIN_RESULT_LABELS[LoginResult.SUCCESS]}</option>
-                    <option value={LoginResult.FAILED}>{LOGIN_RESULT_LABELS[LoginResult.FAILED]}</option>
+                    <option value={LoginResult.SUCCESS}>
+                      {LOGIN_RESULT_LABELS[LoginResult.SUCCESS]}
+                    </option>
+                    <option value={LoginResult.FAILED}>
+                      {LOGIN_RESULT_LABELS[LoginResult.FAILED]}
+                    </option>
                   </Select>
                   <ExportToolbar
                     title="گزارش تلاش‌های ورود"
@@ -690,7 +726,7 @@ export function SecurityWorkspace({
                 </div>
               </div>
               <DataTable columns={loginColumns} data={filteredLogins} showSearch={false} />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 {formatNumber(filteredLogins.length)} رکورد از {formatNumber(logins.length)}
               </p>
             </CardContent>
@@ -698,15 +734,21 @@ export function SecurityWorkspace({
 
           <aside>
             {selectedLogin ? (
-              <Card className="rounded-2xl border-primary/20">
+              <Card className="border-primary/20 rounded-2xl">
                 <CardContent className="space-y-4 pt-6">
                   <div>
                     <h3 className="font-semibold">جزئیات تلاش ورود</h3>
                     <Badge
-                      variant={selectedLogin.success ? LOGIN_RESULT_VARIANT[LoginResult.SUCCESS] : LOGIN_RESULT_VARIANT[LoginResult.FAILED]}
+                      variant={
+                        selectedLogin.success
+                          ? LOGIN_RESULT_VARIANT[LoginResult.SUCCESS]
+                          : LOGIN_RESULT_VARIANT[LoginResult.FAILED]
+                      }
                       className="mt-2"
                     >
-                      {selectedLogin.success ? LOGIN_RESULT_LABELS[LoginResult.SUCCESS] : LOGIN_RESULT_LABELS[LoginResult.FAILED]}
+                      {selectedLogin.success
+                        ? LOGIN_RESULT_LABELS[LoginResult.SUCCESS]
+                        : LOGIN_RESULT_LABELS[LoginResult.FAILED]}
                     </Badge>
                   </div>
                   <dl className="space-y-2 text-sm">
@@ -733,7 +775,7 @@ export function SecurityWorkspace({
               </Card>
             ) : (
               <Card className="rounded-2xl border-dashed">
-                <CardContent className="py-12 text-center text-sm text-muted-foreground">
+                <CardContent className="text-muted-foreground py-12 text-center text-sm">
                   یک رکورد را از جدول انتخاب کنید
                 </CardContent>
               </Card>

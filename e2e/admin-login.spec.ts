@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-async function loginAdmin(page: import('@playwright/test').Page, identifier: string, password: string) {
+async function loginAdmin(
+  page: import('@playwright/test').Page,
+  identifier: string,
+  password: string,
+) {
   await page.getByLabel('ایمیل یا نام کاربری').fill(identifier);
   await page.getByLabel('رمز عبور').fill(password);
   await page.getByRole('button', { name: 'ادامه' }).click();

@@ -42,20 +42,37 @@ const PROVINCE_COLORS = [
 
 export function GeoTrendChart({ data }: { data: GeoTrendPoint[] }) {
   if (data.length === 0) {
-    return <EmptyChart title="روند عضویت" hint="پس از اجرای تجمیع شبانه، نمودار روند نمایش داده می‌شود." />;
+    return (
+      <EmptyChart
+        title="روند عضویت"
+        hint="پس از اجرای تجمیع شبانه، نمودار روند نمایش داده می‌شود."
+      />
+    );
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h3 className="font-bold">روند عضویت جغرافیایی</h3>
-        <p className="mt-1 text-xs text-muted-foreground">عضویت جدید و فعال — بر اساس تجمیع روزانه</p>
+        <p className="text-muted-foreground mt-1 text-xs">
+          عضویت جدید و فعال — بر اساس تجمیع روزانه
+        </p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} width={36} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 10, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+            width={36}
+          />
           <Tooltip contentStyle={tooltipStyle} formatter={(v) => [formatNumber(Number(v)), '']} />
           <Legend wrapperStyle={{ direction: 'rtl', fontSize: 12 }} />
           <Line
@@ -91,10 +108,10 @@ export function GeoProvinceShareChart({
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h3 className="font-bold">سهم استان‌ها</h3>
-        <p className="mt-1 text-xs text-muted-foreground">۱۰ استان برتر — مشترکین دارای موقعیت</p>
+        <p className="text-muted-foreground mt-1 text-xs">۱۰ استان برتر — مشترکین دارای موقعیت</p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <PieChart>
@@ -137,15 +154,20 @@ export function GeoTopCitiesChart({ cities }: { cities: GeoCityStat[] }) {
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h3 className="font-bold">۱۰ شهر برتر</h3>
-        <p className="mt-1 text-xs text-muted-foreground">تعداد مشترک به تفکیک شهر</p>
+        <p className="text-muted-foreground mt-1 text-xs">تعداد مشترک به تفکیک شهر</p>
       </div>
       <ResponsiveContainer width="100%" height={320}>
         <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 16 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-          <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <XAxis
+            type="number"
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             type="category"
             dataKey="label"
@@ -185,16 +207,26 @@ export function GeoGrowthCitiesChart({ cities }: { cities: GeoCityGrowth[] }) {
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h3 className="font-bold">رشد ۳۰ روزه شهرها</h3>
-        <p className="mt-1 text-xs text-muted-foreground">عضویت جدید در ۳۰ روز اخیر</p>
+        <p className="text-muted-foreground mt-1 text-xs">عضویت جدید در ۳۰ روز اخیر</p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} width={32} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 10, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+            width={32}
+          />
           <Tooltip
             contentStyle={tooltipStyle}
             formatter={(value) => [formatNumber(Number(value)), 'عضویت جدید']}
@@ -211,9 +243,9 @@ export function GeoGrowthCitiesChart({ cities }: { cities: GeoCityGrowth[] }) {
 
 function EmptyChart({ title, hint }: { title: string; hint: string }) {
   return (
-    <section className="flex h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-muted/20 p-6 text-center">
+    <section className="border-border bg-muted/20 flex h-[320px] flex-col items-center justify-center rounded-2xl border border-dashed p-6 text-center">
       <h3 className="font-semibold">{title}</h3>
-      <p className="mt-2 max-w-sm text-sm text-muted-foreground">{hint}</p>
+      <p className="text-muted-foreground mt-2 max-w-sm text-sm">{hint}</p>
     </section>
   );
 }

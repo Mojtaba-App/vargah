@@ -92,9 +92,9 @@ export function GlobalSearch({ grantedPermissions }: GlobalSearchProps) {
       />
 
       {open && (debouncedQuery || results.length > 0) && (
-        <div className="absolute start-0 top-full z-50 mt-2 w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+        <div className="border-border bg-card absolute start-0 top-full z-50 mt-2 w-full max-w-md overflow-hidden rounded-2xl border shadow-xl">
           {results.length === 0 ? (
-            <p className="px-4 py-6 text-center text-sm text-muted-foreground">نتیجه‌ای یافت نشد</p>
+            <p className="text-muted-foreground px-4 py-6 text-center text-sm">نتیجه‌ای یافت نشد</p>
           ) : (
             <ul className="max-h-72 overflow-y-auto p-1" role="listbox">
               {results.map((item, index) => (
@@ -109,13 +109,13 @@ export function GlobalSearch({ grantedPermissions }: GlobalSearchProps) {
                     onClick={() => navigate(item.href)}
                   >
                     <span className="font-medium">{item.label}</span>
-                    <span className="text-xs text-muted-foreground">{item.group}</span>
+                    <span className="text-muted-foreground text-xs">{item.group}</span>
                   </button>
                 </li>
               ))}
             </ul>
           )}
-          <div className="border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+          <div className="border-border text-muted-foreground border-t px-3 py-2 text-[11px]">
             ↑↓ حرکت · Enter انتخاب · Esc بستن
           </div>
         </div>

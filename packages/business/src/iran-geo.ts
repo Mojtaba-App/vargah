@@ -1,4 +1,9 @@
-import { getIranCitiesByProvince, getIranProvinceNames, IRAN_PROVINCES, isValidIranProvinceCity } from './iran-locations';
+import {
+  getIranCitiesByProvince,
+  getIranProvinceNames,
+  IRAN_PROVINCES,
+  isValidIranProvinceCity,
+} from './iran-locations';
 
 export type IranCityRecord = {
   id: string;
@@ -10,37 +15,37 @@ export type IranCityRecord = {
 
 /** مرکز تقریبی استان‌ها (WGS84) — منبع: OpenStreetMap / مراجع عمومی */
 export const IRAN_PROVINCE_CENTROIDS: Record<string, { lat: number; lng: number }> = {
-  'اردبیل': { lat: 38.2498, lng: 48.2933 },
-  'اصفهان': { lat: 32.6546, lng: 51.6680 },
-  'البرز': { lat: 35.8400, lng: 50.9391 },
-  'ایلام': { lat: 33.6374, lng: 46.4227 },
+  اردبیل: { lat: 38.2498, lng: 48.2933 },
+  اصفهان: { lat: 32.6546, lng: 51.668 },
+  البرز: { lat: 35.84, lng: 50.9391 },
+  ایلام: { lat: 33.6374, lng: 46.4227 },
   'آذربایجان شرقی': { lat: 38.0962, lng: 46.2738 },
-  'آذربایجان غربی': { lat: 37.5550, lng: 45.0725 },
-  'بوشهر': { lat: 28.9234, lng: 50.8203 },
-  'تهران': { lat: 35.6892, lng: 51.3890 },
+  'آذربایجان غربی': { lat: 37.555, lng: 45.0725 },
+  بوشهر: { lat: 28.9234, lng: 50.8203 },
+  تهران: { lat: 35.6892, lng: 51.389 },
   'چهارمحال وبختیاری': { lat: 32.3256, lng: 50.8644 },
   'خراسان جنوبی': { lat: 32.8649, lng: 59.2262 },
-  'خراسان رضوی': { lat: 36.2970, lng: 59.6062 },
-  'خراسان شمالی': { lat: 37.4710, lng: 57.1013 },
-  'خوزستان': { lat: 31.3183, lng: 48.6706 },
-  'زنجان': { lat: 36.6764, lng: 48.4963 },
-  'سمنان': { lat: 35.5729, lng: 53.3971 },
+  'خراسان رضوی': { lat: 36.297, lng: 59.6062 },
+  'خراسان شمالی': { lat: 37.471, lng: 57.1013 },
+  خوزستان: { lat: 31.3183, lng: 48.6706 },
+  زنجان: { lat: 36.6764, lng: 48.4963 },
+  سمنان: { lat: 35.5729, lng: 53.3971 },
   'سیستان وبلوچستان': { lat: 29.4963, lng: 60.8629 },
-  'فارس': { lat: 29.5918, lng: 52.5837 },
-  'قزوین': { lat: 36.2688, lng: 50.0041 },
-  'قم': { lat: 34.6416, lng: 50.8746 },
-  'کردستان': { lat: 35.3219, lng: 46.9862 },
-  'کرمان': { lat: 30.2839, lng: 57.0834 },
-  'کرمانشاه': { lat: 34.3142, lng: 47.0650 },
-  'کهگیلویه وبویراحمد': { lat: 30.6509, lng: 51.6050 },
-  'گلستان': { lat: 36.8456, lng: 54.4393 },
-  'گیلان': { lat: 37.2808, lng: 49.5832 },
-  'لرستان': { lat: 33.4878, lng: 48.3558 },
-  'مازندران': { lat: 36.5659, lng: 53.0586 },
-  'مرکزی': { lat: 34.0917, lng: 49.6892 },
-  'هرمزگان': { lat: 27.1865, lng: 56.2770 },
-  'همدان': { lat: 34.7992, lng: 48.5146 },
-  'یزد': { lat: 31.8974, lng: 54.3569 },
+  فارس: { lat: 29.5918, lng: 52.5837 },
+  قزوین: { lat: 36.2688, lng: 50.0041 },
+  قم: { lat: 34.6416, lng: 50.8746 },
+  کردستان: { lat: 35.3219, lng: 46.9862 },
+  کرمان: { lat: 30.2839, lng: 57.0834 },
+  کرمانشاه: { lat: 34.3142, lng: 47.065 },
+  'کهگیلویه وبویراحمد': { lat: 30.6509, lng: 51.605 },
+  گلستان: { lat: 36.8456, lng: 54.4393 },
+  گیلان: { lat: 37.2808, lng: 49.5832 },
+  لرستان: { lat: 33.4878, lng: 48.3558 },
+  مازندران: { lat: 36.5659, lng: 53.0586 },
+  مرکزی: { lat: 34.0917, lng: 49.6892 },
+  هرمزگان: { lat: 27.1865, lng: 56.277 },
+  همدان: { lat: 34.7992, lng: 48.5146 },
+  یزد: { lat: 31.8974, lng: 54.3569 },
 };
 
 /** لایه‌های رایگان OpenStreetMap و مشتقات (بدون API Key) */
@@ -120,7 +125,12 @@ export function buildIranCityCatalog(): IranCityRecord[] {
     if (!centroid) continue;
 
     entry.cities.forEach((city, index) => {
-      const { lat, lng } = spreadCityCoordinates(centroid.lat, centroid.lng, index, entry.cities.length);
+      const { lat, lng } = spreadCityCoordinates(
+        centroid.lat,
+        centroid.lng,
+        index,
+        entry.cities.length,
+      );
       catalog.push({
         id: buildIranCityId(entry.province, city),
         province: entry.province,

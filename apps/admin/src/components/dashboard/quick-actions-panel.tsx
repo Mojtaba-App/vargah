@@ -24,7 +24,7 @@ const toneStyles = {
 
 export function QuickActionsPanel({ actions }: { actions: DashboardQuickAction[] }) {
   return (
-    <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm">
+    <section className="border-border/80 bg-card rounded-2xl border p-5 shadow-sm">
       <h2 className="mb-4 font-bold">میانبرهای سریع</h2>
       <div className="grid gap-2 sm:grid-cols-2">
         {actions.map((action) => {
@@ -38,12 +38,14 @@ export function QuickActionsPanel({ actions }: { actions: DashboardQuickAction[]
                 toneStyles[action.tone],
               )}
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-background/70 text-primary">
+              <span className="bg-background/70 text-primary flex size-9 shrink-0 items-center justify-center rounded-lg">
                 <Icon className="size-4" />
               </span>
               <span className="min-w-0">
                 <span className="block text-sm font-semibold">{action.label}</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">{action.description}</span>
+                <span className="text-muted-foreground mt-0.5 block text-xs">
+                  {action.description}
+                </span>
               </span>
             </Link>
           );

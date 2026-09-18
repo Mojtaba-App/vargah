@@ -7,6 +7,9 @@ export function isDiscoverReadyImage(url?: string | null): boolean {
   return Boolean(url && url.length > 0);
 }
 
-export function pickDiscoverImage(coverImage?: string | null, ogImage?: string | null): string | undefined {
+export function pickDiscoverImage(
+  coverImage?: string | null,
+  ogImage?: string | null,
+): string | undefined {
   return ogImage || coverImage || undefined;
 }

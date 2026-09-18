@@ -38,7 +38,13 @@ export function DevOtpBanner({ code, secondsLeft, onUseCode }: DevOtpBannerProps
           </p>
         </div>
         <div className="flex gap-2">
-          <Button type="button" size="sm" variant="outline" className="rounded-lg" onClick={handleCopy}>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="rounded-lg"
+            onClick={handleCopy}
+          >
             {copied ? 'کپی شد' : 'کپی'}
           </Button>
           <Button type="button" size="sm" className="rounded-lg" onClick={onUseCode}>
@@ -47,7 +53,7 @@ export function DevOtpBanner({ code, secondsLeft, onUseCode }: DevOtpBannerProps
         </div>
       </div>
       {secondsLeft === 0 && (
-        <p className="mt-2 text-xs text-destructive">کد منقضی شده — «ارسال مجدد» را بزنید.</p>
+        <p className="text-destructive mt-2 text-xs">کد منقضی شده — «ارسال مجدد» را بزنید.</p>
       )}
     </div>
   );

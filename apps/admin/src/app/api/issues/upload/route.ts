@@ -50,7 +50,10 @@ export async function POST(request: Request) {
   try {
     resolvedMime = assertBufferMatchesMime(new Uint8Array(buffer), file.type);
   } catch {
-    return NextResponse.json({ error: 'محتوای فایل با نوع اعلام‌شده مطابقت ندارد' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'محتوای فایل با نوع اعلام‌شده مطابقت ندارد' },
+      { status: 400 },
+    );
   }
   resolvedMime = normalizeMimeType(resolvedMime);
 

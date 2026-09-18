@@ -36,10 +36,7 @@ export default async function CommentsModerationPage({ searchParams }: PageProps
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="نظرات مقالات"
-        description="بررسی، تأیید یا رد نظرات ارسالی از سایت"
-      />
+      <PageHeader title="نظرات مقالات" description="بررسی، تأیید یا رد نظرات ارسالی از سایت" />
       <CommentsModeration
         comments={comments.map((c) => ({
           id: c.id,

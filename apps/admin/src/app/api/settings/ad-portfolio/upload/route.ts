@@ -18,7 +18,10 @@ const ADMIN_PUBLIC = path.resolve(process.cwd(), 'public');
 export async function POST(request: Request) {
   verifyCsrfFromHttpRequest(request);
   const session = await auth();
-  if (!session?.user?.id || !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))) {
+  if (
+    !session?.user?.id ||
+    !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))
+  ) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -30,7 +33,10 @@ export async function POST(request: Request) {
   }
 
   if (file.size > MAX_SIZE) {
-    return NextResponse.json({ error: 'حداکثر حجم تصویر نمونه‌کار ۴ مگابایت است' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'حداکثر حجم تصویر نمونه‌کار ۴ مگابایت است' },
+      { status: 400 },
+    );
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());

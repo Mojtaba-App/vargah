@@ -27,7 +27,7 @@ export function ContactPageView({ contact }: ContactPageViewProps) {
       <Container className="py-12 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
           <FadeIn>
-            <section className="rounded-[1.75rem] border border-border bg-card/80 p-6 shadow-sm sm:p-8">
+            <section className="border-border bg-card/80 rounded-[1.75rem] border p-6 shadow-sm sm:p-8">
               <SectionTitle
                 title={contact.formTitle}
                 subtitle={contact.formSubtitle}
@@ -35,21 +35,27 @@ export function ContactPageView({ contact }: ContactPageViewProps) {
               />
               <ContactForm />
               {contact.responseNote && (
-                <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{contact.responseNote}</p>
+                <p className="text-muted-foreground mt-5 text-sm leading-relaxed">
+                  {contact.responseNote}
+                </p>
               )}
             </section>
           </FadeIn>
 
           <div className="space-y-8">
             <FadeIn delay={0.06}>
-              <section className="rounded-[1.75rem] border border-border bg-gradient-to-br from-accent/40 via-background to-muted/30 p-6 sm:p-8">
+              <section className="border-border from-accent/40 via-background to-muted/30 rounded-[1.75rem] border bg-gradient-to-br p-6 sm:p-8">
                 <SectionTitle title={contact.infoTitle} className="mb-5 sm:mb-6" />
                 <ul className="space-y-4">
                   <ContactInfoRow label="آدرس" value={contact.address} />
                   <ContactInfoRow
                     label="تلفن"
                     value={
-                      <a href={`tel:${phoneHref}`} className="transition-colors hover:text-primary" dir="ltr">
+                      <a
+                        href={`tel:${phoneHref}`}
+                        className="hover:text-primary transition-colors"
+                        dir="ltr"
+                      >
                         {contact.phone}
                       </a>
                     }
@@ -59,7 +65,7 @@ export function ContactPageView({ contact }: ContactPageViewProps) {
                     value={
                       <a
                         href={`mailto:${contact.email}`}
-                        className="transition-colors hover:text-primary"
+                        className="hover:text-primary transition-colors"
                         dir="ltr"
                       >
                         {contact.email}
@@ -74,12 +80,12 @@ export function ContactPageView({ contact }: ContactPageViewProps) {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <section className="rounded-[1.75rem] border border-border bg-card/80 p-6 shadow-sm sm:p-8">
+              <section className="border-border bg-card/80 rounded-[1.75rem] border p-6 shadow-sm sm:p-8">
                 <SectionTitle title={contact.mapTitle} className="mb-5 sm:mb-6" />
                 <SiteMap
                   contact={contact}
                   address={contact.address}
-                  className="overflow-hidden rounded-2xl border-border/70"
+                  className="border-border/70 overflow-hidden rounded-2xl"
                 />
               </section>
             </FadeIn>
@@ -90,17 +96,11 @@ export function ContactPageView({ contact }: ContactPageViewProps) {
   );
 }
 
-function ContactInfoRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: ReactNode;
-}) {
+function ContactInfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <li className="flex gap-3 border-b border-border/60 pb-4 last:border-0 last:pb-0">
-      <span className="mt-0.5 w-28 shrink-0 text-sm font-medium text-foreground">{label}</span>
-      <span className={cn('text-sm leading-relaxed text-muted-foreground')}>{value}</span>
+    <li className="border-border/60 flex gap-3 border-b pb-4 last:border-0 last:pb-0">
+      <span className="text-foreground mt-0.5 w-28 shrink-0 text-sm font-medium">{label}</span>
+      <span className={cn('text-muted-foreground text-sm leading-relaxed')}>{value}</span>
     </li>
   );
 }

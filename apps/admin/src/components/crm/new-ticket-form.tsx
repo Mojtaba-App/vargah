@@ -69,7 +69,7 @@ export function NewTicketForm() {
                 id="customerType"
                 name="customerType"
                 disabled={isPending}
-                className="w-full rounded-md border border-border px-3 py-2 text-sm"
+                className="border-border w-full rounded-md border px-3 py-2 text-sm"
               >
                 <option value={TicketCustomerType.SUBSCRIBER}>مشترک</option>
                 <option value={TicketCustomerType.ADVERTISER}>آگهی‌دهنده</option>
@@ -80,7 +80,13 @@ export function NewTicketForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="customerEmail">ایمیل</Label>
-              <Input id="customerEmail" name="customerEmail" type="email" dir="ltr" disabled={isPending} />
+              <Input
+                id="customerEmail"
+                name="customerEmail"
+                type="email"
+                dir="ltr"
+                disabled={isPending}
+              />
             </div>
             <div>
               <Label htmlFor="customerPhone">موبایل</Label>
@@ -93,7 +99,7 @@ export function NewTicketForm() {
               id="priority"
               name="priority"
               disabled={isPending}
-              className="w-full rounded-md border border-border px-3 py-2 text-sm"
+              className="border-border w-full rounded-md border px-3 py-2 text-sm"
             >
               <option value={TicketPriority.LOW}>کم</option>
               <option value={TicketPriority.NORMAL}>معمولی</option>

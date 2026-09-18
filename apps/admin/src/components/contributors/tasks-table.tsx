@@ -27,7 +27,11 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
 
 const columns: ColumnDef<TaskRow>[] = [
   { accessorKey: 'title', header: 'عنوان' },
-  { accessorKey: 'contributorName', header: 'همکار', cell: ({ row }) => row.original.contributorName ?? '—' },
+  {
+    accessorKey: 'contributorName',
+    header: 'همکار',
+    cell: ({ row }) => row.original.contributorName ?? '—',
+  },
   {
     accessorKey: 'issueNumber',
     header: 'شماره',
@@ -43,7 +47,11 @@ const columns: ColumnDef<TaskRow>[] = [
     header: 'مهلت',
     cell: ({ row }) => (row.original.dueDate ? formatJalali(row.original.dueDate) : '—'),
   },
-  { accessorKey: 'assignedToName', header: 'مسئول', cell: ({ row }) => row.original.assignedToName ?? '—' },
+  {
+    accessorKey: 'assignedToName',
+    header: 'مسئول',
+    cell: ({ row }) => row.original.assignedToName ?? '—',
+  },
 ];
 
 export function TasksTable({ data }: { data: TaskRow[] }) {

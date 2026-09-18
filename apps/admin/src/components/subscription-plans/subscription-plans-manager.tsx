@@ -58,7 +58,8 @@ function normalizePlans(plans: SubscriptionPlanConfig[]): SubscriptionPlanConfig
     features: plan.features.map((f) => f.trim()).filter(Boolean),
     periodMonths: plan.period === 'yearly' ? 12 : 1,
     discountType: plan.discountType ?? 'none',
-    discountValue: plan.discountType === 'none' || !plan.discountType ? 0 : plan.discountValue ?? 0,
+    discountValue:
+      plan.discountType === 'none' || !plan.discountType ? 0 : (plan.discountValue ?? 0),
   }));
 }
 
@@ -288,7 +289,7 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h3 className="text-lg font-semibold">پلن‌های اشتراک</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             پلن‌های فعال در صفحه اشتراک سایت نمایش داده می‌شوند. برای ویرایش روی هر پلن کلیک کنید.
           </p>
         </div>
@@ -303,9 +304,7 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
         <StatusBanner
           type={listFeedback.type}
           message={listFeedback.message}
-          onDismiss={
-            listFeedback.type === 'success' ? () => setListFeedback(null) : undefined
-          }
+          onDismiss={listFeedback.type === 'success' ? () => setListFeedback(null) : undefined}
         />
       )}
 
@@ -320,24 +319,30 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
             <div
               key={plan.id}
               className={cn(
-                'overflow-hidden rounded-2xl border border-border bg-card transition-shadow',
-                open && 'shadow-sm ring-1 ring-primary/15',
+                'border-border bg-card overflow-hidden rounded-2xl border transition-shadow',
+                open && 'ring-primary/15 shadow-sm ring-1',
               )}
             >
               <button
                 type="button"
                 onClick={() => toggleOpen(plan.id)}
                 aria-expanded={open}
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-start transition-colors hover:bg-muted/40"
+                className="hover:bg-muted/40 flex w-full items-center gap-3 px-4 py-3.5 text-start transition-colors"
               >
                 <span
                   className={cn(
-                    'flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-muted/40 text-muted-foreground transition-transform',
-                    open && 'rotate-180 bg-primary/10 text-primary',
+                    'border-border bg-muted/40 text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-lg border transition-transform',
+                    open && 'bg-primary/10 text-primary rotate-180',
                   )}
                   aria-hidden
                 >
-                  <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="size-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </span>
@@ -353,19 +358,23 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                     {plan.popular && <Badge>پرطرفدار</Badge>}
                   </div>
                   {plan.slug ? (
-                    <p className="mt-0.5 truncate font-mono text-xs text-muted-foreground" dir="ltr">
+                    <p
+                      className="text-muted-foreground mt-0.5 truncate font-mono text-xs"
+                      dir="ltr"
+                    >
                       {plan.slug}
                     </p>
                   ) : null}
                 </div>
 
                 <span className="shrink-0 text-sm font-semibold tabular-nums">
-                  {formatPrice(planHasSaleDiscount(plan) ? getPlanSalePrice(plan) : plan.price)} تومان
+                  {formatPrice(planHasSaleDiscount(plan) ? getPlanSalePrice(plan) : plan.price)}{' '}
+                  تومان
                 </span>
               </button>
 
               {open && (
-                <div className="space-y-4 border-t border-border px-4 py-4">
+                <div className="border-border space-y-4 border-t px-4 py-4">
                   {feedback && (
                     <StatusBanner
                       type={feedback.type}
@@ -407,7 +416,7 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                         onChange={(e) =>
                           updatePlan(index, { type: e.target.value as SubscriptionPlanType })
                         }
-                        className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                        className="border-border bg-background h-10 w-full rounded-xl border px-3 text-sm"
                       >
                         {(Object.keys(PLAN_TYPE_LABELS) as SubscriptionPlanType[]).map((type) => (
                           <option key={type} value={type}>
@@ -424,13 +433,15 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                         onChange={(e) =>
                           updatePlan(index, { period: e.target.value as SubscriptionPlanPeriod })
                         }
-                        className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                        className="border-border bg-background h-10 w-full rounded-xl border px-3 text-sm"
                       >
-                        {(Object.keys(PLAN_PERIOD_LABELS) as SubscriptionPlanPeriod[]).map((period) => (
-                          <option key={period} value={period}>
-                            {PLAN_PERIOD_LABELS[period]}
-                          </option>
-                        ))}
+                        {(Object.keys(PLAN_PERIOD_LABELS) as SubscriptionPlanPeriod[]).map(
+                          (period) => (
+                            <option key={period} value={period}>
+                              {PLAN_PERIOD_LABELS[period]}
+                            </option>
+                          ),
+                        )}
                       </select>
                     </div>
                     <div className="space-y-2">
@@ -453,10 +464,10 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                           updatePlan(index, {
                             discountType: e.target.value as PlanSaleDiscountType,
                             discountValue:
-                              e.target.value === 'none' ? 0 : plan.discountValue ?? 0,
+                              e.target.value === 'none' ? 0 : (plan.discountValue ?? 0),
                           })
                         }
-                        className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                        className="border-border bg-background h-10 w-full rounded-xl border px-3 text-sm"
                       >
                         <option value="none">بدون تخفیف</option>
                         <option value="percent">درصدی</option>
@@ -476,18 +487,16 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                         min={0}
                         max={(plan.discountType ?? 'none') === 'percent' ? 100 : undefined}
                         value={plan.discountValue ?? 0}
-                        disabled={
-                          !canEdit || isSaving || (plan.discountType ?? 'none') === 'none'
-                        }
+                        disabled={!canEdit || isSaving || (plan.discountType ?? 'none') === 'none'}
                         onChange={(e) =>
                           updatePlan(index, { discountValue: Number(e.target.value) || 0 })
                         }
                         className="rounded-xl"
                       />
                       {planHasSaleDiscount(plan) && (
-                        <p className="text-xs text-primary">
+                        <p className="text-primary text-xs">
                           قیمت نهایی: {formatPrice(getPlanSalePrice(plan))} تومان
-                          <span className="ms-2 text-muted-foreground line-through">
+                          <span className="text-muted-foreground ms-2 line-through">
                             {formatPrice(plan.price)}
                           </span>
                         </p>
@@ -531,7 +540,7 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                             type="button"
                             variant="ghost"
                             disabled={isSaving}
-                            className="shrink-0 rounded-xl text-destructive"
+                            className="text-destructive shrink-0 rounded-xl"
                             onClick={() => removeFeature(index, featureIndex)}
                           >
                             حذف
@@ -554,13 +563,13 @@ export function SubscriptionPlansManager({ initialPlans, canEdit }: Subscription
                   </div>
 
                   {canEdit && (
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+                    <div className="border-border flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                       {plans.length > 1 ? (
                         <Button
                           type="button"
                           variant="ghost"
                           disabled={isSaving || savingId !== null}
-                          className="rounded-xl text-destructive"
+                          className="text-destructive rounded-xl"
                           onClick={() => handleDeletePlan(index)}
                         >
                           حذف پلن

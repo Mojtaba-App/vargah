@@ -15,11 +15,9 @@ type ArticleCardProps = {
 };
 
 function resolveArticleMeta(article: Article) {
-  const authorName =
-    article.authorName ?? getAuthorById(article.authorId)?.name ?? 'وارگه';
+  const authorName = article.authorName ?? getAuthorById(article.authorId)?.name ?? 'وارگه';
   const categoryName =
-    article.categoryName ??
-    getAllCategoriesFlat().find((c) => c.id === article.categoryId)?.name;
+    article.categoryName ?? getAllCategoriesFlat().find((c) => c.id === article.categoryId)?.name;
   return { authorName, categoryName };
 }
 
@@ -49,19 +47,26 @@ export function ArticleCard({
           sizes="(max-width:1024px) 100vw, 60vw"
           priority={priority}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" aria-hidden="true" />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"
+          aria-hidden="true"
+        />
         <div className="relative mt-auto p-6 text-white sm:p-8">
           {categoryName && (
             <Badge className="mb-3 bg-white/15 text-white backdrop-blur-sm">{categoryName}</Badge>
           )}
-          <h3 className="text-balance text-2xl font-bold leading-snug sm:text-3xl">{article.title}</h3>
+          <h3 className="text-2xl leading-snug font-bold text-balance sm:text-3xl">
+            {article.title}
+          </h3>
           <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-white/80 sm:text-base">
             {article.excerpt}
           </p>
           <div className="mt-4 flex items-center gap-3 text-xs text-white/70 sm:text-sm">
             <span>{authorName}</span>
             <span aria-hidden="true">·</span>
-            <time dateTime={article.publishedAt}>{formatJalaliDate(article.publishedAt, 'D MMMM')}</time>
+            <time dateTime={article.publishedAt}>
+              {formatJalaliDate(article.publishedAt, 'D MMMM')}
+            </time>
           </div>
         </div>
       </Link>
@@ -85,14 +90,18 @@ export function ArticleCard({
           className="transition-transform duration-300 group-hover:scale-105"
         />
         <div className="flex min-w-0 flex-1 flex-col justify-center">
-          {categoryName && <Badge variant="default" className="mb-2 w-fit">{categoryName}</Badge>}
-          <h3 className="line-clamp-2 text-base font-semibold leading-snug group-hover:text-primary">
+          {categoryName && (
+            <Badge variant="default" className="mb-2 w-fit">
+              {categoryName}
+            </Badge>
+          )}
+          <h3 className="group-hover:text-primary line-clamp-2 text-base leading-snug font-semibold">
             {article.title}
           </h3>
-          <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+          <p className="text-muted-foreground mt-1.5 line-clamp-2 text-xs leading-relaxed sm:text-sm">
             {article.excerpt}
           </p>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-xs">
             {authorName} · {article.readingTimeMinutes} دقیقه
           </p>
         </div>
@@ -113,7 +122,7 @@ export function ArticleCard({
             sizes="(max-width:768px) 100vw, 33vw"
             priority={priority}
           />
-          <h3 className="mt-3 line-clamp-2 px-1 text-sm font-semibold leading-snug group-hover:text-primary">
+          <h3 className="group-hover:text-primary mt-3 line-clamp-2 px-1 text-sm leading-snug font-semibold">
             {article.title}
           </h3>
         </div>
@@ -141,24 +150,26 @@ export function ArticleCard({
           aria-hidden="true"
         />
         {categoryName && (
-          <Badge className="absolute start-3 top-3 bg-background/90 text-foreground backdrop-blur-sm">
+          <Badge className="bg-background/90 text-foreground absolute start-3 top-3 backdrop-blur-sm">
             {categoryName}
           </Badge>
         )}
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="line-clamp-2 text-lg font-semibold leading-snug group-hover:text-primary">
+        <h3 className="group-hover:text-primary line-clamp-2 text-lg leading-snug font-semibold">
           {article.title}
         </h3>
-        <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+        <p className="text-muted-foreground mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
           {article.excerpt}
         </p>
-        <div className="mt-4 flex items-center justify-between border-t border-border/70 pt-4 text-xs text-muted-foreground">
+        <div className="border-border/70 text-muted-foreground mt-4 flex items-center justify-between border-t pt-4 text-xs">
           <span>{authorName}</span>
           <div className="flex items-center gap-2">
             <span>{article.readingTimeMinutes} دقیقه</span>
             <span aria-hidden="true">·</span>
-            <time dateTime={article.publishedAt}>{formatJalaliDate(article.publishedAt, 'D MMMM')}</time>
+            <time dateTime={article.publishedAt}>
+              {formatJalaliDate(article.publishedAt, 'D MMMM')}
+            </time>
           </div>
         </div>
       </div>

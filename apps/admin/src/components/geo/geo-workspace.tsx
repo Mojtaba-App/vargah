@@ -24,20 +24,17 @@ import type { GeoAnalytics } from '@/lib/geo/analytics';
 import type { GeoEntitySource, GeoSummary, GeoSubscriberFilter } from '@/lib/geo/stats';
 import { cn, formatNumber } from '@/lib/utils';
 
-const GeoMap = dynamic(
-  () => import('@/components/geo/geo-map').then((mod) => mod.GeoMap),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        className="flex h-[min(70vh,520px)] w-full items-center justify-center rounded-2xl border border-border bg-muted/30 text-sm text-muted-foreground"
-        aria-busy="true"
-      >
-        در حال بارگذاری نقشه…
-      </div>
-    ),
-  },
-);
+const GeoMap = dynamic(() => import('@/components/geo/geo-map').then((mod) => mod.GeoMap), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="border-border bg-muted/30 text-muted-foreground flex h-[min(70vh,520px)] w-full items-center justify-center rounded-2xl border text-sm"
+      aria-busy="true"
+    >
+      در حال بارگذاری نقشه…
+    </div>
+  ),
+});
 
 type GeoStatsPack = {
   subscribers: { active: GeoSummary; all: GeoSummary };
@@ -72,12 +69,16 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
   const router = useRouter();
   const mapCaptureRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<WorkspaceTab>(initial?.tab ?? 'map');
-  const [entitySource, setEntitySource] = useState<GeoEntitySource>(initial?.source ?? 'subscribers');
+  const [entitySource, setEntitySource] = useState<GeoEntitySource>(
+    initial?.source ?? 'subscribers',
+  );
   const [filter, setFilter] = useState<GeoSubscriberFilter>(initial?.filter ?? 'active');
   const [layerId, setLayerId] = useState<MapLayerId>(mapConfig.defaultBasemap);
   const [mapView, setMapView] = useState<GeoMapView>('cities');
   const [selectedCityId, setSelectedCityId] = useState<string | null>(null);
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(initial?.province ?? null);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(
+    initial?.province ?? null,
+  );
   const [hiddenCustomLayerIds, setHiddenCustomLayerIds] = useState<string[]>([]);
   const [jobMessage, setJobMessage] = useState<string | null>(null);
   const [jobError, setJobError] = useState<string | null>(null);
@@ -159,8 +160,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
     if (initial.city) {
       const match = stats.cities.find(
         (city) =>
-          city.city === initial.city &&
-          (!initial.province || city.province === initial.province),
+          city.city === initial.city && (!initial.province || city.province === initial.province),
       );
       if (match) setSelectedCityId(match.cityId);
     }
@@ -196,9 +196,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
         <StatCard
           label="پرتراکم‌ترین شهر"
           value={stats.topCity?.count ?? 0}
-          hint={
-            stats.topCity ? `${stats.topCity.city} (${stats.topCity.province})` : '—'
-          }
+          hint={stats.topCity ? `${stats.topCity.city} (${stats.topCity.province})` : '—'}
         />
         <StatCard label="شهرهای دارای داده" value={stats.cities.length} />
       </div>
@@ -235,7 +233,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
             بازسازی ۳۰ روز
           </LoadingButton>
           {analytics.lastAggregatedAt && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               آخرین تجمیع: {new Date(analytics.lastAggregatedAt).toLocaleString('fa-IR')}
             </span>
           )}
@@ -250,16 +248,25 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
       <GeoSettingsHint googleReady={Boolean(mapConfig.googleApiKey)} />
 
       <div className="flex flex-wrap gap-2">
-        <FilterButton active={entitySource === 'subscribers'} onClick={() => setEntitySource('subscribers')}>
+        <FilterButton
+          active={entitySource === 'subscribers'}
+          onClick={() => setEntitySource('subscribers')}
+        >
           مشترکین
         </FilterButton>
         {mapConfig.showAdvertisersOnMap && (
-          <FilterButton active={entitySource === 'advertisers'} onClick={() => setEntitySource('advertisers')}>
+          <FilterButton
+            active={entitySource === 'advertisers'}
+            onClick={() => setEntitySource('advertisers')}
+          >
             آگهی‌دهندگان
           </FilterButton>
         )}
         {mapConfig.showMessagesOnMap && (
-          <FilterButton active={entitySource === 'messages'} onClick={() => setEntitySource('messages')}>
+          <FilterButton
+            active={entitySource === 'messages'}
+            onClick={() => setEntitySource('messages')}
+          >
             پیام‌ها
           </FilterButton>
         )}
@@ -291,13 +298,16 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
               <FilterButton active={mapView === 'heatmap'} onClick={() => setMapView('heatmap')}>
                 heatmap
               </FilterButton>
-              <FilterButton active={mapView === 'provinces'} onClick={() => setMapView('provinces')}>
+              <FilterButton
+                active={mapView === 'provinces'}
+                onClick={() => setMapView('provinces')}
+              >
                 choropleth استان
               </FilterButton>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">لایه نقشه:</span>
+              <span className="text-muted-foreground text-sm">لایه نقشه:</span>
               {mapConfig.layers.map((layer) => (
                 <Button
                   key={layer.id}
@@ -326,7 +336,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
           </div>
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-            <div ref={mapCaptureRef} className="rounded-2xl bg-card p-1">
+            <div ref={mapCaptureRef} className="bg-card rounded-2xl p-1">
               <GeoMap
                 cities={stats.cities}
                 provinceStats={stats.provinceStats}
@@ -378,9 +388,9 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
                   key: city.cityId,
                   label: (
                     <>
-                      <span className="me-2 text-xs text-muted-foreground">{index + 1}.</span>
+                      <span className="text-muted-foreground me-2 text-xs">{index + 1}.</span>
                       {city.city}
-                      <span className="ms-1 text-xs text-muted-foreground">({city.province})</span>
+                      <span className="text-muted-foreground ms-1 text-xs">({city.province})</span>
                     </>
                   ),
                   count: city.count,
@@ -390,14 +400,14 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
               />
 
               {bottomCities.length > 0 && (
-                <div className="rounded-2xl border border-border p-4">
+                <div className="border-border rounded-2xl border p-4">
                   <h3 className="font-semibold">شهرهای با کمترین پوشش</h3>
                   <ul className="mt-3 space-y-2 text-sm">
                     {bottomCities.map((city) => (
                       <li key={city.cityId} className="flex justify-between gap-2">
                         <span>
                           {city.city}
-                          <span className="text-xs text-muted-foreground"> — {city.province}</span>
+                          <span className="text-muted-foreground text-xs"> — {city.province}</span>
                         </span>
                         <span className="tabular-nums">{formatNumber(city.count)}</span>
                       </li>
@@ -411,7 +421,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
       ) : (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-muted-foreground">گزارش‌های تجمیعی و روند ۳۰ روزه</p>
+            <p className="text-muted-foreground text-sm">گزارش‌های تجمیعی و روند ۳۰ روزه</p>
             <div className="flex flex-wrap gap-2">
               <ExportToolbar
                 title="گزارش توزیع شهری"
@@ -451,7 +461,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
         </div>
       )}
 
-      <div className="rounded-2xl border border-border p-4">
+      <div className="border-border rounded-2xl border p-4">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-semibold">توزیع استانی</h3>
           {tab === 'map' && (
@@ -481,7 +491,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
                 setMapView('provinces');
               }}
               className={cn(
-                'flex items-center justify-between rounded-xl border border-border/70 px-3 py-2 text-start text-sm transition-colors hover:bg-muted',
+                'border-border/70 hover:bg-muted flex items-center justify-between rounded-xl border px-3 py-2 text-start text-sm transition-colors',
                 selectedProvince === row.province && 'border-primary/40 bg-primary/5',
               )}
             >
@@ -490,7 +500,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
             </button>
           ))}
           {stats.provinceStats.length === 0 && (
-            <p className="text-sm text-muted-foreground">داده استانی موجود نیست.</p>
+            <p className="text-muted-foreground text-sm">داده استانی موجود نیست.</p>
           )}
         </div>
       </div>
@@ -513,9 +523,7 @@ export function GeoWorkspace({ mapConfig, statsPack, analytics, initial }: GeoWo
           withCity: stats.totalWithCity,
           withoutCity: stats.totalWithoutCity,
           coveragePercent,
-          topCityLabel: stats.topCity
-            ? `${stats.topCity.city} (${stats.topCity.province})`
-            : null,
+          topCityLabel: stats.topCity ? `${stats.topCity.city} (${stats.topCity.province})` : null,
           topCities: stats.cities.slice(0, 10).map((city) => ({
             city: city.city,
             province: city.province,
@@ -549,13 +557,13 @@ function StatCard({
   suffix?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
-      <p className="text-sm text-muted-foreground">{label}</p>
+    <div className="border-border bg-card rounded-2xl border p-4">
+      <p className="text-muted-foreground text-sm">{label}</p>
       <p className="mt-1 text-2xl font-bold tabular-nums">
         {formatNumber(value)}
         {suffix}
       </p>
-      {hint && <p className="mt-1 truncate text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-muted-foreground mt-1 truncate text-xs">{hint}</p>}
     </div>
   );
 }
@@ -572,11 +580,11 @@ function SelectionCard({
   hint: string;
 }) {
   return (
-    <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
+    <div className="border-primary/30 bg-primary/5 rounded-2xl border p-4">
       <p className="font-semibold">{title}</p>
-      <p className="text-sm text-muted-foreground">{subtitle}</p>
+      <p className="text-muted-foreground text-sm">{subtitle}</p>
       <p className="mt-2 text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="text-xs text-muted-foreground">{hint}</p>
+      <p className="text-muted-foreground text-xs">{hint}</p>
     </div>
   );
 }
@@ -597,7 +605,7 @@ function RankList({
   }>;
 }) {
   return (
-    <div className="rounded-2xl border border-border p-4">
+    <div className="border-border rounded-2xl border p-4">
       <h3 className="font-semibold">{title}</h3>
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
@@ -606,7 +614,7 @@ function RankList({
               type="button"
               onClick={item.onClick}
               className={cn(
-                'flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-start text-sm transition-colors hover:bg-muted',
+                'hover:bg-muted flex w-full items-center justify-between gap-2 rounded-lg px-2 py-1.5 text-start text-sm transition-colors',
                 item.selected && 'bg-muted',
               )}
             >
@@ -615,7 +623,7 @@ function RankList({
             </button>
           </li>
         ))}
-        {items.length === 0 && <p className="text-sm text-muted-foreground">{empty}</p>}
+        {items.length === 0 && <p className="text-muted-foreground text-sm">{empty}</p>}
       </ul>
     </div>
   );

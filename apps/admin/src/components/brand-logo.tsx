@@ -32,8 +32,7 @@ export function BrandLogoMark({
 }: BrandLogoMarkProps) {
   const dimension = sizeMap[size];
   const primary = resolveBrandingAssetSrc(src, 'admin');
-  const fallback =
-    resolveBrandingAssetSrc(fallbackSrc, 'admin') ?? adminPath(DEFAULT_ADMIN_LOGO);
+  const fallback = resolveBrandingAssetSrc(fallbackSrc, 'admin') ?? adminPath(DEFAULT_ADMIN_LOGO);
   const [imgSrc, setImgSrc] = useState(primary ?? fallback);
 
   useEffect(() => {
@@ -47,10 +46,7 @@ export function BrandLogoMark({
       alt={alt}
       width={dimension}
       height={dimension}
-      className={cn(
-        'shrink-0 rounded-full object-cover shadow-md ring-1 ring-white/25',
-        className,
-      )}
+      className={cn('shrink-0 rounded-full object-cover shadow-md ring-1 ring-white/25', className)}
       onError={() => {
         const defaultSrc = adminPath(DEFAULT_ADMIN_LOGO);
         if (imgSrc !== fallback) setImgSrc(fallback);

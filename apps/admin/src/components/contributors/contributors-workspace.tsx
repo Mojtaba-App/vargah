@@ -72,14 +72,16 @@ function StatCard({
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:bg-muted/30',
-        active && 'border-primary ring-1 ring-primary/20',
+        'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+        onClick && 'hover:border-primary/40 hover:bg-muted/30 cursor-pointer',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-2xl font-bold tabular-nums">{typeof value === 'number' ? formatNumber(value) : value}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
-      {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
+      <p className="text-2xl font-bold tabular-nums">
+        {typeof value === 'number' ? formatNumber(value) : value}
+      </p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
+      {hint && <p className="text-muted-foreground mt-0.5 text-xs">{hint}</p>}
     </Comp>
   );
 }
@@ -98,7 +100,7 @@ function TabBar({
     : ['profiles', 'calendar'];
 
   return (
-    <div className="flex flex-wrap gap-2 border-b border-border pb-4">
+    <div className="border-border flex flex-wrap gap-2 border-b pb-4">
       {tabs.map((tab) => (
         <button
           key={tab}
@@ -150,8 +152,12 @@ export function ContributorsWorkspace({
   const [typeFilter, setTypeFilter] = useState<ContributorTypeFilter>('ALL');
   const [commissionFilter, setCommissionFilter] = useState<CommissionStatusFilter>('ALL');
   const [taskFilter, setTaskFilter] = useState<TaskStatusFilter>('ALL');
-  const [selectedContributor, setSelectedContributor] = useState<(typeof contributors)[0] | null>(null);
-  const [selectedCommission, setSelectedCommission] = useState<(typeof commissions)[0] | null>(null);
+  const [selectedContributor, setSelectedContributor] = useState<(typeof contributors)[0] | null>(
+    null,
+  );
+  const [selectedCommission, setSelectedCommission] = useState<(typeof commissions)[0] | null>(
+    null,
+  );
   const [selectedTask, setSelectedTask] = useState<(typeof tasks)[0] | null>(null);
   const [selectedCalendar, setSelectedCalendar] = useState<(typeof calendar)[0] | null>(null);
   const [createProfileOpen, setCreateProfileOpen] = useState(false);
@@ -159,7 +165,9 @@ export function ContributorsWorkspace({
   const [createTaskOpen, setCreateTaskOpen] = useState(false);
   const [createCalendarOpen, setCreateCalendarOpen] = useState(false);
   const [deleteTaskTarget, setDeleteTaskTarget] = useState<(typeof tasks)[0] | null>(null);
-  const [deleteCalendarTarget, setDeleteCalendarTarget] = useState<(typeof calendar)[0] | null>(null);
+  const [deleteCalendarTarget, setDeleteCalendarTarget] = useState<(typeof calendar)[0] | null>(
+    null,
+  );
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -175,10 +183,7 @@ export function ContributorsWorkspace({
     setTab(defaultTab);
   }, [defaultTab]);
 
-  const minDueDate = useMemo(
-    () => jalaliDatePartsToIso(getTodayJalaliParts(), 'start'),
-    [],
-  );
+  const minDueDate = useMemo(() => jalaliDatePartsToIso(getTodayJalaliParts(), 'start'), []);
 
   const refresh = () => {
     setMessage('به‌روزرسانی شد.');
@@ -223,7 +228,9 @@ export function ContributorsWorkspace({
     const weekMs = 7 * 24 * 60 * 60 * 1000;
     return {
       total: calendar.length,
-      thisWeek: calendar.filter((c) => c.dueDate.getTime() - now <= weekMs && c.dueDate.getTime() >= now).length,
+      thisWeek: calendar.filter(
+        (c) => c.dueDate.getTime() - now <= weekMs && c.dueDate.getTime() >= now,
+      ).length,
       overdue: calendar.filter((c) => c.isOverdue).length,
     };
   }, [calendar]);
@@ -233,7 +240,10 @@ export function ContributorsWorkspace({
     return contributors.filter((c) => {
       if (typeFilter !== 'ALL' && c.type !== typeFilter) return false;
       if (!q) return true;
-      return [c.userName, c.userEmail, CONTRIBUTOR_TYPE_LABELS[c.type]].join(' ').toLowerCase().includes(q);
+      return [c.userName, c.userEmail, CONTRIBUTOR_TYPE_LABELS[c.type]]
+        .join(' ')
+        .toLowerCase()
+        .includes(q);
     });
   }, [contributors, typeFilter, debouncedProfilesSearch]);
 
@@ -243,7 +253,10 @@ export function ContributorsWorkspace({
       if (commissionFilter === 'OVERDUE') return c.isOverdue;
       if (commissionFilter !== 'ALL' && c.status !== commissionFilter) return false;
       if (!q) return true;
-      return [c.title, c.description, c.assigneeName, c.contributorName].join(' ').toLowerCase().includes(q);
+      return [c.title, c.description, c.assigneeName, c.contributorName]
+        .join(' ')
+        .toLowerCase()
+        .includes(q);
     });
   }, [commissions, commissionFilter, debouncedCommissionsSearch]);
 
@@ -270,9 +283,13 @@ export function ContributorsWorkspace({
       accessorKey: 'userName',
       header: 'نام',
       cell: ({ row }) => (
-        <button type="button" className="text-start" onClick={() => setSelectedContributor(row.original)}>
-          <p className="font-medium text-primary hover:underline">{row.original.userName ?? '—'}</p>
-          <p className="text-xs text-muted-foreground">{row.original.userEmail ?? '—'}</p>
+        <button
+          type="button"
+          className="text-start"
+          onClick={() => setSelectedContributor(row.original)}
+        >
+          <p className="text-primary font-medium hover:underline">{row.original.userName ?? '—'}</p>
+          <p className="text-muted-foreground text-xs">{row.original.userEmail ?? '—'}</p>
         </button>
       ),
     },
@@ -296,7 +313,8 @@ export function ContributorsWorkspace({
       header: 'بار کاری',
       cell: ({ row }) => (
         <span className="text-sm tabular-nums">
-          {formatNumber(row.original.commissionCount)} سفارش · {formatNumber(row.original.taskCount)} وظیفه
+          {formatNumber(row.original.commissionCount)} سفارش ·{' '}
+          {formatNumber(row.original.taskCount)} وظیفه
         </span>
       ),
     },
@@ -333,8 +351,12 @@ export function ContributorsWorkspace({
       accessorKey: 'title',
       header: 'سوژه',
       cell: ({ row }) => (
-        <button type="button" className="max-w-xs text-start" onClick={() => setSelectedCommission(row.original)}>
-          <p className="font-medium text-primary hover:underline">{row.original.title}</p>
+        <button
+          type="button"
+          className="max-w-xs text-start"
+          onClick={() => setSelectedCommission(row.original)}
+        >
+          <p className="text-primary font-medium hover:underline">{row.original.title}</p>
           {row.original.isOverdue && (
             <Badge variant="destructive" className="mt-1">
               سررسید گذشته
@@ -352,7 +374,11 @@ export function ContributorsWorkspace({
         </Badge>
       ),
     },
-    { accessorKey: 'assigneeName', header: 'نویسنده', cell: ({ row }) => row.original.assigneeName ?? '—' },
+    {
+      accessorKey: 'assigneeName',
+      header: 'نویسنده',
+      cell: ({ row }) => row.original.assigneeName ?? '—',
+    },
     {
       accessorKey: 'dueDate',
       header: 'مهلت',
@@ -405,11 +431,15 @@ export function ContributorsWorkspace({
       header: 'عنوان',
       cell: ({ row }) => (
         <button type="button" onClick={() => setSelectedTask(row.original)}>
-          <span className="font-medium text-primary hover:underline">{row.original.title}</span>
+          <span className="text-primary font-medium hover:underline">{row.original.title}</span>
         </button>
       ),
     },
-    { accessorKey: 'contributorName', header: 'همکار', cell: ({ row }) => row.original.contributorName ?? '—' },
+    {
+      accessorKey: 'contributorName',
+      header: 'همکار',
+      cell: ({ row }) => row.original.contributorName ?? '—',
+    },
     {
       accessorKey: 'issueNumber',
       header: 'شماره',
@@ -437,7 +467,7 @@ export function ContributorsWorkspace({
       header: 'عنوان',
       cell: ({ row }) => (
         <button type="button" onClick={() => setSelectedCalendar(row.original)}>
-          <span className="font-medium text-primary hover:underline">{row.original.title}</span>
+          <span className="text-primary font-medium hover:underline">{row.original.title}</span>
         </button>
       ),
     },
@@ -460,7 +490,9 @@ export function ContributorsWorkspace({
       accessorKey: 'description',
       header: 'توضیح',
       cell: ({ row }) => (
-        <p className="line-clamp-2 max-w-xs text-sm text-muted-foreground">{row.original.description ?? '—'}</p>
+        <p className="text-muted-foreground line-clamp-2 max-w-xs text-sm">
+          {row.original.description ?? '—'}
+        </p>
       ),
     },
     ...(canManage
@@ -585,11 +617,36 @@ export function ContributorsWorkspace({
       {tab === 'profiles' && (
         <>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-            <StatCard label="کل همکاران" value={profileStats.total} active={typeFilter === 'ALL'} onClick={() => setTypeFilter('ALL')} />
-            <StatCard label="نویسندگان" value={profileStats.writers} active={typeFilter === ContributorType.WRITER} onClick={() => setTypeFilter(ContributorType.WRITER)} />
-            <StatCard label="خبرنگاران" value={profileStats.journalists} active={typeFilter === ContributorType.JOURNALIST} onClick={() => setTypeFilter(ContributorType.JOURNALIST)} />
-            <StatCard label="طراحان" value={profileStats.designers} active={typeFilter === ContributorType.DESIGNER} onClick={() => setTypeFilter(ContributorType.DESIGNER)} />
-            <StatCard label="عکاسان" value={profileStats.photographers} active={typeFilter === ContributorType.PHOTOGRAPHER} onClick={() => setTypeFilter(ContributorType.PHOTOGRAPHER)} />
+            <StatCard
+              label="کل همکاران"
+              value={profileStats.total}
+              active={typeFilter === 'ALL'}
+              onClick={() => setTypeFilter('ALL')}
+            />
+            <StatCard
+              label="نویسندگان"
+              value={profileStats.writers}
+              active={typeFilter === ContributorType.WRITER}
+              onClick={() => setTypeFilter(ContributorType.WRITER)}
+            />
+            <StatCard
+              label="خبرنگاران"
+              value={profileStats.journalists}
+              active={typeFilter === ContributorType.JOURNALIST}
+              onClick={() => setTypeFilter(ContributorType.JOURNALIST)}
+            />
+            <StatCard
+              label="طراحان"
+              value={profileStats.designers}
+              active={typeFilter === ContributorType.DESIGNER}
+              onClick={() => setTypeFilter(ContributorType.DESIGNER)}
+            />
+            <StatCard
+              label="عکاسان"
+              value={profileStats.photographers}
+              active={typeFilter === ContributorType.PHOTOGRAPHER}
+              onClick={() => setTypeFilter(ContributorType.PHOTOGRAPHER)}
+            />
           </div>
           <Card className="rounded-2xl">
             <CardContent className="space-y-4 pt-6">
@@ -601,12 +658,20 @@ export function ContributorsWorkspace({
                   placeholder="نام، ایمیل..."
                 />
                 {canManage && (
-                  <Button type="button" className="rounded-xl" onClick={() => setCreateProfileOpen(true)}>
+                  <Button
+                    type="button"
+                    className="rounded-xl"
+                    onClick={() => setCreateProfileOpen(true)}
+                  >
                     پروفایل جدید
                   </Button>
                 )}
               </div>
-              <DataTable columns={contributorColumns} data={filteredContributors} showSearch={false} />
+              <DataTable
+                columns={contributorColumns}
+                data={filteredContributors}
+                showSearch={false}
+              />
             </CardContent>
           </Card>
         </>
@@ -615,10 +680,29 @@ export function ContributorsWorkspace({
       {tab === 'commissions' && (
         <>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard label="کل سفارش‌ها" value={commissionStats.total} active={commissionFilter === 'ALL'} onClick={() => setCommissionFilter('ALL')} />
-            <StatCard label="فعال" value={commissionStats.active} onClick={() => setCommissionFilter(CommissionStatus.IN_WRITING)} />
-            <StatCard label="در بازبینی" value={commissionStats.inReview} active={commissionFilter === CommissionStatus.IN_REVIEW} onClick={() => setCommissionFilter(CommissionStatus.IN_REVIEW)} />
-            <StatCard label="سررسید گذشته" value={commissionStats.overdue} active={commissionFilter === 'OVERDUE'} onClick={() => setCommissionFilter('OVERDUE')} />
+            <StatCard
+              label="کل سفارش‌ها"
+              value={commissionStats.total}
+              active={commissionFilter === 'ALL'}
+              onClick={() => setCommissionFilter('ALL')}
+            />
+            <StatCard
+              label="فعال"
+              value={commissionStats.active}
+              onClick={() => setCommissionFilter(CommissionStatus.IN_WRITING)}
+            />
+            <StatCard
+              label="در بازبینی"
+              value={commissionStats.inReview}
+              active={commissionFilter === CommissionStatus.IN_REVIEW}
+              onClick={() => setCommissionFilter(CommissionStatus.IN_REVIEW)}
+            />
+            <StatCard
+              label="سررسید گذشته"
+              value={commissionStats.overdue}
+              active={commissionFilter === 'OVERDUE'}
+              onClick={() => setCommissionFilter('OVERDUE')}
+            />
           </div>
           <Card className="rounded-2xl">
             <CardContent className="space-y-4 pt-6">
@@ -630,12 +714,20 @@ export function ContributorsWorkspace({
                   placeholder="سوژه، نویسنده..."
                 />
                 {canManage && (
-                  <Button type="button" className="rounded-xl" onClick={() => setCreateCommissionOpen(true)}>
+                  <Button
+                    type="button"
+                    className="rounded-xl"
+                    onClick={() => setCreateCommissionOpen(true)}
+                  >
                     سفارش جدید
                   </Button>
                 )}
               </div>
-              <DataTable columns={commissionColumns} data={filteredCommissions} showSearch={false} />
+              <DataTable
+                columns={commissionColumns}
+                data={filteredCommissions}
+                showSearch={false}
+              />
             </CardContent>
           </Card>
         </>
@@ -644,10 +736,25 @@ export function ContributorsWorkspace({
       {tab === 'tasks' && canManage && (
         <>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <StatCard label="کل وظایف" value={taskStats.total} active={taskFilter === 'ALL'} onClick={() => setTaskFilter('ALL')} />
+            <StatCard
+              label="کل وظایف"
+              value={taskStats.total}
+              active={taskFilter === 'ALL'}
+              onClick={() => setTaskFilter('ALL')}
+            />
             <StatCard label="فعال" value={taskStats.active} />
-            <StatCard label="در حال انجام" value={taskStats.inProgress} active={taskFilter === TaskStatus.IN_PROGRESS} onClick={() => setTaskFilter(TaskStatus.IN_PROGRESS)} />
-            <StatCard label="سررسید گذشته" value={taskStats.overdue} active={taskFilter === 'OVERDUE'} onClick={() => setTaskFilter('OVERDUE')} />
+            <StatCard
+              label="در حال انجام"
+              value={taskStats.inProgress}
+              active={taskFilter === TaskStatus.IN_PROGRESS}
+              onClick={() => setTaskFilter(TaskStatus.IN_PROGRESS)}
+            />
+            <StatCard
+              label="سررسید گذشته"
+              value={taskStats.overdue}
+              active={taskFilter === 'OVERDUE'}
+              onClick={() => setTaskFilter('OVERDUE')}
+            />
           </div>
           <Card className="rounded-2xl">
             <CardContent className="space-y-4 pt-6">
@@ -658,7 +765,11 @@ export function ContributorsWorkspace({
                   onChange={(value) => setSearchByTab((prev) => ({ ...prev, tasks: value }))}
                   placeholder="عنوان، همکار..."
                 />
-                <Button type="button" className="rounded-xl" onClick={() => setCreateTaskOpen(true)}>
+                <Button
+                  type="button"
+                  className="rounded-xl"
+                  onClick={() => setCreateTaskOpen(true)}
+                >
                   وظیفه جدید
                 </Button>
               </div>
@@ -685,7 +796,11 @@ export function ContributorsWorkspace({
                   placeholder="عنوان، مسئول..."
                 />
                 {canManage && (
-                  <Button type="button" className="rounded-xl" onClick={() => setCreateCalendarOpen(true)}>
+                  <Button
+                    type="button"
+                    className="rounded-xl"
+                    onClick={() => setCreateCalendarOpen(true)}
+                  >
                     رویداد جدید
                   </Button>
                 )}
@@ -698,14 +813,20 @@ export function ContributorsWorkspace({
 
       {/* Profile detail panel */}
       {selectedContributor && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h3 className="text-lg font-bold">{selectedContributor.userName}</h3>
-                <p className="text-sm text-muted-foreground">{selectedContributor.userEmail}</p>
+                <p className="text-muted-foreground text-sm">{selectedContributor.userEmail}</p>
               </div>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelectedContributor(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                onClick={() => setSelectedContributor(null)}
+              >
                 بستن
               </Button>
             </div>
@@ -714,12 +835,21 @@ export function ContributorsWorkspace({
                 {CONTRIBUTOR_TYPE_LABELS[selectedContributor.type]}
               </Badge>
               {selectedContributor.avgRating && (
-                <Badge variant="secondary">امتیاز {selectedContributor.avgRating.toFixed(1)} / ۵</Badge>
+                <Badge variant="secondary">
+                  امتیاز {selectedContributor.avgRating.toFixed(1)} / ۵
+                </Badge>
               )}
             </div>
-            {selectedContributor.bio && <p className="text-sm text-muted-foreground">{selectedContributor.bio}</p>}
+            {selectedContributor.bio && (
+              <p className="text-muted-foreground text-sm">{selectedContributor.bio}</p>
+            )}
             <div className="grid gap-2 text-sm sm:grid-cols-2">
-              <p>حق‌التحریر: {selectedContributor.feePerWord ? `${formatPrice(selectedContributor.feePerWord)} ت/کلمه` : '—'}</p>
+              <p>
+                حق‌التحریر:{' '}
+                {selectedContributor.feePerWord
+                  ? `${formatPrice(selectedContributor.feePerWord)} ت/کلمه`
+                  : '—'}
+              </p>
               <p>شروع همکاری: {formatJalali(selectedContributor.joinedAt)}</p>
               <p>سفارش‌ها: {formatNumber(selectedContributor.commissionCount)}</p>
               <p>وظایف: {formatNumber(selectedContributor.taskCount)}</p>
@@ -728,7 +858,7 @@ export function ContributorsWorkspace({
               <div className="space-y-2">
                 <p className="text-sm font-semibold">آخرین امتیازها</p>
                 {selectedContributor.recentRatings.map((r, i) => (
-                  <div key={i} className="rounded-xl border border-border bg-muted/20 p-2 text-sm">
+                  <div key={i} className="border-border bg-muted/20 rounded-xl border p-2 text-sm">
                     <span className="font-bold">{r.score}/۵</span>
                     {r.note && <span className="text-muted-foreground"> — {r.note}</span>}
                   </div>
@@ -741,12 +871,14 @@ export function ContributorsWorkspace({
 
       {/* Commission detail panel */}
       {selectedCommission && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h3 className="text-lg font-bold">{selectedCommission.title}</h3>
-                <p className="text-sm text-muted-foreground">سردبیر: {selectedCommission.createdByName}</p>
+                <p className="text-muted-foreground text-sm">
+                  سردبیر: {selectedCommission.createdByName}
+                </p>
               </div>
               <div className="flex gap-2">
                 <Link href={`/contributors/workflow/${selectedCommission.id}`}>
@@ -754,7 +886,13 @@ export function ContributorsWorkspace({
                     صفحه جزئیات
                   </Button>
                 </Link>
-                <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelectedCommission(null)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="rounded-xl"
+                  onClick={() => setSelectedCommission(null)}
+                >
                   بستن
                 </Button>
               </div>
@@ -763,12 +901,16 @@ export function ContributorsWorkspace({
               {COMMISSION_STATUS_LABELS[selectedCommission.status]}
             </Badge>
             {selectedCommission.description && (
-              <p className="whitespace-pre-wrap text-sm text-muted-foreground">{selectedCommission.description}</p>
+              <p className="text-muted-foreground text-sm whitespace-pre-wrap">
+                {selectedCommission.description}
+              </p>
             )}
             <div className="grid gap-2 text-sm sm:grid-cols-2">
               <p>نویسنده: {selectedCommission.assigneeName ?? '—'}</p>
               <p>همکار: {selectedCommission.contributorName ?? '—'}</p>
-              <p>مهلت: {selectedCommission.dueDate ? formatJalali(selectedCommission.dueDate) : '—'}</p>
+              <p>
+                مهلت: {selectedCommission.dueDate ? formatJalali(selectedCommission.dueDate) : '—'}
+              </p>
             </div>
             {canManage && (
               <CommissionTransitionButtons
@@ -784,11 +926,17 @@ export function ContributorsWorkspace({
 
       {/* Task detail panel */}
       {selectedTask && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <h3 className="text-lg font-bold">{selectedTask.title}</h3>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelectedTask(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                onClick={() => setSelectedTask(null)}
+              >
                 بستن
               </Button>
             </div>
@@ -796,7 +944,7 @@ export function ContributorsWorkspace({
               {TASK_STATUS_LABELS[selectedTask.status]}
             </Badge>
             {selectedTask.description && (
-              <p className="text-sm text-muted-foreground">{selectedTask.description}</p>
+              <p className="text-muted-foreground text-sm">{selectedTask.description}</p>
             )}
             <div className="grid gap-2 text-sm sm:grid-cols-2">
               <p>همکار: {selectedTask.contributorName ?? '—'}</p>
@@ -810,11 +958,17 @@ export function ContributorsWorkspace({
 
       {/* Calendar detail panel */}
       {selectedCalendar && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <h3 className="text-lg font-bold">{selectedCalendar.title}</h3>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelectedCalendar(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                onClick={() => setSelectedCalendar(null)}
+              >
                 بستن
               </Button>
             </div>
@@ -823,14 +977,18 @@ export function ContributorsWorkspace({
               <p>مهلت: {formatJalali(selectedCalendar.dueDate)}</p>
             </div>
             {selectedCalendar.description && (
-              <p className="text-sm text-muted-foreground">{selectedCalendar.description}</p>
+              <p className="text-muted-foreground text-sm">{selectedCalendar.description}</p>
             )}
           </CardContent>
         </Card>
       )}
 
       {/* Modals */}
-      <ModalDialog open={createProfileOpen} title="پروفایل همکار جدید" onClose={() => setCreateProfileOpen(false)}>
+      <ModalDialog
+        open={createProfileOpen}
+        title="پروفایل همکار جدید"
+        onClose={() => setCreateProfileOpen(false)}
+      >
         <form onSubmit={handleCreateProfile} className="space-y-4">
           <div>
             <Label required>کاربر</Label>
@@ -855,24 +1013,47 @@ export function ContributorsWorkspace({
           </div>
           <div>
             <Label htmlFor="feePerWord">حق‌التحریر (تومان/کلمه)</Label>
-            <Input id="feePerWord" name="feePerWord" type="number" min={0} dir="ltr" className="mt-2 rounded-xl" disabled={isPending} />
+            <Input
+              id="feePerWord"
+              name="feePerWord"
+              type="number"
+              min={0}
+              dir="ltr"
+              className="mt-2 rounded-xl"
+              disabled={isPending}
+            />
           </div>
           <div>
             <Label htmlFor="bio">بیوگرافی</Label>
-            <Textarea id="bio" name="bio" rows={3} className="mt-2 rounded-xl" disabled={isPending} />
+            <Textarea
+              id="bio"
+              name="bio"
+              rows={3}
+              className="mt-2 rounded-xl"
+              disabled={isPending}
+            />
           </div>
           <div className="flex gap-2">
             <LoadingButton type="submit" loading={isPending} className="rounded-xl">
               ایجاد پروفایل
             </LoadingButton>
-            <Button type="button" variant="outline" className="rounded-xl" onClick={() => setCreateProfileOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl"
+              onClick={() => setCreateProfileOpen(false)}
+            >
               انصراف
             </Button>
           </div>
         </form>
       </ModalDialog>
 
-      <ModalDialog open={createCommissionOpen} title="سفارش مطلب جدید" onClose={() => setCreateCommissionOpen(false)}>
+      <ModalDialog
+        open={createCommissionOpen}
+        title="سفارش مطلب جدید"
+        onClose={() => setCreateCommissionOpen(false)}
+      >
         <form onSubmit={handleCreateCommission} className="space-y-4">
           <div>
             <Label required>عنوان سوژه</Label>
@@ -880,7 +1061,12 @@ export function ContributorsWorkspace({
           </div>
           <div>
             <Label>شرح</Label>
-            <Textarea name="description" rows={3} className="mt-2 rounded-xl" disabled={isPending} />
+            <Textarea
+              name="description"
+              rows={3}
+              className="mt-2 rounded-xl"
+              disabled={isPending}
+            />
           </div>
           <div>
             <Label>نویسنده</Label>
@@ -927,14 +1113,23 @@ export function ContributorsWorkspace({
             <LoadingButton type="submit" loading={isPending} className="rounded-xl">
               ایجاد سفارش
             </LoadingButton>
-            <Button type="button" variant="outline" className="rounded-xl" onClick={() => setCreateCommissionOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl"
+              onClick={() => setCreateCommissionOpen(false)}
+            >
               انصراف
             </Button>
           </div>
         </form>
       </ModalDialog>
 
-      <ModalDialog open={createTaskOpen} title="وظیفه جدید" onClose={() => setCreateTaskOpen(false)}>
+      <ModalDialog
+        open={createTaskOpen}
+        title="وظیفه جدید"
+        onClose={() => setCreateTaskOpen(false)}
+      >
         <form onSubmit={handleCreateTask} className="space-y-4">
           <div>
             <Label required>عنوان</Label>
@@ -985,14 +1180,23 @@ export function ContributorsWorkspace({
             <LoadingButton type="submit" loading={isPending} className="rounded-xl">
               ایجاد وظیفه
             </LoadingButton>
-            <Button type="button" variant="outline" className="rounded-xl" onClick={() => setCreateTaskOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl"
+              onClick={() => setCreateTaskOpen(false)}
+            >
               انصراف
             </Button>
           </div>
         </form>
       </ModalDialog>
 
-      <ModalDialog open={createCalendarOpen} title="رویداد تقویم" onClose={() => setCreateCalendarOpen(false)}>
+      <ModalDialog
+        open={createCalendarOpen}
+        title="رویداد تقویم"
+        onClose={() => setCreateCalendarOpen(false)}
+      >
         <form onSubmit={handleCreateCalendar} className="space-y-4">
           <div>
             <Label required>عنوان</Label>
@@ -1020,13 +1224,23 @@ export function ContributorsWorkspace({
           />
           <div>
             <Label>توضیح</Label>
-            <Textarea name="description" rows={2} className="mt-2 rounded-xl" disabled={isPending} />
+            <Textarea
+              name="description"
+              rows={2}
+              className="mt-2 rounded-xl"
+              disabled={isPending}
+            />
           </div>
           <div className="flex gap-2">
             <LoadingButton type="submit" loading={isPending} className="rounded-xl">
               ثبت رویداد
             </LoadingButton>
-            <Button type="button" variant="outline" className="rounded-xl" onClick={() => setCreateCalendarOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-xl"
+              onClick={() => setCreateCalendarOpen(false)}
+            >
               انصراف
             </Button>
           </div>

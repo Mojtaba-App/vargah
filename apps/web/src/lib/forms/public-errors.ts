@@ -52,7 +52,5 @@ export type FormActionSuccess<T extends object = object> = {
   ok: true;
 } & T;
 
-export type FormActionResult<
-  F extends string = string,
-  S extends object = object,
-> = FormActionSuccess<S> | FormActionFailure<F>;
+export type FormActionResult<F extends string = string, S extends object = object> =
+  FormActionSuccess<S> | FormActionFailure<F>;

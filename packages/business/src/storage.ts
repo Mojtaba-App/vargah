@@ -15,9 +15,9 @@ export type StoredObject = {
 function isS3Configured() {
   return Boolean(
     process.env.S3_ENDPOINT?.trim() &&
-      process.env.S3_ACCESS_KEY?.trim() &&
-      process.env.S3_SECRET_KEY?.trim() &&
-      process.env.S3_BUCKET?.trim(),
+    process.env.S3_ACCESS_KEY?.trim() &&
+    process.env.S3_SECRET_KEY?.trim() &&
+    process.env.S3_BUCKET?.trim(),
   );
 }
 

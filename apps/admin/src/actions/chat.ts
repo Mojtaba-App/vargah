@@ -1,11 +1,6 @@
 'use server';
 
-import {
-  AuditAction,
-  ChatConversationStatus,
-  ChatSenderType,
-  prisma,
-} from '@vargah/database';
+import { AuditAction, ChatConversationStatus, ChatSenderType, prisma } from '@vargah/database';
 import { sanitizePlainText } from '@vargah/security/sanitize';
 
 import { recordAuditLog } from '@/lib/audit/record';
@@ -179,7 +174,11 @@ export async function pollChatInbox(params?: {
 }> {
   const session = await requirePermission(PERMISSIONS.CHAT_VIEW);
   const ip = await getClientIp();
-  await rateLimitOrThrow(`chat:poll:admin:${session.user.id}:${ip}`, CHAT_POLL_LIMIT, CHAT_POLL_WINDOW_MS);
+  await rateLimitOrThrow(
+    `chat:poll:admin:${session.user.id}:${ip}`,
+    CHAT_POLL_LIMIT,
+    CHAT_POLL_WINDOW_MS,
+  );
 
   const conversations = await queryConversations({
     status: params?.status,
@@ -283,9 +282,7 @@ export async function assignChat(conversationId: string, assignedToId: string | 
     where: { id: conversationId },
     data: {
       assignedToId: assignedToId || null,
-      ...(assignedToId
-        ? { status: ChatConversationStatus.OPEN }
-        : {}),
+      ...(assignedToId ? { status: ChatConversationStatus.OPEN } : {}),
     },
   });
 

@@ -83,13 +83,13 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">
         {typeof value === 'number' ? formatNumber(value) : value}
       </p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
@@ -217,7 +217,12 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
 
   return (
     <div className="space-y-6">
-      <div className={cn('grid gap-3 sm:grid-cols-2', showOnlineUsers ? 'xl:grid-cols-5' : 'xl:grid-cols-4')}>
+      <div
+        className={cn(
+          'grid gap-3 sm:grid-cols-2',
+          showOnlineUsers ? 'xl:grid-cols-5' : 'xl:grid-cols-4',
+        )}
+      >
         {showOnlineUsers ? <StatCard label="کاربران آنلاین" value={stats.online} /> : null}
         <StatCard
           label="رویدادهای امروز"
@@ -246,7 +251,9 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="font-semibold">کاربران آنلاین</p>
-                <p className="text-sm text-muted-foreground">نشست‌های فعال پنل — به‌روزرسانی خودکار</p>
+                <p className="text-muted-foreground text-sm">
+                  نشست‌های فعال پنل — به‌روزرسانی خودکار
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="rounded-full">
@@ -266,7 +273,9 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
             </div>
 
             {onlineUsers.length === 0 ? (
-              <p className="text-sm text-muted-foreground">در حال حاضر کاربر آنلاینی ثبت نشده است.</p>
+              <p className="text-muted-foreground text-sm">
+                در حال حاضر کاربر آنلاینی ثبت نشده است.
+              </p>
             ) : (
               <div className="flex gap-3 overflow-x-auto pb-1">
                 {onlineUsers.map((user) => {
@@ -280,8 +289,8 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                         setSelectedId(null);
                       }}
                       className={cn(
-                        'surface-card min-w-[250px] shrink-0 rounded-xl p-3 text-start transition-colors hover:border-primary/40',
-                        userFilter === user.userId && 'border-primary ring-1 ring-primary/20',
+                        'surface-card hover:border-primary/40 min-w-[250px] shrink-0 rounded-xl p-3 text-start transition-colors',
+                        userFilter === user.userId && 'border-primary ring-primary/20 ring-1',
                       )}
                     >
                       <div className="flex items-start gap-3">
@@ -292,21 +301,23 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                           online
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium">{user.name ?? user.email ?? 'کاربر'}</p>
-                          <p className="truncate text-xs text-muted-foreground">
+                          <p className="truncate font-medium">
+                            {user.name ?? user.email ?? 'کاربر'}
+                          </p>
+                          <p className="text-muted-foreground truncate text-xs">
                             {ROLE_LABELS[user.role] ?? user.role}
                           </p>
-                          <p className="mt-1 text-xs text-muted-foreground">
+                          <p className="text-muted-foreground mt-1 text-xs">
                             نشست از <RelativeTime value={user.lastSeenAt} />
                           </p>
                           {user.recentAction ? (
-                            <p className="mt-1 line-clamp-1 text-[11px] text-primary/90">
+                            <p className="text-primary/90 mt-1 line-clamp-1 text-[11px]">
                               آخرین فعالیت: {user.recentAction}
                             </p>
                           ) : null}
                         </div>
                       </div>
-                      <div className="mt-3 border-t border-border/60 pt-3">
+                      <div className="border-border/60 mt-3 border-t pt-3">
                         <ClientInfoBadge
                           os={client.os}
                           osLabel={client.osLabel}
@@ -335,7 +346,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
           <select
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value as ActionFilter)}
-            className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
+            className="border-border bg-background h-10 rounded-xl border px-3 text-sm"
             aria-label="فیلتر عملیات"
           >
             <option value="ALL">همه عملیات</option>
@@ -348,7 +359,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
           <select
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value)}
-            className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
+            className="border-border bg-background h-10 rounded-xl border px-3 text-sm"
             aria-label="فیلتر بخش"
           >
             <option value="ALL">همه بخش‌ها</option>
@@ -362,7 +373,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
             <select
               value={userFilter}
               onChange={(e) => setUserFilter(e.target.value)}
-              className="h-10 max-w-[12rem] rounded-xl border border-border bg-background px-3 text-sm"
+              className="border-border bg-background h-10 max-w-[12rem] rounded-xl border px-3 text-sm"
               aria-label="فیلتر کاربر"
             >
               <option value="ALL">همه کاربران</option>
@@ -433,7 +444,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
       <div className="grid gap-6 xl:grid-cols-3">
         <div className={cn('space-y-3', selected ? 'xl:col-span-2' : 'xl:col-span-3')}>
           {pageItems.length === 0 ? (
-            <div className="surface-card rounded-2xl p-12 text-center text-muted-foreground">
+            <div className="surface-card text-muted-foreground rounded-2xl p-12 text-center">
               رویدادی با این فیلتر یافت نشد.
             </div>
           ) : (
@@ -446,8 +457,8 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                   setShowRawChanges(false);
                 }}
                 className={cn(
-                  'surface-card w-full rounded-2xl p-4 text-start transition-colors hover:border-primary/40',
-                  selectedId === log.id && 'border-primary ring-1 ring-primary/20',
+                  'surface-card hover:border-primary/40 w-full rounded-2xl p-4 text-start transition-colors',
+                  selectedId === log.id && 'border-primary ring-primary/20 ring-1',
                 )}
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -466,7 +477,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                         <Badge variant="secondary">{getEntityLabel(log.entity)}</Badge>
                       </div>
                       <p className="mt-1 text-sm leading-6">{log.message}</p>
-                      <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                      <div className="text-muted-foreground mt-2 flex flex-wrap items-center gap-3 text-xs">
                         <time dateTime={log.createdAt}>{formatJalali(log.createdAt, true)}</time>
                         <RelativeTime value={log.createdAt} />
                       </div>
@@ -485,7 +496,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
           )}
 
           {filtered.length > PAGE_SIZE ? (
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border px-4 py-3 text-sm">
+            <div className="border-border flex flex-wrap items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-sm">
               <p className="text-muted-foreground">
                 نمایش {formatNumber((pageSafe - 1) * PAGE_SIZE + 1)} تا{' '}
                 {formatNumber(Math.min(pageSafe * PAGE_SIZE, filtered.length))} از{' '}
@@ -502,7 +513,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                 >
                   قبلی
                 </Button>
-                <span className="tabular-nums text-muted-foreground">
+                <span className="text-muted-foreground tabular-nums">
                   {formatNumber(pageSafe)} / {formatNumber(totalPages)}
                 </span>
                 <Button
@@ -540,12 +551,12 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                 <div className="min-w-0">
                   <p className="truncate font-medium">{selected.userName}</p>
                   {selected.user ? (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {ROLE_LABELS[selected.user.role] ?? selected.user.role}
                       {selected.user.email ? ` · ${selected.user.email}` : ''}
                     </p>
                   ) : (
-                    <p className="text-xs text-muted-foreground">رویداد سیستمی</p>
+                    <p className="text-muted-foreground text-xs">رویداد سیستمی</p>
                   )}
                 </div>
               </div>
@@ -558,7 +569,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                 <p>
                   <span className="text-muted-foreground">زمان: </span>
                   {formatJalali(selected.createdAt, true)}
-                  <span className="ms-2 text-xs text-muted-foreground">
+                  <span className="text-muted-foreground ms-2 text-xs">
                     (<RelativeTime value={selected.createdAt} />
                   </span>
                 </p>
@@ -571,7 +582,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                   {getActionLabel(selected.action)}
                 </p>
                 {selected.entityId ? (
-                  <p className="break-all font-mono text-xs" dir="ltr">
+                  <p className="font-mono text-xs break-all" dir="ltr">
                     شناسه: {selected.entityId}
                   </p>
                 ) : null}
@@ -587,7 +598,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
               {selected.changes != null ? (
                 <div className="space-y-2">
                   <p className="text-sm font-medium">خلاصه تغییرات</p>
-                  <p className="text-sm leading-6 text-muted-foreground">
+                  <p className="text-muted-foreground text-sm leading-6">
                     {formatChangesSummary(selected.entity, selected.changes) ?? '—'}
                   </p>
                   <Button
@@ -601,7 +612,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
                   </Button>
                   {showRawChanges ? (
                     <pre
-                      className="max-h-48 overflow-auto rounded-xl bg-muted/50 p-3 text-xs"
+                      className="bg-muted/50 max-h-48 overflow-auto rounded-xl p-3 text-xs"
                       dir="ltr"
                     >
                       {JSON.stringify(selected.changes, null, 2)}
@@ -613,7 +624,7 @@ export function AuditWorkspace({ logs, onlineUsers, showOnlineUsers = true }: Au
               {selected.userAgent ? (
                 <div className="space-y-1">
                   <p className="text-sm font-medium">مرورگر / دستگاه</p>
-                  <p className="break-all text-xs leading-5 text-muted-foreground" dir="ltr">
+                  <p className="text-muted-foreground text-xs leading-5 break-all" dir="ltr">
                     {selected.userAgent}
                   </p>
                 </div>

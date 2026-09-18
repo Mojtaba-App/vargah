@@ -111,12 +111,12 @@ export function DataTable<T>({
           </Button>
         )}
       </div>
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <div className="border-border overflow-x-auto rounded-xl border">
         <table id={tableId} className="w-full text-sm">
           <caption className="sr-only">{caption}</caption>
           <thead>
             {table.getHeaderGroups().map((hg) => (
-              <tr key={hg.id} className="border-b border-border bg-muted/50">
+              <tr key={hg.id} className="border-border bg-muted/50 border-b">
                 {hg.headers.map((header) => {
                   const canSort = header.column.getCanSort();
                   const sorted = header.column.getIsSorted();
@@ -130,7 +130,7 @@ export function DataTable<T>({
                       {canSort ? (
                         <button
                           type="button"
-                          className="inline-flex items-center gap-1 rounded-md text-start hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          className="hover:text-primary focus-visible:ring-ring inline-flex items-center gap-1 rounded-md text-start focus-visible:ring-2 focus-visible:outline-none"
                           onClick={header.column.getToggleSortingHandler()}
                         >
                           {flexRender(header.column.columnDef.header, header.getContext())}
@@ -157,13 +157,16 @@ export function DataTable<T>({
           <tbody>
             {table.getRowModel().rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-8 text-center text-muted-foreground">
+                <td
+                  colSpan={columns.length}
+                  className="text-muted-foreground px-4 py-8 text-center"
+                >
                   {emptyMessage}
                 </td>
               </tr>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-border last:border-0 hover:bg-muted/30">
+                <tr key={row.id} className="border-border hover:bg-muted/30 border-b last:border-0">
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="px-4 py-3">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -176,7 +179,7 @@ export function DataTable<T>({
         </table>
       </div>
       <div className="flex items-center justify-between gap-3">
-        <p id={statusId} className="text-sm text-muted-foreground" aria-live="polite">
+        <p id={statusId} className="text-muted-foreground text-sm" aria-live="polite">
           {filteredCount.toLocaleString('fa-IR')} مورد
           {pageCount > 1
             ? ` · صفحه ${(pageIndex + 1).toLocaleString('fa-IR')} از ${pageCount.toLocaleString('fa-IR')}`
@@ -231,7 +234,7 @@ export function PageHeader({
       <div className={cn('flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between')}>
         <div>
           <h1 className="text-xl font-bold sm:text-2xl">{title}</h1>
-          {description && <p className="text-sm text-muted-foreground">{description}</p>}
+          {description && <p className="text-muted-foreground text-sm">{description}</p>}
         </div>
         {action}
       </div>

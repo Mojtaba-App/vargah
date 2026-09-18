@@ -1,10 +1,6 @@
 import Link from 'next/link';
 
-import {
-  AlertTriangleIcon,
-  BellAlertIcon,
-  InfoIcon,
-} from '@/components/dashboard/dashboard-icons';
+import { AlertTriangleIcon, BellAlertIcon, InfoIcon } from '@/components/dashboard/dashboard-icons';
 import type { DashboardNotification } from '@/lib/dashboard-metrics';
 import { cn } from '@/lib/utils';
 
@@ -28,14 +24,14 @@ const typeStyles = {
 
 export function NotificationsPanel({ items }: { items: DashboardNotification[] }) {
   return (
-    <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm">
+    <section className="border-border/80 bg-card rounded-2xl border p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-2">
         <h2 className="font-bold">اعلان‌های سیستمی</h2>
-        <BellAlertIcon className="size-5 text-muted-foreground" />
+        <BellAlertIcon className="text-muted-foreground size-5" />
       </div>
 
       {items.length === 0 ? (
-        <p className="rounded-xl bg-muted/40 px-4 py-6 text-center text-sm text-muted-foreground">
+        <p className="bg-muted/40 text-muted-foreground rounded-xl px-4 py-6 text-center text-sm">
           اعلان فعالی وجود ندارد
         </p>
       ) : (
@@ -48,14 +44,14 @@ export function NotificationsPanel({ items }: { items: DashboardNotification[] }
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-start gap-3 rounded-xl border px-3 py-3 text-sm transition-colors hover:bg-muted/40',
+                    'hover:bg-muted/40 flex items-start gap-3 rounded-xl border px-3 py-3 text-sm transition-colors',
                     style.wrap,
                   )}
                 >
                   <Icon className={cn('mt-0.5 size-4 shrink-0', style.icon)} />
-                  <span className="flex-1 font-medium leading-relaxed">{item.text}</span>
+                  <span className="flex-1 leading-relaxed font-medium">{item.text}</span>
                   {item.unreadCount > 0 ? (
-                    <span className="shrink-0 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold text-destructive">
+                    <span className="bg-destructive/10 text-destructive shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold">
                       {item.unreadCount.toLocaleString('fa-IR')}
                     </span>
                   ) : null}

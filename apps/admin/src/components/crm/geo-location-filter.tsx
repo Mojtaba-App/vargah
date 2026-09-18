@@ -36,7 +36,7 @@ export function GeoLocationFilterBar({
   });
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border/70 p-4 lg:flex-row lg:items-end lg:justify-between">
+    <div className="border-border/70 flex flex-col gap-3 rounded-2xl border p-4 lg:flex-row lg:items-end lg:justify-between">
       <div className="grid flex-1 gap-3 sm:grid-cols-2">
         <div>
           <Label htmlFor="crm-geo-province">استان</Label>
@@ -78,7 +78,7 @@ export function GeoLocationFilterBar({
       {(province || city) && (
         <Link
           href={mapHref}
-          className="inline-flex h-9 items-center justify-center rounded-full border border-border bg-background/80 px-4 text-xs font-semibold shadow-sm transition-colors hover:bg-muted"
+          className="border-border bg-background/80 hover:bg-muted inline-flex h-9 items-center justify-center rounded-full border px-4 text-xs font-semibold shadow-sm transition-colors"
         >
           نمایش روی نقشه
         </Link>

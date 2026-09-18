@@ -24,8 +24,7 @@ export async function runSeed(prisma: PrismaClient, argv: string[] = process.arg
   let users: SeedUsers | null = null;
 
   const needUsers =
-    modules === 'all' ||
-    modules.some((m) => ['content', 'crm', 'settings'].includes(m));
+    modules === 'all' || modules.some((m) => ['content', 'crm', 'settings'].includes(m));
 
   if (needUsers) {
     if (shouldRun(modules, 'users')) {

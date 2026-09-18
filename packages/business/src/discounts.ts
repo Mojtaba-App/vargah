@@ -101,10 +101,7 @@ export function applyCouponToSubtotal(input: CouponApplyInput): CouponApplyResul
   if (coupon.maxUses != null && coupon.usedCount >= coupon.maxUses) {
     return { ok: false, message: 'سقف استفاده از این کد تکمیل شده است.' };
   }
-  if (
-    coupon.maxUsesPerUser != null &&
-    (coupon.userRedemptionCount ?? 0) >= coupon.maxUsesPerUser
-  ) {
+  if (coupon.maxUsesPerUser != null && (coupon.userRedemptionCount ?? 0) >= coupon.maxUsesPerUser) {
     return { ok: false, message: 'شما قبلاً از این کد به سقف مجاز استفاده کرده‌اید.' };
   }
   if (coupon.minSubtotal != null && subtotal < coupon.minSubtotal) {

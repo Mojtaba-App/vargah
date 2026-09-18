@@ -4,7 +4,10 @@ import { Container } from '@vargah/ui/components/container';
 import { PageHeader } from '@/components/shared/page-header';
 import { SectionTitle } from '@/components/shared/section-title';
 import { FadeIn } from '@/components/motion/fade-in';
-import { JobOpeningsGrid, WritingGuidelinesGrid } from '@/components/collaborate/collaborate-sections';
+import {
+  JobOpeningsGrid,
+  WritingGuidelinesGrid,
+} from '@/components/collaborate/collaborate-sections';
 import { ArticleSubmissionForm } from '@/components/forms/article-submission-form';
 import { CollaborationApplicationForm } from '@/components/forms/collaboration-application-form';
 import { getPublicServicesContent } from '@/lib/services-content';
@@ -24,7 +27,7 @@ export default async function CollaboratePage({ params }: { params: Promise<{ lo
       <Container className="py-12 sm:py-14">
         <div className="mb-14 grid gap-8 lg:grid-cols-2 lg:gap-10">
           <FadeIn>
-            <section className="h-full rounded-[1.75rem] border border-border bg-card/80 p-6 shadow-sm sm:p-8">
+            <section className="border-border bg-card/80 h-full rounded-[1.75rem] border p-6 shadow-sm sm:p-8">
               <SectionTitle
                 title={collaborate.formTitle}
                 subtitle={collaborate.formSubtitle}
@@ -35,7 +38,7 @@ export default async function CollaboratePage({ params }: { params: Promise<{ lo
           </FadeIn>
 
           <FadeIn delay={0.05}>
-            <section className="h-full rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm sm:p-8">
+            <section className="border-primary/20 from-primary/5 via-card to-card h-full rounded-[1.75rem] border bg-gradient-to-br p-6 shadow-sm sm:p-8">
               <SectionTitle
                 title={collaborate.resumeTitle}
                 subtitle={collaborate.resumeSubtitle}
@@ -52,7 +55,10 @@ export default async function CollaboratePage({ params }: { params: Promise<{ lo
         </section>
 
         <section>
-          <SectionTitle title={collaborate.guidelinesTitle} subtitle={collaborate.guidelinesSubtitle} />
+          <SectionTitle
+            title={collaborate.guidelinesTitle}
+            subtitle={collaborate.guidelinesSubtitle}
+          />
           <WritingGuidelinesGrid guidelines={collaborate.guidelines} />
         </section>
       </Container>

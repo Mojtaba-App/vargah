@@ -7,7 +7,13 @@ import { Button } from '@vargah/ui/components/button';
 import { Input, Label } from '@vargah/ui/components/input';
 import { Card, CardContent } from '@vargah/ui/components/card';
 
-import { deleteWebhook, runRemindersNow, testWebhookSettings, toggleWebhook, upsertWebhook } from '@/actions/automation';
+import {
+  deleteWebhook,
+  runRemindersNow,
+  testWebhookSettings,
+  toggleWebhook,
+  upsertWebhook,
+} from '@/actions/automation';
 import { ConfirmDialog } from '@/components/ui/feedback/confirm-dialog';
 import { LoadingButton } from '@/components/ui/feedback/loading-button';
 import { StatusBanner } from '@/components/ui/feedback/status-banner';
@@ -105,10 +111,9 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
   const [testingWebhookKey, setTestingWebhookKey] = useState<string | null>(null);
 
   const webhooksByProvider = useMemo(() => {
-    const map = Object.fromEntries(WEBHOOK_PROVIDER_ORDER.map((p) => [p, [] as WebhookRow[]])) as Record<
-      WebhookProvider,
-      WebhookRow[]
-    >;
+    const map = Object.fromEntries(
+      WEBHOOK_PROVIDER_ORDER.map((p) => [p, [] as WebhookRow[]]),
+    ) as Record<WebhookProvider, WebhookRow[]>;
     for (const webhook of webhooks) {
       (map[webhook.provider] ?? map.GENERIC).push(webhook);
     }
@@ -119,7 +124,8 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
     () => ({
       activeWebhooks: webhooks.filter((w) => w.isActive).length,
       totalWebhooks: webhooks.length,
-      failedNotifications: notifications.filter((n) => n.status === NotificationStatus.FAILED).length,
+      failedNotifications: notifications.filter((n) => n.status === NotificationStatus.FAILED)
+        .length,
       sentToday: notifications.filter((n) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -214,7 +220,9 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
           events: state.form.events,
         });
         patchProvider(provider, {
-          message: state.editingId ? 'اتصال این بخش به‌روزرسانی شد.' : 'اتصال جدید برای این بخش ذخیره شد.',
+          message: state.editingId
+            ? 'اتصال این بخش به‌روزرسانی شد.'
+            : 'اتصال جدید برای این بخش ذخیره شد.',
           form: emptyForm(),
           editingId: null,
         });
@@ -304,7 +312,11 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
     <div className="space-y-6">
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: 'Webhook فعال', value: stats.activeWebhooks, hint: `${formatNumber(stats.totalWebhooks)} کل` },
+          {
+            label: 'Webhook فعال',
+            value: stats.activeWebhooks,
+            hint: `${formatNumber(stats.totalWebhooks)} کل`,
+          },
           { label: 'ارسال موفق امروز', value: stats.sentToday },
           {
             label: 'اعلان ناموفق',
@@ -313,8 +325,8 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
           },
           { label: 'کل اعلان‌های اخیر', value: notifications.length },
         ].map((item) => (
-          <div key={item.label} className="rounded-2xl border border-border bg-card p-4">
-            <p className="text-sm text-muted-foreground">{item.label}</p>
+          <div key={item.label} className="border-border bg-card rounded-2xl border p-4">
+            <p className="text-muted-foreground text-sm">{item.label}</p>
             <p
               className={cn(
                 'mt-1 text-2xl font-bold tabular-nums',
@@ -323,7 +335,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
             >
               {formatNumber(item.value)}
             </p>
-            {item.hint && <p className="mt-1 text-xs text-muted-foreground">{item.hint}</p>}
+            {item.hint && <p className="text-muted-foreground mt-1 text-xs">{item.hint}</p>}
           </div>
         ))}
       </div>
@@ -340,7 +352,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <h3 className="font-semibold">اجرای یادآورها</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 اشتراک (۷ و ۱ روز مانده) + Deadline سفارش مطلب — اجرای دستی برای تست
               </p>
             </div>
@@ -363,7 +375,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
         <CardContent className="space-y-5 pt-6">
           <div>
             <h3 className="font-semibold">اتصال به برنامه‌های خارجی</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               هر سرویس بخش و ذخیرهٔ جداگانه دارد؛ تنظیمات تلگرام با اسلک یا دیسکورد مخلوط نمی‌شود.
             </p>
           </div>
@@ -385,7 +397,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
                   )}
                 >
                   <span className="font-medium">{WEBHOOK_PROVIDER_LABELS[provider]}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                  <span className="text-muted-foreground mt-0.5 block text-xs">
                     {count === 0
                       ? 'بدون اتصال'
                       : `${formatNumber(active)} فعال از ${formatNumber(count)}`}
@@ -395,10 +407,12 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
             })}
           </div>
 
-          <div className="space-y-4 rounded-xl border border-border/80 p-4">
+          <div className="border-border/80 space-y-4 rounded-xl border p-4">
             <div>
               <h4 className="font-semibold">{WEBHOOK_PROVIDER_LABELS[activeProvider]}</h4>
-              <p className="mt-1 text-sm text-muted-foreground">{WEBHOOK_PROVIDER_HINTS[activeProvider]}</p>
+              <p className="text-muted-foreground mt-1 text-sm">
+                {WEBHOOK_PROVIDER_HINTS[activeProvider]}
+              </p>
             </div>
 
             {(activeState.error || activeState.message) && (
@@ -415,10 +429,12 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
 
             <div className="space-y-3">
               {activeList.length === 0 ? (
-                <p className="text-sm text-muted-foreground">هنوز اتصالی برای این سرویس ذخیره نشده است.</p>
+                <p className="text-muted-foreground text-sm">
+                  هنوز اتصالی برای این سرویس ذخیره نشده است.
+                </p>
               ) : (
                 activeList.map((webhook) => (
-                  <div key={webhook.id} className="rounded-xl border border-border/70 p-4">
+                  <div key={webhook.id} className="border-border/70 rounded-xl border p-4">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
@@ -427,16 +443,16 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
                             {webhook.isActive ? 'فعال' : 'غیرفعال'}
                           </Badge>
                         </div>
-                        <p className="mt-1 truncate text-xs text-muted-foreground" dir="ltr">
+                        <p className="text-muted-foreground mt-1 truncate text-xs" dir="ltr">
                           {webhook.url}
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
+                        <p className="text-muted-foreground mt-1 text-xs">
                           رویدادها:{' '}
                           {webhook.events
                             .map(
                               (event) =>
-                                WEBHOOK_EVENT_OPTIONS.find((option) => option.value === event)?.label ??
-                                event,
+                                WEBHOOK_EVENT_OPTIONS.find((option) => option.value === event)
+                                  ?.label ?? event,
                             )
                             .join('، ') || '—'}
                         </p>
@@ -450,7 +466,9 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
                             className="rounded-lg"
                             loading={testingWebhookKey === webhook.id}
                             loadingText="در حال تست..."
-                            disabled={Boolean(testingWebhookKey && testingWebhookKey !== webhook.id)}
+                            disabled={Boolean(
+                              testingWebhookKey && testingWebhookKey !== webhook.id,
+                            )}
                             onClick={() =>
                               void runWebhookTest({
                                 key: webhook.id,
@@ -486,7 +504,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
                             type="button"
                             size="sm"
                             variant="outline"
-                            className="rounded-lg text-destructive"
+                            className="text-destructive rounded-lg"
                             onClick={() => setDeleteTarget(webhook)}
                           >
                             حذف
@@ -500,7 +518,7 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
             </div>
 
             {canEdit && (
-              <div className="space-y-4 border-t border-border/60 pt-4">
+              <div className="border-border/60 space-y-4 border-t pt-4">
                 <h5 className="font-semibold">
                   {activeState.editingId
                     ? `ویرایش اتصال ${WEBHOOK_PROVIDER_LABELS[activeProvider]}`
@@ -629,12 +647,12 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 className="font-semibold">آخرین اعلان‌ها</h3>
-              <p className="mt-1 text-sm text-muted-foreground">لاگ ارسال ایمیل، پیامک و Webhook</p>
+              <p className="text-muted-foreground mt-1 text-sm">لاگ ارسال ایمیل، پیامک و Webhook</p>
             </div>
             <select
               value={notificationFilter}
               onChange={(e) => setNotificationFilter(e.target.value as NotificationStatus | 'ALL')}
-              className="rounded-xl border border-border bg-background px-3 py-2 text-sm"
+              className="border-border bg-background rounded-xl border px-3 py-2 text-sm"
             >
               <option value="ALL">همه وضعیت‌ها</option>
               {(Object.values(NotificationStatus) as NotificationStatus[]).map((status) => (
@@ -647,10 +665,10 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
 
           <div className="max-h-80 space-y-2 overflow-y-auto">
             {filteredNotifications.length === 0 && (
-              <p className="text-sm text-muted-foreground">اعلانی یافت نشد.</p>
+              <p className="text-muted-foreground text-sm">اعلانی یافت نشد.</p>
             )}
             {filteredNotifications.map((n) => (
-              <div key={n.id} className="rounded-xl border border-border/60 px-3 py-3 text-sm">
+              <div key={n.id} className="border-border/60 rounded-xl border px-3 py-3 text-sm">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">{CHANNEL_LABELS[n.channel]}</Badge>
                   <Badge variant={NOTIFICATION_STATUS_VARIANT[n.status]}>
@@ -659,13 +677,15 @@ export function AutomationPanel({ webhooks, notifications, canEdit }: Automation
                   <span className="font-mono text-xs" dir="ltr">
                     {n.recipient}
                   </span>
-                  <span className="ms-auto text-xs text-muted-foreground">
+                  <span className="text-muted-foreground ms-auto text-xs">
                     {formatJalali(n.createdAt, true)}
                   </span>
                 </div>
                 {n.subject && <p className="mt-1 font-medium">{n.subject}</p>}
-                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{n.body}</p>
-                {n.errorMessage && <p className="mt-1 text-xs text-destructive">{n.errorMessage}</p>}
+                <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{n.body}</p>
+                {n.errorMessage && (
+                  <p className="text-destructive mt-1 text-xs">{n.errorMessage}</p>
+                )}
               </div>
             ))}
           </div>

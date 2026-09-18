@@ -61,10 +61,10 @@ Branch protection پیشنهادی روی `main`: require PR + CI سبز.
 
 Settings → Secrets and variables → Actions:
 
-| Secret / Variable | کاربرد |
-|-------------------|--------|
-| (معمولاً برای CI فعلی لازم نیست) | workflow فعلی با env ساختگی build می‌کند |
-| `STAGING_SITE_URL` / `STAGING_ADMIN_URL` | workflow ZAP |
+| Secret / Variable                        | کاربرد                                   |
+| ---------------------------------------- | ---------------------------------------- |
+| (معمولاً برای CI فعلی لازم نیست)         | workflow فعلی با env ساختگی build می‌کند |
+| `STAGING_SITE_URL` / `STAGING_ADMIN_URL` | workflow ZAP                             |
 
 **Secrets اپلیکیشن production را در GitHub Actions نگذارید مگر deploy خودکار دارید**؛ ترجیح: secret manager سرور.
 
@@ -72,15 +72,15 @@ Settings → Secrets and variables → Actions:
 
 ## ۵. فایل‌های مرتبط مخزن
 
-| فایل | نقش |
-|------|-----|
-| `.gitignore` | جلوگیری از secret و artifact |
-| `.env.example` | الگوی env بدون مقدار واقعی |
-| `.github/workflows/ci.yml` | lint / typecheck / build |
-| `.github/workflows/security-zap.yml` | اسکن اختیاری |
-| `CONTRIBUTING.md` | قوانین مشارکت انسانی |
-| `SECURITY.md` | گزارش آسیب‌پذیری |
-| `README.md` | نقطه ورود |
+| فایل                                 | نقش                          |
+| ------------------------------------ | ---------------------------- |
+| `.gitignore`                         | جلوگیری از secret و artifact |
+| `.env.example`                       | الگوی env بدون مقدار واقعی   |
+| `.github/workflows/ci.yml`           | lint / typecheck / build     |
+| `.github/workflows/security-zap.yml` | اسکن اختیاری                 |
+| `CONTRIBUTING.md`                    | قوانین مشارکت انسانی         |
+| `SECURITY.md`                        | گزارش آسیب‌پذیری             |
+| `README.md`                          | نقطه ورود                    |
 
 ---
 

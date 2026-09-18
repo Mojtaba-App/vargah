@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       style={{ colorScheme: resolvedTheme }}
       suppressHydrationWarning
     >
-      <body className="font-sans text-start antialiased" suppressHydrationWarning>
+      <body className="text-start font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

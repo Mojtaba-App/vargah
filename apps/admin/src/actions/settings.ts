@@ -27,7 +27,10 @@ import { getSiteConfig, saveSiteConfig } from '@/lib/site-config';
 import { getMessagingConfig, saveMessagingConfig } from '@/lib/messaging-config';
 import { getPaymentConfig, savePaymentConfig } from '@/lib/payment-config';
 import { getMapConfig, saveMapConfig } from '@/lib/map-config';
-import { getSubscriptionPlansConfig, saveSubscriptionPlansConfig } from '@/lib/subscription-plans-config';
+import {
+  getSubscriptionPlansConfig,
+  saveSubscriptionPlansConfig,
+} from '@/lib/subscription-plans-config';
 import { getServicesContent, saveServicesContent } from '@/lib/services-content';
 import type { ServicesContent } from '@vargah/business/services-content';
 import { getAboutContent, saveAboutContent } from '@/lib/about-content';
@@ -53,12 +56,12 @@ import {
 async function auditSettings(entityId: string, changes: Prisma.InputJsonValue) {
   const session = await requirePermission(PERMISSIONS.SETTINGS_EDIT);
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'SiteSetting',
-      entityId,
-      changes,
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'SiteSetting',
+    entityId,
+    changes,
+  });
 }
 
 function revalidateSettings() {
@@ -67,8 +70,23 @@ function revalidateSettings() {
   revalidateTag('payment-config', 'max');
   revalidateTag('subscription-plans', 'max');
   void revalidateWeb({
-    tags: ['site-config', 'payment-config', 'subscription-plans', 'services-content', 'about-content', 'issues'],
-    paths: ['/fa', '/fa/about', '/fa/contact', '/fa/subscription', '/fa/issues', '/fa/advertising', '/fa/collaborate'],
+    tags: [
+      'site-config',
+      'payment-config',
+      'subscription-plans',
+      'services-content',
+      'about-content',
+      'issues',
+    ],
+    paths: [
+      '/fa',
+      '/fa/about',
+      '/fa/contact',
+      '/fa/subscription',
+      '/fa/issues',
+      '/fa/advertising',
+      '/fa/collaborate',
+    ],
   });
 }
 
@@ -202,7 +220,8 @@ function mergeEmailConfig(current: EmailConfig, incoming: EmailConfig): EmailCon
   return {
     ...current,
     ...incoming,
-    password: incoming.password === SETTINGS_SECRET_PLACEHOLDER ? current.password : incoming.password,
+    password:
+      incoming.password === SETTINGS_SECRET_PLACEHOLDER ? current.password : incoming.password,
   };
 }
 
@@ -211,7 +230,8 @@ function mergeSmsConfig(current: SmsConfig, incoming: SmsConfig): SmsConfig {
     ...current,
     ...incoming,
     apiKey: incoming.apiKey === SETTINGS_SECRET_PLACEHOLDER ? current.apiKey : incoming.apiKey,
-    password: incoming.password === SETTINGS_SECRET_PLACEHOLDER ? current.password : incoming.password,
+    password:
+      incoming.password === SETTINGS_SECRET_PLACEHOLDER ? current.password : incoming.password,
   };
 }
 
@@ -582,15 +602,7 @@ export async function updateAboutContent(content: AboutContent) {
 }
 
 export type AboutContentSection =
-  | 'page'
-  | 'intro'
-  | 'stats'
-  | 'mission'
-  | 'history'
-  | 'milestones'
-  | 'team'
-  | 'ethics'
-  | 'cta';
+  'page' | 'intro' | 'stats' | 'mission' | 'history' | 'milestones' | 'team' | 'ethics' | 'cta';
 
 export async function updateAboutContentSection(
   section: AboutContentSection,
@@ -638,4 +650,3 @@ export async function updateMapConfig(config: MapConfig) {
   revalidatePath('/geo');
   return { success: true as const };
 }
-

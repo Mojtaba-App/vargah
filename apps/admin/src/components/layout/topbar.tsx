@@ -22,14 +22,20 @@ type TopbarProps = {
 
 export function Topbar({ user, alerts, grantedPermissions, onOpenMobileNav }: TopbarProps) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-brand-200/70 bg-card/90 px-4 shadow-sm shadow-brand-900/5 backdrop-blur-xl dark:border-brand-800/50 dark:bg-card/85 dark:shadow-black/20 sm:gap-4 sm:px-6">
+    <header className="border-brand-200/70 bg-card/90 shadow-brand-900/5 dark:border-brand-800/50 dark:bg-card/85 sticky top-0 z-30 flex h-16 items-center gap-3 border-b px-4 shadow-sm backdrop-blur-xl sm:gap-4 sm:px-6 dark:shadow-black/20">
       <button
         type="button"
-        className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-border text-foreground lg:hidden"
+        className="border-border text-foreground inline-flex size-10 shrink-0 items-center justify-center rounded-xl border lg:hidden"
         aria-label="باز کردن منو"
         onClick={onOpenMobileNav}
       >
-        <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          viewBox="0 0 24 24"
+          className="size-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
         </svg>
       </button>

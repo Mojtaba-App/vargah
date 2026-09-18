@@ -28,7 +28,17 @@ function sanitizeBaseName(name: string): string {
 
 function buildStoredName(originalName: string, mimeType: string): string {
   const extFromName = path.extname(originalName).toLowerCase();
-  const knownExt = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.pdf', '.txt', '.doc', '.docx']);
+  const knownExt = new Set([
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.webp',
+    '.gif',
+    '.pdf',
+    '.txt',
+    '.doc',
+    '.docx',
+  ]);
   const fromMime = extensionForMime(mimeType);
   const ext =
     (knownExt.has(extFromName) ? (extFromName === '.jpeg' ? '.jpg' : extFromName) : '') ||
@@ -42,7 +52,10 @@ function buildStoredName(originalName: string, mimeType: string): string {
 export async function POST(request: Request) {
   verifyCsrfFromHttpRequest(request);
   const session = await auth();
-  if (!session?.user?.id || !(await hasPermissionAsync(session.user.role, PERMISSIONS.MEDIA_MANAGE))) {
+  if (
+    !session?.user?.id ||
+    !(await hasPermissionAsync(session.user.role, PERMISSIONS.MEDIA_MANAGE))
+  ) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

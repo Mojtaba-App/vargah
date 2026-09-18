@@ -41,11 +41,7 @@ export default async function LiveChatPage() {
         description={`گفتگوی زنده با بازدیدکنندگان سایت · ${waitingCount.toLocaleString('fa-IR')} گفتگو در انتظار`}
       />
       <MessagesNav />
-      <ChatWorkspace
-        initialConversations={conversations}
-        staff={staff}
-        canManage={canManage}
-      />
+      <ChatWorkspace initialConversations={conversations} staff={staff} canManage={canManage} />
     </div>
   );
 }

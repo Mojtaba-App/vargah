@@ -20,11 +20,10 @@ export async function getPublishedArticleBySlug(slug: string) {
 }
 
 export const getCachedPublishedArticleBySlug = (slug: string) =>
-  unstable_cache(
-    () => getPublishedArticleBySlug(slug),
-    ['article', slug],
-    { tags: ['articles', `article:${slug}`], revalidate: 3600 },
-  )();
+  unstable_cache(() => getPublishedArticleBySlug(slug), ['article', slug], {
+    tags: ['articles', `article:${slug}`],
+    revalidate: 3600,
+  })();
 
 export async function getPublishedArticleSlugs() {
   const rows = await prisma.article.findMany({
@@ -146,12 +145,8 @@ export async function searchPublishedArticles(filters: {
   const rows = await prisma.article.findMany({
     where: {
       status: ArticleStatus.PUBLISHED,
-      ...(filters.categorySlug
-        ? { category: { slug: filters.categorySlug } }
-        : {}),
-      ...(filters.tagSlug
-        ? { tags: { some: { tag: { slug: filters.tagSlug } } } }
-        : {}),
+      ...(filters.categorySlug ? { category: { slug: filters.categorySlug } } : {}),
+      ...(filters.tagSlug ? { tags: { some: { tag: { slug: filters.tagSlug } } } } : {}),
       ...(query
         ? {
             OR: [
@@ -170,16 +165,13 @@ export async function searchPublishedArticles(filters: {
   return rows.map(mapDbArticleToView);
 }
 
-export const getCachedSearchPublishedArticles = (
-  filters: { query?: string; categorySlug?: string; tagSlug?: string },
-) =>
+export const getCachedSearchPublishedArticles = (filters: {
+  query?: string;
+  categorySlug?: string;
+  tagSlug?: string;
+}) =>
   unstable_cache(
     () => searchPublishedArticles(filters),
-    [
-      'search-articles',
-      filters.query ?? '',
-      filters.categorySlug ?? '',
-      filters.tagSlug ?? '',
-    ],
+    ['search-articles', filters.query ?? '', filters.categorySlug ?? '', filters.tagSlug ?? ''],
     { tags: ['articles'], revalidate: 600 },
   )();

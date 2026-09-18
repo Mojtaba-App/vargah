@@ -64,7 +64,7 @@ function StatCard({ label, value }: { label: string; value: number }) {
   return (
     <div className="surface-card rounded-2xl p-4">
       <p className="text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </div>
   );
 }
@@ -86,7 +86,9 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
   );
 
   const categoryForm = useForm<CategoryFormValues>({
-    resolver: zodResolver(categoryFormSchema) as import('react-hook-form').Resolver<CategoryFormValues>,
+    resolver: zodResolver(
+      categoryFormSchema,
+    ) as import('react-hook-form').Resolver<CategoryFormValues>,
     defaultValues: { name: '', slug: '', description: '', parentId: '', sortOrder: 0 },
   });
 
@@ -209,7 +211,7 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
       cell: ({ row }) => (
         <div>
           <p className="font-medium">{row.original.name}</p>
-          <p className="text-xs text-muted-foreground" dir="ltr">
+          <p className="text-muted-foreground text-xs" dir="ltr">
             /{row.original.slug}
           </p>
         </div>
@@ -239,7 +241,14 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
       header: 'عملیات',
       cell: ({ row }) => (
         <div className="flex gap-1">
-          <Button variant="ghost" size="sm" onClick={() => { setTab('categories'); resetCategoryForm(row.original); }}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setTab('categories');
+              resetCategoryForm(row.original);
+            }}
+          >
             ویرایش
           </Button>
           <Button
@@ -262,7 +271,7 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
       cell: ({ row }) => (
         <div>
           <p className="font-medium">{row.original.name}</p>
-          <p className="text-xs text-muted-foreground" dir="ltr">
+          <p className="text-muted-foreground text-xs" dir="ltr">
             /{row.original.slug}
           </p>
         </div>
@@ -283,7 +292,14 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
       header: 'عملیات',
       cell: ({ row }) => (
         <div className="flex gap-1">
-          <Button variant="ghost" size="sm" onClick={() => { setTab('tags'); resetTagForm(row.original); }}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setTab('tags');
+              resetTagForm(row.original);
+            }}
+          >
             ویرایش
           </Button>
           <Button
@@ -346,7 +362,12 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
                 <div className="flex items-center justify-between">
                   <p className="font-semibold">{editingCategory ? 'ویرایش دسته' : 'دسته جدید'}</p>
                   {editingCategory && (
-                    <Button type="button" variant="ghost" size="sm" onClick={() => resetCategoryForm(null)}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => resetCategoryForm(null)}
+                    >
                       انصراف
                     </Button>
                   )}
@@ -368,12 +389,20 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
                   </div>
                   <div>
                     <Label>Slug</Label>
-                    <Input className="mt-2 rounded-xl" dir="ltr" {...categoryForm.register('slug')} />
+                    <Input
+                      className="mt-2 rounded-xl"
+                      dir="ltr"
+                      {...categoryForm.register('slug')}
+                    />
                     <FieldMessage message={categoryForm.formState.errors.slug?.message} />
                   </div>
                   <div>
                     <Label>توضیح</Label>
-                    <Textarea rows={2} className="mt-2 rounded-xl" {...categoryForm.register('description')} />
+                    <Textarea
+                      rows={2}
+                      className="mt-2 rounded-xl"
+                      {...categoryForm.register('description')}
+                    />
                   </div>
                   <div>
                     <Label>دسته والد</Label>
@@ -388,7 +417,12 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
                   </div>
                   <div>
                     <Label>ترتیب نمایش</Label>
-                    <Input type="number" min={0} className="mt-2 rounded-xl" {...categoryForm.register('sortOrder')} />
+                    <Input
+                      type="number"
+                      min={0}
+                      className="mt-2 rounded-xl"
+                      {...categoryForm.register('sortOrder')}
+                    />
                   </div>
                   <LoadingButton type="submit" loading={isPending} className="w-full rounded-xl">
                     {editingCategory ? 'ذخیره دسته' : 'افزودن دسته'}
@@ -400,7 +434,12 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
                 <div className="flex items-center justify-between">
                   <p className="font-semibold">{editingTag ? 'ویرایش برچسب' : 'برچسب جدید'}</p>
                   {editingTag && (
-                    <Button type="button" variant="ghost" size="sm" onClick={() => resetTagForm(null)}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => resetTagForm(null)}
+                    >
                       انصراف
                     </Button>
                   )}
@@ -435,10 +474,20 @@ export function TaxonomyWorkspace({ categories, tags }: TaxonomyWorkspaceProps) 
         </Card>
 
         <div className={cn('xl:col-span-2', tab === 'categories' ? 'block' : 'hidden')}>
-          <DataTable columns={categoryColumns} data={categories} searchKey="name" searchPlaceholder="جستجوی دسته..." />
+          <DataTable
+            columns={categoryColumns}
+            data={categories}
+            searchKey="name"
+            searchPlaceholder="جستجوی دسته..."
+          />
         </div>
         <div className={cn('xl:col-span-2', tab === 'tags' ? 'block' : 'hidden')}>
-          <DataTable columns={tagColumns} data={tags} searchKey="name" searchPlaceholder="جستجوی برچسب..." />
+          <DataTable
+            columns={tagColumns}
+            data={tags}
+            searchKey="name"
+            searchPlaceholder="جستجوی برچسب..."
+          />
         </div>
       </div>
 

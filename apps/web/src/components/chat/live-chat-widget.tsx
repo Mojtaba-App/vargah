@@ -50,7 +50,7 @@ function MessageBubble({ message }: { message: ChatMessageDto }) {
 
   if (isSystem) {
     return (
-      <p className="px-2 py-1 text-center text-[11px] text-muted-foreground">{message.body}</p>
+      <p className="text-muted-foreground px-2 py-1 text-center text-[11px]">{message.body}</p>
     );
   }
 
@@ -60,8 +60,8 @@ function MessageBubble({ message }: { message: ChatMessageDto }) {
         className={cn(
           'max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed',
           isGuest
-            ? 'rounded-ss-md bg-muted text-foreground'
-            : 'rounded-se-md bg-primary text-primary-foreground',
+            ? 'bg-muted text-foreground rounded-ss-md'
+            : 'bg-primary text-primary-foreground rounded-se-md',
         )}
       >
         {!isGuest && message.agentName ? (
@@ -79,7 +79,7 @@ function MessageBubble({ message }: { message: ChatMessageDto }) {
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} role="alert" className="mt-1 text-xs text-destructive">
+    <p id={id} role="alert" className="text-destructive mt-1 text-xs">
       {message}
     </p>
   );
@@ -292,9 +292,7 @@ export function LiveChatWidget() {
         setError(null);
         setFieldErrors({});
       } catch (err) {
-        setError(
-          toPublicChatError(err instanceof Error ? err.message : FALLBACK_ERROR),
-        );
+        setError(toPublicChatError(err instanceof Error ? err.message : FALLBACK_ERROR));
       }
     });
   };
@@ -329,9 +327,7 @@ export function LiveChatWidget() {
         });
       } catch (err) {
         setDraft(text);
-        setError(
-          toPublicChatError(err instanceof Error ? err.message : FALLBACK_ERROR),
-        );
+        setError(toPublicChatError(err instanceof Error ? err.message : FALLBACK_ERROR));
       }
     });
   };
@@ -349,14 +345,14 @@ export function LiveChatWidget() {
   };
 
   return (
-    <div className="pointer-events-none fixed bottom-5 start-5 z-[70] flex flex-col items-start gap-3">
+    <div className="pointer-events-none fixed start-5 bottom-5 z-[70] flex flex-col items-start gap-3">
       {open ? (
         <div
-          className="pointer-events-auto flex h-[min(32rem,calc(100vh-6rem))] w-[min(100vw-1.5rem,22rem)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-2xl"
+          className="border-border bg-background pointer-events-auto flex h-[min(32rem,calc(100vh-6rem))] w-[min(100vw-1.5rem,22rem)] flex-col overflow-hidden rounded-2xl border shadow-2xl"
           role="dialog"
           aria-label="گفتگوی آنلاین"
         >
-          <div className="flex items-center justify-between gap-2 border-b border-border bg-primary px-4 py-3 text-primary-foreground">
+          <div className="border-border bg-primary text-primary-foreground flex items-center justify-between gap-2 border-b px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-bold">گفتگوی آنلاین وارگه</p>
               <p className="text-[11px] opacity-80">
@@ -379,7 +375,7 @@ export function LiveChatWidget() {
 
           <div className="flex min-h-0 flex-1 flex-col">
             {booting ? (
-              <p className="p-4 text-sm text-muted-foreground">در حال بارگذاری…</p>
+              <p className="text-muted-foreground p-4 text-sm">در حال بارگذاری…</p>
             ) : !conversation ? (
               <form
                 onSubmit={handleStart}
@@ -387,13 +383,13 @@ export function LiveChatWidget() {
                 noValidate
                 className="flex flex-1 flex-col gap-3 overflow-y-auto p-4"
               >
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <p className="text-muted-foreground text-xs leading-relaxed">
                   برای شروع گفتگو نام و شماره موبایل خود را وارد کنید تا کارشناسان پاسخ دهند.
                 </p>
                 {error ? (
                   <p
                     role="alert"
-                    className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive"
+                    className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border px-3 py-2 text-xs"
                   >
                     {error}
                   </p>
@@ -483,12 +479,12 @@ export function LiveChatWidget() {
                 {error ? (
                   <p
                     role="alert"
-                    className="mx-3 rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive"
+                    className="border-destructive/30 bg-destructive/5 text-destructive mx-3 rounded-xl border px-3 py-2 text-xs"
                   >
                     {error}
                   </p>
                 ) : null}
-                <form onSubmit={handleSend} className="border-t border-border p-3">
+                <form onSubmit={handleSend} className="border-border border-t p-3">
                   <div className="flex gap-2">
                     <Input
                       value={draft}
@@ -512,7 +508,7 @@ export function LiveChatWidget() {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="mt-2 text-[11px] text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground mt-2 text-[11px]"
                   >
                     شروع گفتگوی جدید
                   </button>
@@ -541,7 +537,7 @@ export function LiveChatWidget() {
           setUnread(0);
         }}
         className={cn(
-          'pointer-events-auto relative flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          'bg-primary text-primary-foreground focus-visible:ring-ring pointer-events-auto relative flex size-14 items-center justify-center rounded-full shadow-lg focus-visible:ring-2 focus-visible:outline-none',
           attract && !open
             ? 'chat-fab-attention'
             : 'transition-[transform,box-shadow] hover:scale-[1.03]',
@@ -551,7 +547,7 @@ export function LiveChatWidget() {
       >
         <ChatBubbleIcon className="size-6" />
         {unread > 0 && !open ? (
-          <span className="absolute -top-0.5 -end-0.5 flex min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground">
+          <span className="bg-destructive text-destructive-foreground absolute -end-0.5 -top-0.5 flex min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold">
             {unread > 9 ? '۹+' : unread.toLocaleString('fa-IR')}
           </span>
         ) : null}

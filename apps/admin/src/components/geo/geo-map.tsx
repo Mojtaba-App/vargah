@@ -11,7 +11,11 @@ import {
   provinceNameFromGeoJson,
   type FreeMapLayerId,
 } from '@vargah/business/iran-geo';
-import type { AdminMapRuntimeConfig, CustomGeoLayer, MapLayerId } from '@vargah/business/map-config';
+import type {
+  AdminMapRuntimeConfig,
+  CustomGeoLayer,
+  MapLayerId,
+} from '@vargah/business/map-config';
 import { createGoogleMutantLayer } from '@/lib/geo/google-maps-leaflet';
 import { createHeatLayer, ensureLeafletHeat } from '@/lib/geo/leaflet-heat';
 import type { GeoCityStat } from '@/lib/geo/stats';
@@ -99,8 +103,7 @@ export function GeoMap({
   }>({ active: false, done: 0, total: 0, label: '' });
 
   const visibleCustomLayers = useMemo(
-    () =>
-      mapConfig.customLayers.filter((layer) => !hiddenCustomLayerIds.includes(layer.id)),
+    () => mapConfig.customLayers.filter((layer) => !hiddenCustomLayerIds.includes(layer.id)),
     [mapConfig.customLayers, hiddenCustomLayerIds],
   );
 
@@ -201,7 +204,10 @@ export function GeoMap({
         }
 
         if (selected.kind === 'google' && selected.googleType && mapConfig.googleApiKey) {
-          layerRef.current = await createGoogleMutantLayer(mapConfig.googleApiKey, selected.googleType);
+          layerRef.current = await createGoogleMutantLayer(
+            mapConfig.googleApiKey,
+            selected.googleType,
+          );
           if (!cancelled) layerRef.current.addTo(liveMap);
           return;
         }
@@ -377,9 +383,7 @@ export function GeoMap({
       });
 
       const marker = L.marker([city.lat, city.lng], { icon });
-      marker.bindPopup(
-        `<strong>${city.city}</strong><br/>${city.province}<br/>${city.count} مورد`,
-      );
+      marker.bindPopup(`<strong>${city.city}</strong><br/>${city.province}<br/>${city.count} مورد`);
       marker.on('click', () => onSelectCity?.(city.cityId));
       marker.addTo(group);
     }
@@ -400,7 +404,7 @@ export function GeoMap({
       <div className="relative">
         <div
           ref={containerRef}
-          className="h-[min(70vh,520px)] w-full overflow-hidden rounded-2xl border border-border bg-muted/30"
+          className="border-border bg-muted/30 h-[min(70vh,520px)] w-full overflow-hidden rounded-2xl border"
           aria-label={
             mapView === 'provinces'
               ? 'نقشه choropleth استانی'
@@ -411,22 +415,23 @@ export function GeoMap({
         />
         {layerProgress.active ? (
           <div
-            className="pointer-events-none absolute inset-x-3 bottom-3 z-[500] rounded-xl border border-border/80 bg-background/95 px-3 py-2 shadow-lg backdrop-blur-sm"
+            className="border-border/80 bg-background/95 pointer-events-none absolute inset-x-3 bottom-3 z-[500] rounded-xl border px-3 py-2 shadow-lg backdrop-blur-sm"
             role="status"
             aria-live="polite"
           >
             <div className="mb-1.5 flex items-center justify-between gap-2 text-xs">
-              <span className="truncate text-muted-foreground">
+              <span className="text-muted-foreground truncate">
                 بارگذاری لایه: {layerProgress.label || '…'}
               </span>
               <span className="shrink-0 font-semibold tabular-nums">
-                {progressPercent.toLocaleString('fa-IR')}٪ ({layerProgress.done.toLocaleString('fa-IR')}/
+                {progressPercent.toLocaleString('fa-IR')}٪ (
+                {layerProgress.done.toLocaleString('fa-IR')}/
                 {layerProgress.total.toLocaleString('fa-IR')})
               </span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+            <div className="bg-muted h-1.5 overflow-hidden rounded-full">
               <div
-                className="h-full rounded-full bg-primary transition-[width] duration-300"
+                className="bg-primary h-full rounded-full transition-[width] duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -434,7 +439,7 @@ export function GeoMap({
         ) : null}
       </div>
       {mapView === 'provinces' && (
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-3 text-xs">
           <span>کم</span>
           <div className="h-2 flex-1 rounded-full bg-gradient-to-l from-indigo-600 via-indigo-300 to-slate-200" />
           <span>زیاد</span>

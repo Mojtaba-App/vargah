@@ -25,13 +25,13 @@ export function HeaderLogo({ siteName, tagline, logoSrc, homeAria, compact }: He
       <div className={cn('min-w-0 flex-col', compact ? 'hidden sm:flex' : 'flex')}>
         <span
           className={cn(
-            'truncate font-bold leading-none tracking-tight text-foreground',
+            'text-foreground truncate leading-none font-bold tracking-tight',
             compact ? 'text-base' : 'text-lg',
           )}
         >
           {siteName}
         </span>
-        <span className="mt-1 truncate text-[10px] font-medium text-muted-foreground sm:text-[11px]">
+        <span className="text-muted-foreground mt-1 truncate text-[10px] font-medium sm:text-[11px]">
           {tagline}
         </span>
       </div>

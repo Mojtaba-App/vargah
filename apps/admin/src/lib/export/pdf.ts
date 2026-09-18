@@ -4,7 +4,14 @@ import { installJsPdfShaper } from 'bidi-shaper/jspdf';
 import { render as shapeRtl } from 'bidi-shaper';
 
 import { fetchFontAsBase64 } from './types';
-import { cellText, downloadBlob, stampFilename, type ExportColumn, type ExportMeta, type ExportRow } from './types';
+import {
+  cellText,
+  downloadBlob,
+  stampFilename,
+  type ExportColumn,
+  type ExportMeta,
+  type ExportRow,
+} from './types';
 
 const PDF_FONT = 'NotoNaskh';
 

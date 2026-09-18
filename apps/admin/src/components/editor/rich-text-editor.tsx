@@ -8,10 +8,7 @@ import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import { Button } from '@vargah/ui/components/button';
-import {
-  MediaPickerDialog,
-  type MediaPickerAsset,
-} from '@/components/content/media-picker-dialog';
+import { MediaPickerDialog, type MediaPickerAsset } from '@/components/content/media-picker-dialog';
 import { cn } from '@/lib/utils';
 
 type RichTextEditorProps = {
@@ -86,7 +83,11 @@ export function RichTextEditor({
   const insertImage = useCallback(
     (url: string, alt?: string | null) => {
       if (!editor) return;
-      editor.chain().focus().setImage({ src: url, alt: alt ?? '' }).run();
+      editor
+        .chain()
+        .focus()
+        .setImage({ src: url, alt: alt ?? '' })
+        .run();
     },
     [editor],
   );
@@ -97,12 +98,12 @@ export function RichTextEditor({
     <>
       <div
         className={cn(
-          'overflow-hidden rounded-xl border border-border bg-background shadow-sm',
+          'border-border bg-background overflow-hidden rounded-xl border shadow-sm',
           disabled && 'opacity-60',
           className,
         )}
       >
-        <div className="flex flex-wrap items-center gap-1 border-b border-border bg-muted/30 p-2">
+        <div className="border-border bg-muted/30 flex flex-wrap items-center gap-1 border-b p-2">
           <ToolbarGroup>
             <ToolbarButton
               onClick={() => editor.chain().focus().undo().run()}
@@ -198,11 +199,7 @@ export function RichTextEditor({
               label="🔗"
               title="لینک"
             />
-            <ToolbarButton
-              onClick={() => setImagePickerOpen(true)}
-              label="🖼"
-              title="درج تصویر"
-            />
+            <ToolbarButton onClick={() => setImagePickerOpen(true)} label="🖼" title="درج تصویر" />
           </ToolbarGroup>
         </div>
         <EditorContent editor={editor} />
@@ -224,7 +221,7 @@ function ToolbarGroup({ children }: { children: React.ReactNode }) {
 }
 
 function ToolbarDivider() {
-  return <div className="mx-1 hidden h-6 w-px bg-border sm:block" />;
+  return <div className="bg-border mx-1 hidden h-6 w-px sm:block" />;
 }
 
 function ToolbarButton({

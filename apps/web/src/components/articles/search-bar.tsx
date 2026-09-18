@@ -33,7 +33,10 @@ export function SearchBar({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn('surface-card flex flex-col gap-3 rounded-2xl p-3 sm:flex-row sm:items-center', className)}
+      className={cn(
+        'surface-card flex flex-col gap-3 rounded-2xl p-3 sm:flex-row sm:items-center',
+        className,
+      )}
       role="search"
       aria-label="جستجوی مقالات"
     >
@@ -46,7 +49,12 @@ export function SearchBar({
         aria-label="عبارت جستجو"
         className="h-12 flex-1 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
       />
-      <Button type="submit" disabled={isPending} size="lg" className="h-12 shrink-0 rounded-xl px-8">
+      <Button
+        type="submit"
+        disabled={isPending}
+        size="lg"
+        className="h-12 shrink-0 rounded-xl px-8"
+      >
         {isPending ? '...' : 'جستجو'}
       </Button>
     </form>

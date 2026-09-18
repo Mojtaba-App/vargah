@@ -14,7 +14,11 @@ const optionalImageUrl = z
   });
 
 const articleFieldsSchema = z.object({
-  title: z.string().trim().min(3, 'عنوان حداقل ۳ کاراکتر باشد').max(300, 'عنوان حداکثر ۳۰۰ کاراکتر'),
+  title: z
+    .string()
+    .trim()
+    .min(3, 'عنوان حداقل ۳ کاراکتر باشد')
+    .max(300, 'عنوان حداکثر ۳۰۰ کاراکتر'),
   excerpt: z.string().max(1000, 'خلاصه حداکثر ۱۰۰۰ کاراکتر').optional().or(z.literal('')),
   content: z
     .string()

@@ -1,15 +1,8 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import {
-  PaymentStatus,
-  PaymentType,
-  SubscriptionStatus,
-  prisma,
-} from '@vargah/database';
-import {
-  getActiveSubscriptionPlans,
-} from '@vargah/business/subscription-plans';
+import { PaymentStatus, PaymentType, SubscriptionStatus, prisma } from '@vargah/database';
+import { getActiveSubscriptionPlans } from '@vargah/business/subscription-plans';
 import {
   applyCouponToSubtotal,
   normalizeDiscountCode,
@@ -27,10 +20,7 @@ import {
   isPaymentReady,
   resolvePaymentConfig,
 } from '@vargah/business/payment-config';
-import {
-  zarinpalRequestPayment,
-  zarinpalStartPayUrl,
-} from '@vargah/business/zarinpal';
+import { zarinpalRequestPayment, zarinpalStartPayUrl } from '@vargah/business/zarinpal';
 import { subscriberCityUpdate } from '@vargah/business/subscriber-location';
 import { subscriptionCheckoutSchema } from '@vargah/security/schemas';
 import { sanitizePlainText } from '@vargah/security/sanitize';
@@ -44,11 +34,7 @@ import { verifyCsrfFromRequest } from '@/lib/security/request';
 const CHECKOUT_LIMIT = 8;
 const CHECKOUT_WINDOW_MS = 15 * 60 * 1000;
 
-async function assertSubscriptionRateLimit(
-  key: string,
-  limit: number,
-  windowMs: number,
-) {
+async function assertSubscriptionRateLimit(key: string, limit: number, windowMs: number) {
   if (!process.env.DATABASE_URL) return;
   await rateLimitOrThrow(key, limit, windowMs);
 }
@@ -94,7 +80,11 @@ export async function initiateSubscriptionCheckout(input: {
   await verifyCsrfFromRequest();
   const customerSession = await requireCustomerSession();
   const parsed = subscriptionCheckoutSchema.parse(input);
-  await assertSubscriptionRateLimit(`checkout:${customerSession.subscriberId}`, CHECKOUT_LIMIT, CHECKOUT_WINDOW_MS);
+  await assertSubscriptionRateLimit(
+    `checkout:${customerSession.subscriberId}`,
+    CHECKOUT_LIMIT,
+    CHECKOUT_WINDOW_MS,
+  );
 
   const [paymentConfig, plans] = await Promise.all([getPaymentConfig(), loadPlans()]);
   const resolved = resolvePaymentConfig(paymentConfig);
@@ -204,7 +194,14 @@ async function resolveCouponForCheckout(params: {
   planSlugs: string[];
   subscriberId: string;
 }): Promise<
-  | { ok: true; amountOff: number; finalAmount: number; code: string; title: string; discountCodeId: string }
+  | {
+      ok: true;
+      amountOff: number;
+      finalAmount: number;
+      code: string;
+      title: string;
+      discountCodeId: string;
+    }
   | { ok: false; message: string }
 > {
   const code = normalizeDiscountCode(params.code);
@@ -300,8 +297,7 @@ export async function getSubscriberDashboardFromSession(): Promise<SubscriberDas
   if (!subscriber) return null;
 
   const plans = await loadPlans();
-  const planName =
-    plans.find((p) => p.slug === subscriber.planType)?.name ?? subscriber.planType;
+  const planName = plans.find((p) => p.slug === subscriber.planType)?.name ?? subscriber.planType;
 
   return {
     id: subscriber.id,

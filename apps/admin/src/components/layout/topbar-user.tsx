@@ -26,15 +26,13 @@ export function TopbarUser({ user }: TopbarUserProps) {
       aria-current={isProfileActive ? 'page' : undefined}
       className={cn(
         'flex items-center gap-2.5 rounded-xl px-2 py-1.5 transition-colors',
-        isProfileActive
-          ? 'bg-primary/10 text-primary'
-          : 'text-foreground hover:bg-muted/80',
+        isProfileActive ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted/80',
       )}
     >
       <UserAvatar name={user.name} avatar={user.avatar} size="sm" />
       <span className="hidden min-w-0 sm:block">
-        <span className="block truncate text-sm font-bold leading-tight">{user.name}</span>
-        <span className="block truncate text-[11px] text-muted-foreground">
+        <span className="block truncate text-sm leading-tight font-bold">{user.name}</span>
+        <span className="text-muted-foreground block truncate text-[11px]">
           {ROLE_LABELS[user.role]}
         </span>
       </span>

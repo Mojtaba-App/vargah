@@ -85,11 +85,11 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{formatNumber(value)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
@@ -134,7 +134,7 @@ function TicketStatusSelect({
           </option>
         ))}
       </Select>
-      {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
+      {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
     </div>
   );
 }
@@ -190,7 +190,13 @@ function QuickReplyDialog({
       onClose={onClose}
       footer={
         <div className="flex flex-wrap justify-end gap-2">
-          <Button type="button" variant="outline" className="rounded-xl" onClick={onClose} disabled={isPending}>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-xl"
+            onClick={onClose}
+            disabled={isPending}
+          >
             انصراف
           </Button>
           <LoadingButton type="button" className="rounded-xl" loading={isPending} onClick={submit}>
@@ -258,7 +264,9 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
       inProgress: tickets.filter((t) => t.status === TicketStatus.IN_PROGRESS).length,
       waiting: tickets.filter((t) => t.status === TicketStatus.WAITING_CUSTOMER).length,
       resolved: tickets.filter((t) => t.status === TicketStatus.RESOLVED).length,
-      urgent: tickets.filter((t) => t.priority === TicketPriority.URGENT && isTicketActive(t.status)).length,
+      urgent: tickets.filter(
+        (t) => t.priority === TicketPriority.URGENT && isTicketActive(t.status),
+      ).length,
     }),
     [tickets],
   );
@@ -347,8 +355,8 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
           className="max-w-xs text-start"
           onClick={() => setSelected(row.original)}
         >
-          <p className="font-medium text-primary hover:underline">{row.original.subject}</p>
-          <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{row.original.body}</p>
+          <p className="text-primary font-medium hover:underline">{row.original.subject}</p>
+          <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">{row.original.body}</p>
         </button>
       ),
     },
@@ -358,7 +366,7 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
       cell: ({ row }) => (
         <div className="min-w-[8rem]">
           <p className="font-medium">{row.original.customerName}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {TICKET_CUSTOMER_TYPE_LABELS[row.original.customerType]}
           </p>
         </div>
@@ -396,7 +404,7 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
       accessorKey: 'createdAt',
       header: 'تاریخ',
       cell: ({ row }) => (
-        <span className="whitespace-nowrap text-muted-foreground">
+        <span className="text-muted-foreground whitespace-nowrap">
           {formatJalali(row.original.createdAt, true)}
         </span>
       ),
@@ -409,7 +417,12 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
       {error && <StatusBanner type="error" message={error} className="rounded-xl" />}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-        <StatCard label="همه" value={stats.total} active={statusFilter === 'ALL'} onClick={() => setStatusFilter('ALL')} />
+        <StatCard
+          label="همه"
+          value={stats.total}
+          active={statusFilter === 'ALL'}
+          onClick={() => setStatusFilter('ALL')}
+        />
         <StatCard
           label="باز"
           value={stats.open}
@@ -438,25 +451,32 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
           label="فوری فعال"
           value={stats.urgent}
           active={priorityFilter === TicketPriority.URGENT}
-          onClick={() => setPriorityFilter((p) => (p === TicketPriority.URGENT ? 'ALL' : TicketPriority.URGENT))}
+          onClick={() =>
+            setPriorityFilter((p) => (p === TicketPriority.URGENT ? 'ALL' : TicketPriority.URGENT))
+          }
         />
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {(['ALL', TicketCustomerType.SUBSCRIBER, TicketCustomerType.ADVERTISER, TicketCustomerType.GUEST] as const).map(
-          (type) => (
-            <Button
-              key={type}
-              type="button"
-              size="sm"
-              variant={customerFilter === type ? 'default' : 'outline'}
-              className="rounded-xl"
-              onClick={() => setCustomerFilter(type)}
-            >
-              {type === 'ALL' ? 'همه مشتریان' : TICKET_CUSTOMER_TYPE_LABELS[type]}
-            </Button>
-          ),
-        )}
+        {(
+          [
+            'ALL',
+            TicketCustomerType.SUBSCRIBER,
+            TicketCustomerType.ADVERTISER,
+            TicketCustomerType.GUEST,
+          ] as const
+        ).map((type) => (
+          <Button
+            key={type}
+            type="button"
+            size="sm"
+            variant={customerFilter === type ? 'default' : 'outline'}
+            className="rounded-xl"
+            onClick={() => setCustomerFilter(type)}
+          >
+            {type === 'ALL' ? 'همه مشتریان' : TICKET_CUSTOMER_TYPE_LABELS[type]}
+          </Button>
+        ))}
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -507,12 +527,12 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
             <button
               type="button"
               onClick={() => setSelected(row)}
-              className="surface-card w-full rounded-2xl p-4 text-start transition-colors hover:border-primary/40"
+              className="surface-card hover:border-primary/40 w-full rounded-2xl p-4 text-start transition-colors"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold leading-snug">{row.subject}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="leading-snug font-semibold">{row.subject}</p>
+                  <p className="text-muted-foreground mt-1 text-sm">
                     #{getTicketShortId(row.id)} — {row.customerName}
                   </p>
                 </div>
@@ -520,7 +540,7 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
                   {TICKET_STATUS_LABELS[row.status]}
                 </Badge>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+              <div className="text-muted-foreground mt-3 flex flex-wrap gap-2 text-xs">
                 <Badge variant={TICKET_PRIORITY_VARIANT[row.priority]}>
                   {TICKET_PRIORITY_LABELS[row.priority]}
                 </Badge>
@@ -531,7 +551,7 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
           </li>
         ))}
         {filtered.length === 0 && (
-          <li className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+          <li className="border-border text-muted-foreground rounded-2xl border border-dashed px-4 py-8 text-center text-sm">
             تیکتی یافت نشد.
           </li>
         )}
@@ -543,7 +563,7 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-lg font-semibold">{selected.subject}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   #{getTicketShortId(selected.id)} — {selected.customerName}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -553,7 +573,9 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
                   <Badge variant={TICKET_PRIORITY_VARIANT[selected.priority]}>
                     {TICKET_PRIORITY_LABELS[selected.priority]}
                   </Badge>
-                  <Badge variant="outline">{TICKET_CUSTOMER_TYPE_LABELS[selected.customerType]}</Badge>
+                  <Badge variant="outline">
+                    {TICKET_CUSTOMER_TYPE_LABELS[selected.customerType]}
+                  </Badge>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -562,7 +584,12 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
                     صفحه کامل
                   </Button>
                 </Link>
-                <Button size="sm" variant="ghost" className="rounded-xl" onClick={() => setSelected(null)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="rounded-xl"
+                  onClick={() => setSelected(null)}
+                >
                   بستن
                 </Button>
               </div>
@@ -602,10 +629,12 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
               </div>
             )}
 
-            <div className="rounded-xl bg-muted/40 p-4 text-sm whitespace-pre-wrap">{selected.body}</div>
+            <div className="bg-muted/40 rounded-xl p-4 text-sm whitespace-pre-wrap">
+              {selected.body}
+            </div>
 
             {canManage && (
-              <div className="space-y-3 rounded-xl border border-border p-4">
+              <div className="border-border space-y-3 rounded-xl border p-4">
                 <p className="font-semibold">پاسخ به تیکت</p>
                 {detailError && <StatusBanner type="error" message={detailError} />}
                 <Textarea
@@ -639,12 +668,15 @@ export function TicketsWorkspace({ tickets: initialTickets, canManage }: Tickets
             <div className="space-y-2">
               <p className="font-semibold">گفتگو ({formatNumber(selected.replies.length)})</p>
               {selected.replies.length === 0 ? (
-                <p className="text-sm text-muted-foreground">هنوز پاسخی ثبت نشده.</p>
+                <p className="text-muted-foreground text-sm">هنوز پاسخی ثبت نشده.</p>
               ) : (
                 <ul className="max-h-72 space-y-2 overflow-y-auto">
                   {selected.replies.map((reply) => (
-                    <li key={reply.id} className="rounded-xl border border-border bg-muted/20 p-3 text-sm">
-                      <div className="mb-1 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+                    <li
+                      key={reply.id}
+                      className="border-border bg-muted/20 rounded-xl border p-3 text-sm"
+                    >
+                      <div className="text-muted-foreground mb-1 flex flex-wrap justify-between gap-2 text-xs">
                         <span>
                           {reply.authorName ?? 'سیستم'}
                           {reply.isInternal ? ' (داخلی)' : ''}

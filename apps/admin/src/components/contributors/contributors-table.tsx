@@ -35,7 +35,8 @@ const columns: ColumnDef<ContributorRow>[] = [
   {
     accessorKey: 'feePerWord',
     header: 'حق‌التحریر',
-    cell: ({ row }) => (row.original.feePerWord ? `${formatPrice(row.original.feePerWord)} ت/کلمه` : '—'),
+    cell: ({ row }) =>
+      row.original.feePerWord ? `${formatPrice(row.original.feePerWord)} ت/کلمه` : '—',
   },
   { accessorKey: 'taskCount', header: 'وظایف' },
   {

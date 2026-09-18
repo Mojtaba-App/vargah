@@ -12,7 +12,7 @@ export function DataDeletionForm() {
 
   return (
     <form
-      className="mt-6 space-y-4 rounded-xl border border-border p-6"
+      className="border-border mt-6 space-y-4 rounded-xl border p-6"
       onSubmit={(e) => {
         e.preventDefault();
         setError('');
@@ -29,11 +29,13 @@ export function DataDeletionForm() {
       }}
     >
       <h3 className="font-semibold">درخواست حذف داده</h3>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         مطابق اصول حفاظت از داده، می‌توانید درخواست حذف اطلاعات شخصی خود را ثبت کنید.
       </p>
       <div>
-        <Label htmlFor="deletion-email" required>ایمیل ثبت‌شده</Label>
+        <Label htmlFor="deletion-email" required>
+          ایمیل ثبت‌شده
+        </Label>
         <Input id="deletion-email" name="email" type="email" required dir="ltr" />
       </div>
       <div>
@@ -43,8 +45,10 @@ export function DataDeletionForm() {
       <Button type="submit" disabled={pending}>
         {pending ? 'در حال ثبت...' : 'ثبت درخواست حذف'}
       </Button>
-      {done && <p className="text-sm text-green-600">درخواست شما ثبت شد و ظرف ۳۰ روز بررسی می‌شود.</p>}
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {done && (
+        <p className="text-sm text-green-600">درخواست شما ثبت شد و ظرف ۳۰ روز بررسی می‌شود.</p>
+      )}
+      {error && <p className="text-destructive text-sm">{error}</p>}
     </form>
   );
 }

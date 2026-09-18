@@ -56,22 +56,16 @@ function StatCard({
       className={cn(
         'surface-card rounded-2xl p-4 text-start transition-colors',
         onClick && 'hover:border-primary/40',
-        active && 'border-primary ring-1 ring-primary/20',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
       <p className="text-2xl font-bold tabular-nums">{value}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground mt-1 text-sm">{label}</p>
     </Comp>
   );
 }
 
-export function IssuesWorkspace({
-  issues,
-  canDelete,
-}: {
-  issues: IssueRow[];
-  canDelete: boolean;
-}) {
+export function IssuesWorkspace({ issues, canDelete }: { issues: IssueRow[]; canDelete: boolean }) {
   const router = useRouter();
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL');
   const [deleteTarget, setDeleteTarget] = useState<IssueRow | null>(null);
@@ -108,12 +102,12 @@ export function IssuesWorkspace({
       header: 'شماره',
       cell: ({ row }) => (
         <div className="flex min-w-[220px] items-center gap-3">
-          <div className="relative size-14 shrink-0 overflow-hidden rounded-lg border border-border bg-muted/40">
+          <div className="border-border bg-muted/40 relative size-14 shrink-0 overflow-hidden rounded-lg border">
             {row.original.coverImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={row.original.coverImage} alt="" className="size-full object-cover" />
             ) : (
-              <div className="flex size-full items-center justify-center text-xs font-bold text-muted-foreground">
+              <div className="text-muted-foreground flex size-full items-center justify-center text-xs font-bold">
                 #{row.original.number}
               </div>
             )}
@@ -121,11 +115,11 @@ export function IssuesWorkspace({
           <div>
             <Link
               href={`/content/issues/${row.original.id}`}
-              className="font-medium text-primary hover:underline"
+              className="text-primary font-medium hover:underline"
             >
               شماره {row.original.number}
             </Link>
-            <p className="line-clamp-1 text-sm text-muted-foreground">{row.original.title}</p>
+            <p className="text-muted-foreground line-clamp-1 text-sm">{row.original.title}</p>
           </div>
         </div>
       ),
@@ -175,7 +169,11 @@ export function IssuesWorkspace({
             </Button>
           </Link>
           {row.original.status === IssueStatus.PUBLISHED && (
-            <a href={getPublicIssueUrl(row.original.slug)} target="_blank" rel="noopener noreferrer">
+            <a
+              href={getPublicIssueUrl(row.original.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button variant="outline" size="sm">
                 مشاهده
               </Button>

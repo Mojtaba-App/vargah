@@ -21,7 +21,10 @@ type CollaborationApplicationFormProps = {
   className?: string;
 };
 
-export function CollaborationApplicationForm({ types, className }: CollaborationApplicationFormProps) {
+export function CollaborationApplicationForm({
+  types,
+  className,
+}: CollaborationApplicationFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -38,13 +41,11 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
 
   const handleInvalid = (event: React.FormEvent<HTMLFormElement>) => {
     const target = event.target;
-    if (
-      !(
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLTextAreaElement ||
-        target instanceof HTMLSelectElement
-      )
-    ) {
+    if (!(
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement
+    )) {
       return;
     }
     event.preventDefault();
@@ -90,12 +91,18 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
       aria-label="فرم درخواست همکاری و رزومه"
     >
       {error && (
-        <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       )}
       {submitted && (
-        <p role="status" className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400">
+        <p
+          role="status"
+          className="rounded-xl border border-green-600/30 bg-green-500/5 px-3 py-2 text-sm text-green-700 dark:text-green-400"
+        >
           درخواست همکاری و رزومه شما دریافت شد. به‌زودی بررسی می‌کنیم.
         </p>
       )}
@@ -116,7 +123,9 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
             disabled={pending}
             onChange={() => clearFieldError('fullName')}
           />
-          {fieldErrors.fullName && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.fullName}</p>}
+          {fieldErrors.fullName && (
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.fullName}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="collab-email" required>
@@ -133,7 +142,9 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
             disabled={pending}
             onChange={() => clearFieldError('email')}
           />
-          {fieldErrors.email && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.email}</p>}
+          {fieldErrors.email && (
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.email}</p>
+          )}
         </div>
       </div>
 
@@ -158,8 +169,10 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
             placeholder="09123456789"
             onChange={() => clearFieldError('phone')}
           />
-          {fieldErrors.phone && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.phone}</p>}
-          <p className="mt-1 text-xs text-muted-foreground">موبایل ایران — مثال: 09123456789</p>
+          {fieldErrors.phone && (
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.phone}</p>
+          )}
+          <p className="text-muted-foreground mt-1 text-xs">موبایل ایران — مثال: 09123456789</p>
         </div>
         <div>
           <Label htmlFor="collab-type" required>
@@ -184,7 +197,7 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
             ))}
           </Select>
           {fieldErrors.collaborationType && (
-            <p className="mt-1.5 text-xs text-destructive">{fieldErrors.collaborationType}</p>
+            <p className="text-destructive mt-1.5 text-xs">{fieldErrors.collaborationType}</p>
           )}
         </div>
       </div>
@@ -205,7 +218,9 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
           placeholder="سابقه، علاقه‌مندی و نحوهٔ همکاری پیشنهادی خود را بنویسید..."
           onChange={() => clearFieldError('message')}
         />
-        {fieldErrors.message && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.message}</p>}
+        {fieldErrors.message && (
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.message}</p>
+        )}
       </div>
 
       <div>
@@ -222,7 +237,7 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
           onChange={() => clearFieldError('portfolioUrl')}
         />
         {fieldErrors.portfolioUrl && (
-          <p className="mt-1.5 text-xs text-destructive">{fieldErrors.portfolioUrl}</p>
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.portfolioUrl}</p>
         )}
       </div>
 
@@ -240,15 +255,22 @@ export function CollaborationApplicationForm({ types, className }: Collaboration
           disabled={pending}
           onChange={() => clearFieldError('resume')}
         />
-        {fieldErrors.resume && <p className="mt-1.5 text-xs text-destructive">{fieldErrors.resume}</p>}
-        <p className="mt-1 text-xs text-muted-foreground">PDF یا Word — حداکثر ۸ مگابایت</p>
+        {fieldErrors.resume && (
+          <p className="text-destructive mt-1.5 text-xs">{fieldErrors.resume}</p>
+        )}
+        <p className="text-muted-foreground mt-1 text-xs">PDF یا Word — حداکثر ۸ مگابایت</p>
       </div>
 
-      <Button type="submit" size="lg" className="rounded-full px-7" disabled={pending || types.length === 0}>
+      <Button
+        type="submit"
+        size="lg"
+        className="rounded-full px-7"
+        disabled={pending || types.length === 0}
+      >
         {pending ? 'در حال ارسال...' : 'ارسال درخواست همکاری'}
       </Button>
       {types.length === 0 && (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           در حال حاضر نوع همکاری فعالی تعریف نشده است. لطفاً بعداً مراجعه کنید.
         </p>
       )}

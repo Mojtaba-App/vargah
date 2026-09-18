@@ -66,8 +66,7 @@ export default async function DashboardPage() {
       : null,
   ].filter(Boolean);
 
-  const showSidebarPanels =
-    metrics.notifications.length > 0 || metrics.quickActions.length > 0;
+  const showSidebarPanels = metrics.notifications.length > 0 || metrics.quickActions.length > 0;
   const showMainChart = scope.showTraffic && metrics.chartData.length > 0;
   const showBottomRow = scope.showTopArticles || scope.showTrafficSources;
 

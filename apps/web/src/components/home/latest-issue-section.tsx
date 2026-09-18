@@ -26,7 +26,10 @@ export function LatestIssueSection({ issue }: LatestIssueSectionProps) {
           title="آخرین شماره"
           subtitle={`شماره ${issue.number} — ${formatJalaliDate(issue.publishedAt, 'MMMM YYYY')}`}
           action={
-            <Link href={`/issues/${issue.slug}`} className="group text-sm font-semibold text-primary">
+            <Link
+              href={`/issues/${issue.slug}`}
+              className="group text-primary text-sm font-semibold"
+            >
               <MotionLinkArrow>مشاهده همه مطالب</MotionLinkArrow>
             </Link>
           }
@@ -43,15 +46,17 @@ export function LatestIssueSection({ issue }: LatestIssueSectionProps) {
                 priority
                 className="transition-transform duration-500 hover:scale-[1.02]"
               />
-              <div className="absolute start-6 top-6 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow-md">
+              <div className="bg-primary text-primary-foreground absolute start-6 top-6 rounded-full px-3 py-1 text-xs font-bold shadow-md">
                 شماره {issue.number}
               </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.1} className="flex flex-col lg:col-span-7">
             <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">{issue.title}</h3>
-            <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">{issue.description}</p>
-            <p className="mt-3 inline-flex w-fit rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+            <p className="text-muted-foreground mt-4 max-w-2xl leading-relaxed">
+              {issue.description}
+            </p>
+            <p className="bg-muted text-muted-foreground mt-3 inline-flex w-fit rounded-full px-3 py-1 text-xs font-medium">
               {issue.pageCount} صفحه · PDF و مطالعه آنلاین
             </p>
             <div className="surface-card mt-6 flex-1 rounded-2xl p-5 sm:p-6">
@@ -59,10 +64,14 @@ export function LatestIssueSection({ issue }: LatestIssueSectionProps) {
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href={`/issues/${issue.slug}`}>
-                <Button size="lg" className="rounded-full px-7">مطالعه آنلاین</Button>
+                <Button size="lg" className="rounded-full px-7">
+                  مطالعه آنلاین
+                </Button>
               </Link>
               <a href={issue.pdfUrl} download>
-                <Button variant="outline" size="lg" className="rounded-full px-7">دانلود PDF</Button>
+                <Button variant="outline" size="lg" className="rounded-full px-7">
+                  دانلود PDF
+                </Button>
               </a>
             </div>
           </FadeIn>

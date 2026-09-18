@@ -44,7 +44,10 @@ async function resolveAdTypeLabel(adType: string): Promise<string> {
   return `${item.name} (${item.size})`;
 }
 
-const ARTICLE_CATEGORY_LABELS: Record<z.infer<typeof articleSubmissionFormSchema>['category'], string> = {
+const ARTICLE_CATEGORY_LABELS: Record<
+  z.infer<typeof articleSubmissionFormSchema>['category'],
+  string
+> = {
   politics: 'سیاست و جامعه',
   economy: 'اقتصاد',
   culture: 'فرهنگ و هنر',
@@ -113,7 +116,10 @@ export async function submitContactForm(
   } catch (error) {
     return {
       ok: false,
-      message: toPublicUserError(error, 'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.'),
+      message: toPublicUserError(
+        error,
+        'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.',
+      ),
     };
   }
 
@@ -181,7 +187,10 @@ export async function submitNewsletter(
   } catch (error) {
     return {
       ok: false,
-      message: toPublicUserError(error, 'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.'),
+      message: toPublicUserError(
+        error,
+        'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.',
+      ),
     };
   }
 
@@ -235,9 +244,7 @@ export async function submitAdRequest(formData: FormData) {
       phone: String(formData.get('phone') ?? ''),
       email: String(formData.get('email') ?? ''),
       adType: String(formData.get('adType') ?? ''),
-      description: formData.get('description')
-        ? String(formData.get('description'))
-        : undefined,
+      description: formData.get('description') ? String(formData.get('description')) : undefined,
       province: formData.get('province') ? String(formData.get('province')) : undefined,
       city: formData.get('city') ? String(formData.get('city')) : undefined,
     });
@@ -468,7 +475,10 @@ export async function submitComment(input: {
   } catch (error) {
     return {
       ok: false,
-      message: toPublicUserError(error, 'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.'),
+      message: toPublicUserError(
+        error,
+        'تعداد درخواست‌ها زیاد است. لطفاً کمی بعد دوباره تلاش کنید.',
+      ),
     };
   }
 
@@ -480,9 +490,7 @@ export async function submitComment(input: {
     return { ok: false, message: 'مقاله یافت نشد یا دیگر در دسترس نیست.' };
   }
 
-  const authorName = sanitizePlainText(
-    session.name?.trim() || parsed.authorName || 'مشترک',
-  );
+  const authorName = sanitizePlainText(session.name?.trim() || parsed.authorName || 'مشترک');
 
   try {
     await prisma.articleComment.create({

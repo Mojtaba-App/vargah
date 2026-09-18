@@ -10,7 +10,11 @@ import { formatJalali } from '@/lib/utils';
 import { PERMISSIONS } from '@/lib/permissions';
 import { hasPermissionAsync } from '@/lib/permissions-server';
 
-export default async function CommissionDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function CommissionDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   await requirePermission(PERMISSIONS.CONTRIBUTOR_MANAGE);
   const session = await requireAuth();
   const { id } = await params;
@@ -61,7 +65,9 @@ export default async function CommissionDetailPage({ params }: { params: Promise
         <CardContent className="space-y-4 pt-6">
           <Badge>{COMMISSION_STATUS_LABELS[commission.status]}</Badge>
           {commission.description && (
-            <p className="whitespace-pre-wrap text-sm text-muted-foreground">{commission.description}</p>
+            <p className="text-muted-foreground text-sm whitespace-pre-wrap">
+              {commission.description}
+            </p>
           )}
           <div className="grid gap-2 text-sm sm:grid-cols-2">
             <p>سردبیر: {commission.createdBy.name}</p>

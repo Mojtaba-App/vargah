@@ -2,14 +2,14 @@
 
 وب‌سایت و پنل مدیریت ماهنامه — monorepo با **pnpm workspaces** و **Turborepo**.
 
-| سند | موضوع |
-|-----|--------|
-| [docs/SETUP.md](./docs/SETUP.md) | راه‌اندازی گام‌به‌گام محلی |
-| [docs/DEPLOY.md](./docs/DEPLOY.md) | استقرار production |
-| [docs/GITHUB.md](./docs/GITHUB.md) | آماده‌سازی و push به GitHub |
-| [docs/DATABASE.md](./docs/DATABASE.md) | Prisma، migration، seed |
-| [SECURITY.md](./SECURITY.md) | سیاست امنیت و گزارش آسیب‌پذیری |
-| [docs/](./docs/README.md) | فهرست کامل مستندات |
+| سند                                    | موضوع                          |
+| -------------------------------------- | ------------------------------ |
+| [docs/SETUP.md](./docs/SETUP.md)       | راه‌اندازی گام‌به‌گام محلی     |
+| [docs/DEPLOY.md](./docs/DEPLOY.md)     | استقرار production             |
+| [docs/GITHUB.md](./docs/GITHUB.md)     | آماده‌سازی و push به GitHub    |
+| [docs/DATABASE.md](./docs/DATABASE.md) | Prisma، migration، seed        |
+| [SECURITY.md](./SECURITY.md)           | سیاست امنیت و گزارش آسیب‌پذیری |
+| [docs/](./docs/README.md)              | فهرست کامل مستندات             |
 
 سایت **فقط فارسی و RTL** است (`locale: fa`).
 
@@ -17,12 +17,12 @@
 
 ## پیش‌نیازها
 
-| ابزار | نسخه |
-|--------|------|
-| Node.js | **20+** (پیشنهادی ۲۲ LTS) |
-| pnpm | **10.34.5** (مطابق `packageManager`) |
-| PostgreSQL | **14+** |
-| Git | ۲+ |
+| ابزار      | نسخه                                 |
+| ---------- | ------------------------------------ |
+| Node.js    | **20+** (پیشنهادی ۲۲ LTS)            |
+| pnpm       | **10.34.5** (مطابق `packageManager`) |
+| PostgreSQL | **14+**                              |
+| Git        | ۲+                                   |
 
 ```powershell
 corepack enable
@@ -56,21 +56,21 @@ pnpm --filter=@vargah/web dev
 
 ## آدرس‌های محلی
 
-| سرویس | آدرس |
-|--------|------|
-| سایت | http://localhost:3000 |
-| پنل | http://localhost:3000/admin/login |
-| API (CMS) | http://localhost:4000/api/v1 |
-| Prisma Studio | `pnpm db:studio` |
+| سرویس         | آدرس                              |
+| ------------- | --------------------------------- |
+| سایت          | http://localhost:3000             |
+| پنل           | http://localhost:3000/admin/login |
+| API (CMS)     | http://localhost:4000/api/v1      |
+| Prisma Studio | `pnpm db:studio`                  |
 
 `pnpm --filter=@vargah/web dev` سایت (:3000) و پنل (:3001) را با هم بالا می‌آورد؛ مسیر `/admin` از طریق rewrite وب به پنل می‌رسد.
 
 ### حساب‌های seed (فقط local / staging)
 
-| نقش | ایمیل / نام کاربری | رمز |
-|-----|---------------------|-----|
-| مدیر کل | `admin@magazine.ir` / `admin` | `admin1234` |
-| سردبیر | `editor@magazine.ir` / `editor` | `editor1234` |
+| نقش     | ایمیل / نام کاربری              | رمز          |
+| ------- | ------------------------------- | ------------ |
+| مدیر کل | `admin@magazine.ir` / `admin`   | `admin1234`  |
+| سردبیر  | `editor@magazine.ir` / `editor` | `editor1234` |
 | نویسنده | `writer@magazine.ir` / `writer` | `writer1234` |
 
 ورود: ایمیل یا نام کاربری + رمز → کد OTP (در development روی صفحه نمایش داده می‌شود).  
@@ -134,11 +134,11 @@ pnpm db:seed:settings
 
 ## عیب‌یابی کوتاه
 
-| مشکل | اقدام |
-|------|--------|
-| DB auth failed | `DATABASE_URL` در `.env` ریشه |
-| EPERM روی generate | بستن dev server → `pnpm db:generate` |
+| مشکل                   | اقدام                                                    |
+| ---------------------- | -------------------------------------------------------- |
+| DB auth failed         | `DATABASE_URL` در `.env` ریشه                            |
+| EPERM روی generate     | بستن dev server → `pnpm db:generate`                     |
 | لوگو لاگین لود نمی‌شود | مسیرهای `/images` و `/uploads/branding` باید عمومی باشند |
-| migration تکراری | `prisma migrate resolve --applied "<name>"` |
+| migration تکراری       | `prisma migrate resolve --applied "<name>"`              |
 
 جزئیات: [docs/SETUP.md](./docs/SETUP.md)

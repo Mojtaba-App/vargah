@@ -12,7 +12,10 @@ import { Input, Label, Textarea } from '@vargah/ui/components/input';
 import { Badge } from '@vargah/ui/components/badge';
 import { Button } from '@vargah/ui/components/button';
 
-import { initiateSubscriptionCheckout, previewSubscriptionDiscountCode } from '@/actions/subscription';
+import {
+  initiateSubscriptionCheckout,
+  previewSubscriptionDiscountCode,
+} from '@/actions/subscription';
 import { useCustomerAuth } from '@/components/auth/customer-auth-provider';
 import { ProvinceCityField } from '@/components/forms/province-city-field';
 import { PlanCard } from '@/components/subscription/plan-card';
@@ -64,14 +67,13 @@ export function SubscriptionWorkspace({
 
   const paymentReady = isPaymentReady(resolvePaymentConfig(paymentConfig));
   const resolvedPayment = resolvePaymentConfig(paymentConfig);
-  const paymentBlockReason =
-    !resolvedPayment.enabled
-      ? 'درگاه در پنل غیرفعال است'
-      : !resolvedPayment.zarinpal.merchantId
-        ? 'Merchant ID زرین‌پال در تنظیمات وارد نشده'
-        : !resolvedPayment.callbackBaseUrl
-          ? 'آدرس callback سایت تنظیم نشده'
-          : null;
+  const paymentBlockReason = !resolvedPayment.enabled
+    ? 'درگاه در پنل غیرفعال است'
+    : !resolvedPayment.zarinpal.merchantId
+      ? 'Merchant ID زرین‌پال در تنظیمات وارد نشده'
+      : !resolvedPayment.callbackBaseUrl
+        ? 'آدرس callback سایت تنظیم نشده'
+        : null;
 
   const groupedPlans = useMemo(() => {
     const groups: Record<string, SubscriptionPlanConfig[]> = {
@@ -138,7 +140,9 @@ export function SubscriptionWorkspace({
 
   const handleAddToCart = (plan: SubscriptionPlanConfig, quantity: number) => {
     if (!isAuthenticated) {
-      setAuthNotice('برای افزودن به سبد و خرید اشتراک، ابتدا با شماره موبایل وارد حساب کاربری شوید.');
+      setAuthNotice(
+        'برای افزودن به سبد و خرید اشتراک، ابتدا با شماره موبایل وارد حساب کاربری شوید.',
+      );
       openLogin('subscription');
       return;
     }
@@ -181,9 +185,7 @@ export function SubscriptionWorkspace({
           openLogin('subscription');
           return;
         }
-        setCheckoutError(
-          toPublicUserError(error, 'خطا در شروع پرداخت'),
-        );
+        setCheckoutError(toPublicUserError(error, 'خطا در شروع پرداخت'));
       }
     });
   };
@@ -217,11 +219,11 @@ export function SubscriptionWorkspace({
       )}
 
       {!isAuthenticated && (
-        <div className="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-4 text-sm">
+        <div className="border-primary/20 bg-primary/5 rounded-2xl border px-4 py-4 text-sm">
           برای خرید یا تمدید اشتراک،{' '}
           <button
             type="button"
-            className="font-semibold text-primary underline-offset-2 hover:underline"
+            className="text-primary font-semibold underline-offset-2 hover:underline"
             onClick={() => openLogin('subscription')}
           >
             با موبایل وارد شوید
@@ -231,7 +233,10 @@ export function SubscriptionWorkspace({
       )}
 
       {authNotice && (
-        <p role="status" className="rounded-xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p
+          role="status"
+          className="rounded-xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
           {authNotice}
         </p>
       )}
@@ -240,7 +245,7 @@ export function SubscriptionWorkspace({
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold">پلن‌های اشتراک</h2>
-            <p className="mt-2 text-muted-foreground">
+            <p className="text-muted-foreground mt-2">
               قیمت‌ها از پنل مدیریت خوانده می‌شوند — چند پلن و تعداد دلخواه را به سبد اضافه کنید
               {paymentReady ? '' : ' (درگاه در حال راه‌اندازی)'}
             </p>
@@ -252,7 +257,9 @@ export function SubscriptionWorkspace({
             </Badge>
             {itemCount > 0 && (
               <button type="button" onClick={() => setDrawerOpen(true)}>
-                <Badge variant="default">{itemCount} در سبد · {formatPrice(totalAmount)} ت</Badge>
+                <Badge variant="default">
+                  {itemCount} در سبد · {formatPrice(totalAmount)} ت
+                </Badge>
               </button>
             )}
           </div>
@@ -260,12 +267,13 @@ export function SubscriptionWorkspace({
 
         {!paymentReady && paymentBlockReason && (
           <p className="mb-6 rounded-xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
-            پلن‌ها قابل مشاهده و افزودن به سبد هستند. {paymentBlockReason} — تا زمان تکمیل، دکمه پرداخت غیرفعال می‌ماند.
+            پلن‌ها قابل مشاهده و افزودن به سبد هستند. {paymentBlockReason} — تا زمان تکمیل، دکمه
+            پرداخت غیرفعال می‌ماند.
           </p>
         )}
 
         {plans.length === 0 && (
-          <p className="mb-6 rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+          <p className="border-border text-muted-foreground mb-6 rounded-xl border border-dashed px-4 py-8 text-center text-sm">
             هیچ پلن فعالی تعریف نشده است.
           </p>
         )}
@@ -293,13 +301,15 @@ export function SubscriptionWorkspace({
       {items.length > 0 && isAuthenticated && (
         <section
           id="checkout"
-          className="scroll-mt-28 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent p-6 md:p-8"
+          className="border-primary/20 from-primary/5 scroll-mt-28 rounded-2xl border bg-gradient-to-b to-transparent p-6 md:p-8"
         >
           <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-sm text-primary">سبد خرید اشتراک</p>
-              <h3 className="text-xl font-bold">{itemCount} مورد · {formatPrice(totalAmount)} تومان</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-primary text-sm">سبد خرید اشتراک</p>
+              <h3 className="text-xl font-bold">
+                {itemCount} مورد · {formatPrice(totalAmount)} تومان
+              </h3>
+              <p className="text-muted-foreground mt-1 text-sm">
                 مبلغ نهایی بر اساس قیمت به‌روز پنل محاسبه می‌شود
               </p>
             </div>
@@ -312,17 +322,17 @@ export function SubscriptionWorkspace({
             {items.map((item) => (
               <li
                 key={item.planSlug}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/80 bg-background/70 px-4 py-3"
+                className="border-border/80 bg-background/70 flex flex-wrap items-center justify-between gap-3 rounded-xl border px-4 py-3"
               >
                 <div className="min-w-0">
                   <p className="font-semibold">{item.name}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {PLAN_TYPE_LABELS[item.type]} · {PLAN_PERIOD_LABELS[item.period]} ·{' '}
                     {formatPrice(item.unitPrice)} تومان
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="inline-flex items-center rounded-lg border border-border">
+                  <div className="border-border inline-flex items-center rounded-lg border">
                     <button
                       type="button"
                       className="px-2.5 py-1 text-sm"
@@ -346,7 +356,7 @@ export function SubscriptionWorkspace({
                   </span>
                   <button
                     type="button"
-                    className="text-xs text-destructive hover:underline"
+                    className="text-destructive text-xs hover:underline"
                     onClick={() => removeItem(item.planSlug)}
                   >
                     حذف
@@ -387,7 +397,7 @@ export function SubscriptionWorkspace({
                 value={customer?.phone ?? ''}
                 readOnly
                 dir="ltr"
-                className="rounded-xl bg-muted/40"
+                className="bg-muted/40 rounded-xl"
               />
             </div>
 
@@ -418,15 +428,21 @@ export function SubscriptionWorkspace({
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="checkout-address">آدرس کامل پستی</Label>
-                  <Textarea id="checkout-address" name="address" required rows={3} className="rounded-xl" />
+                  <Textarea
+                    id="checkout-address"
+                    name="address"
+                    required
+                    rows={3}
+                    className="rounded-xl"
+                  />
                 </div>
               </>
             )}
 
-            <div className="space-y-3 rounded-2xl border border-dashed border-primary/30 bg-background/80 p-4 md:col-span-2">
+            <div className="border-primary/30 bg-background/80 space-y-3 rounded-2xl border border-dashed p-4 md:col-span-2">
               <div>
                 <Label htmlFor="discount-code">کد تخفیف</Label>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-1 text-xs">
                   اگر کد تخفیف دارید، قبل از پرداخت وارد کنید
                 </p>
               </div>
@@ -452,7 +468,7 @@ export function SubscriptionWorkspace({
                   <Button
                     type="button"
                     variant="ghost"
-                    className="rounded-xl text-destructive sm:shrink-0"
+                    className="text-destructive rounded-xl sm:shrink-0"
                     onClick={() => {
                       setAppliedDiscount(null);
                       setDiscountCodeInput('');
@@ -463,40 +479,45 @@ export function SubscriptionWorkspace({
                   </Button>
                 )}
               </div>
-              {discountError && <p className="text-sm text-destructive">{discountError}</p>}
+              {discountError && <p className="text-destructive text-sm">{discountError}</p>}
               {appliedDiscount && (
                 <div className="rounded-xl bg-emerald-50 px-3 py-2 text-sm text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100">
                   کد <span className="font-mono font-bold">{appliedDiscount.code}</span> (
-                  {appliedDiscount.title}) اعمال شد —{' '}
-                  {formatPrice(appliedDiscount.amountOff)} تومان تخفیف
+                  {appliedDiscount.title}) اعمال شد — {formatPrice(appliedDiscount.amountOff)} تومان
+                  تخفیف
                 </div>
               )}
               <div className="space-y-1 text-sm">
-                <div className="flex justify-between gap-3 text-muted-foreground">
+                <div className="text-muted-foreground flex justify-between gap-3">
                   <span>جمع سبد</span>
                   <span className="tabular-nums">{formatPrice(totalAmount)} تومان</span>
                 </div>
                 {appliedDiscount && (
                   <div className="flex justify-between gap-3 text-emerald-700 dark:text-emerald-300">
                     <span>تخفیف کد</span>
-                    <span className="tabular-nums">−{formatPrice(appliedDiscount.amountOff)} تومان</span>
+                    <span className="tabular-nums">
+                      −{formatPrice(appliedDiscount.amountOff)} تومان
+                    </span>
                   </div>
                 )}
-                <div className="flex justify-between gap-3 border-t border-border pt-2 font-bold">
+                <div className="border-border flex justify-between gap-3 border-t pt-2 font-bold">
                   <span>مبلغ قابل پرداخت</span>
-                  <span className="tabular-nums text-primary">{formatPrice(payableAmount)} تومان</span>
+                  <span className="text-primary tabular-nums">
+                    {formatPrice(payableAmount)} تومان
+                  </span>
                 </div>
               </div>
             </div>
 
             {checkoutError && (
-              <p className="md:col-span-2 text-sm text-destructive">{checkoutError}</p>
+              <p className="text-destructive text-sm md:col-span-2">{checkoutError}</p>
             )}
 
             <div className="md:col-span-2">
               {!paymentReady ? (
-                <p className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
-                  برای پرداخت آنلاین، در پنل «تنظیمات → پرداخت و اشتراک» درگاه زرین‌پال را کامل کنید.
+                <p className="border-border bg-muted/30 text-muted-foreground rounded-xl border border-dashed px-4 py-3 text-sm">
+                  برای پرداخت آنلاین، در پنل «تنظیمات → پرداخت و اشتراک» درگاه زرین‌پال را کامل
+                  کنید.
                 </p>
               ) : null}
               <FormActionButton

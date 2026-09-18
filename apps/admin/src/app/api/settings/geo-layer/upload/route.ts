@@ -61,7 +61,10 @@ async function extractKmlFromKmz(buffer: Buffer): Promise<string> {
 export async function POST(request: Request) {
   verifyCsrfFromHttpRequest(request);
   const session = await auth();
-  if (!session?.user?.id || !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))) {
+  if (
+    !session?.user?.id ||
+    !(await hasPermissionAsync(session.user.role, PERMISSIONS.SETTINGS_EDIT))
+  ) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -95,10 +98,7 @@ export async function POST(request: Request) {
       geoJson = kmlToGeoJson(kml);
       sourceFormat = 'kmz';
     } else {
-      return NextResponse.json(
-        { error: 'فرمت مجاز: GeoJSON، KML یا KMZ' },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'فرمت مجاز: GeoJSON، KML یا KMZ' }, { status: 400 });
     }
   } catch (error) {
     return NextResponse.json(

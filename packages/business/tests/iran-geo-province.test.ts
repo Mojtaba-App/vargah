@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  provinceNameForGeoJson,
-  provinceNameFromGeoJson,
-} from '@vargah/business/iran-geo';
+import { provinceNameForGeoJson, provinceNameFromGeoJson } from '@vargah/business/iran-geo';
 
 describe('iran-geo province aliases', () => {
   it('maps app province names to geojson names', () => {

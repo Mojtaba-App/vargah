@@ -93,7 +93,11 @@ export const satisfactionSurveySchema = z.object({
 });
 
 export const messageTemplateSchema = z.object({
-  key: z.string().min(2).max(80).regex(/^[a-z0-9._-]+$/i),
+  key: z
+    .string()
+    .min(2)
+    .max(80)
+    .regex(/^[a-z0-9._-]+$/i),
   name: z.string().min(1).max(120),
   channel: z.enum(['EMAIL', 'SMS', 'WEBHOOK']),
   subject: z.string().max(300).optional(),
@@ -106,9 +110,7 @@ export const paymentConfigSchema = z.object({
   enabled: z.boolean(),
   provider: z.literal('zarinpal'),
   zarinpal: z.object({
-    merchantId: z
-      .string()
-      .max(36, 'شناسه پذیرنده (Merchant ID) نباید بیشتر از ۳۶ کاراکتر باشد.'),
+    merchantId: z.string().max(36, 'شناسه پذیرنده (Merchant ID) نباید بیشتر از ۳۶ کاراکتر باشد.'),
     sandbox: z.boolean(),
   }),
   callbackBaseUrl: z.string().max(500),

@@ -27,17 +27,21 @@ export function IssueCard({ issue, className, priority = false }: IssueCardProps
           sizes="(max-width:768px) 50vw, 25vw"
           priority={priority}
         />
-        <Badge className="absolute start-5 top-5 rounded-full bg-primary px-3 text-primary-foreground shadow-sm">
+        <Badge className="bg-primary text-primary-foreground absolute start-5 top-5 rounded-full px-3 shadow-sm">
           شماره {issue.number}
         </Badge>
       </div>
       <div className="p-5">
-        <h3 className="line-clamp-2 font-semibold leading-snug group-hover:text-primary">{issue.title}</h3>
+        <h3 className="group-hover:text-primary line-clamp-2 leading-snug font-semibold">
+          {issue.title}
+        </h3>
         {issue.description ? (
-          <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{issue.description}</p>
+          <p className="text-muted-foreground mt-2 line-clamp-2 text-sm">{issue.description}</p>
         ) : null}
-        <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-          <time dateTime={issue.publishedAt}>{formatJalaliDate(issue.publishedAt, 'MMMM YYYY')}</time>
+        <div className="text-muted-foreground mt-3 flex items-center justify-between text-xs">
+          <time dateTime={issue.publishedAt}>
+            {formatJalaliDate(issue.publishedAt, 'MMMM YYYY')}
+          </time>
           <span>{issue.pageCount} صفحه</span>
         </div>
       </div>

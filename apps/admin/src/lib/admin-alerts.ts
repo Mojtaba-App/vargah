@@ -63,10 +63,7 @@ const ALERT_DEFINITIONS = [
   },
 ] as const;
 
-function canSeeAlert(
-  permissions: Permission[],
-  def: (typeof ALERT_DEFINITIONS)[number],
-): boolean {
+function canSeeAlert(permissions: Permission[], def: (typeof ALERT_DEFINITIONS)[number]): boolean {
   if ('permission' in def && def.permission) {
     return permissions.includes(def.permission);
   }

@@ -8,7 +8,11 @@ describe('zarinpalTestConnection', () => {
 
   it('throws when merchant id is empty', async () => {
     await expect(
-      zarinpalTestConnection({ merchantId: '', sandbox: true, callbackUrl: 'http://localhost:3000/cb' }),
+      zarinpalTestConnection({
+        merchantId: '',
+        sandbox: true,
+        callbackUrl: 'http://localhost:3000/cb',
+      }),
     ).rejects.toThrow('Merchant ID');
   });
 

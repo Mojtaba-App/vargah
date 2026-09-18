@@ -1,8 +1,5 @@
 import { prisma } from '@vargah/database';
-import {
-  createDbRateLimitStore,
-  type RateLimitStore,
-} from '@vargah/security/rate-limit';
+import { createDbRateLimitStore, type RateLimitStore } from '@vargah/security/rate-limit';
 
 export const rateLimitStore: RateLimitStore = createDbRateLimitStore(prisma);
 

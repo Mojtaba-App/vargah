@@ -1,8 +1,5 @@
 import { prisma } from '@vargah/database';
-import {
-  ADMIN_LOGIN_FAIL_LIMIT,
-  ADMIN_LOGIN_LOCKOUT_MS,
-} from '@vargah/security/admin-login';
+import { ADMIN_LOGIN_FAIL_LIMIT, ADMIN_LOGIN_LOCKOUT_MS } from '@vargah/security/admin-login';
 
 import { rateLimitStore } from './rate-limit';
 

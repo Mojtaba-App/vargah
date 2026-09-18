@@ -20,7 +20,11 @@ const columns: ColumnDef<CalendarRow>[] = [
     header: 'مهلت تحویل',
     cell: ({ row }) => formatJalali(row.original.dueDate),
   },
-  { accessorKey: 'description', header: 'توضیح', cell: ({ row }) => row.original.description ?? '—' },
+  {
+    accessorKey: 'description',
+    header: 'توضیح',
+    cell: ({ row }) => row.original.description ?? '—',
+  },
 ];
 
 export function CalendarTable({ data }: { data: CalendarRow[] }) {

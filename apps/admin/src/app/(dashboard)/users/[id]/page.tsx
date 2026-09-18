@@ -6,11 +6,7 @@ import { EditUserForm } from '@/components/users/edit-user-form';
 import { requireAuth } from '@/lib/auth-utils';
 import { PERMISSIONS, ROLE_LABELS, ADMIN_ROLES } from '@/lib/permissions';
 import { hasAnyPermissionAsync } from '@/lib/permissions-server';
-import {
-  canActorDeleteTarget,
-  canActorManageTarget,
-  getAssignableRoles,
-} from '@/lib/users/policy';
+import { canActorDeleteTarget, canActorManageTarget, getAssignableRoles } from '@/lib/users/policy';
 import { redirect } from 'next/navigation';
 
 type Props = { params: Promise<{ id: string }> };
@@ -49,8 +45,7 @@ export default async function EditUserPage({ params }: Props) {
     hasAnyPermissionAsync(session.user.role, [PERMISSIONS.USER_MANAGE, PERMISSIONS.USER_EDIT]),
     hasAnyPermissionAsync(session.user.role, [PERMISSIONS.USER_MANAGE]).then(
       (allowed) =>
-        allowed &&
-        canActorDeleteTarget(session.user.role, user.role, session.user.id, user.id),
+        allowed && canActorDeleteTarget(session.user.role, user.role, session.user.id, user.id),
     ),
   ]);
 

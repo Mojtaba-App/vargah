@@ -45,7 +45,7 @@ export function ConfirmDialog({
     <dialog
       ref={dialogRef}
       className={cn(
-        'fixed inset-0 z-[80] m-auto w-[min(100%-2rem,28rem)] rounded-2xl border border-border bg-card p-0 shadow-2xl backdrop:bg-black/50',
+        'border-border bg-card fixed inset-0 z-[80] m-auto w-[min(100%-2rem,28rem)] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/50',
       )}
       onCancel={(event) => {
         event.preventDefault();
@@ -55,7 +55,7 @@ export function ConfirmDialog({
     >
       <div className="p-6">
         <h2 className="text-lg font-bold">{title}</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground mt-2 text-sm leading-relaxed">{description}</p>
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button
             type="button"

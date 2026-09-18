@@ -13,10 +13,7 @@ import { FadeIn } from '@/components/motion/fade-in';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getIssueBySlug, issues } from '@/data/mock/issues';
 import { formatJalaliDate, toIsoString } from '@/lib/date';
-import {
-  getCachedPublishedIssueBySlug,
-  getCachedPublishedIssueSlugs,
-} from '@/lib/db/issues';
+import { getCachedPublishedIssueBySlug, getCachedPublishedIssueSlugs } from '@/lib/db/issues';
 
 export const revalidate = 3600;
 
@@ -128,14 +125,21 @@ export default async function IssueDetailPage({ params }: IssueDetailPageProps) 
                   priority
                 />
                 <div className="text-center lg:text-start">
-                  <span className="text-sm font-medium text-primary">شماره {dbIssue.number}</span>
-                  <h1 className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">{dbIssue.title}</h1>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    <time dateTime={publishedAt}>{formatJalaliDate(publishedAt, 'D MMMM YYYY')}</time>
-                    {' · '}{dbIssue.pageCount} صفحه
+                  <span className="text-primary text-sm font-medium">شماره {dbIssue.number}</span>
+                  <h1 className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">
+                    {dbIssue.title}
+                  </h1>
+                  <p className="text-muted-foreground mt-2 text-sm">
+                    <time dateTime={publishedAt}>
+                      {formatJalaliDate(publishedAt, 'D MMMM YYYY')}
+                    </time>
+                    {' · '}
+                    {dbIssue.pageCount} صفحه
                   </p>
                   {dbIssue.description && (
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{dbIssue.description}</p>
+                    <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+                      {dbIssue.description}
+                    </p>
                   )}
                   <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
                     <a href={pdfUrl} download>
@@ -205,13 +209,18 @@ export default async function IssueDetailPage({ params }: IssueDetailPageProps) 
                 priority
               />
               <div className="text-center lg:text-start">
-                <span className="text-sm font-medium text-primary">شماره {issue.number}</span>
+                <span className="text-primary text-sm font-medium">شماره {issue.number}</span>
                 <h1 className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">{issue.title}</h1>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  <time dateTime={issue.publishedAt}>{formatJalaliDate(issue.publishedAt, 'D MMMM YYYY')}</time>
-                  {' · '}{issue.pageCount} صفحه
+                <p className="text-muted-foreground mt-2 text-sm">
+                  <time dateTime={issue.publishedAt}>
+                    {formatJalaliDate(issue.publishedAt, 'D MMMM YYYY')}
+                  </time>
+                  {' · '}
+                  {issue.pageCount} صفحه
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{issue.description}</p>
+                <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+                  {issue.description}
+                </p>
                 <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
                   <a href={issue.pdfUrl} download>
                     <Button>دانلود PDF</Button>

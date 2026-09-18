@@ -39,30 +39,30 @@ export function PlanCard({
   return (
     <article
       className={cn(
-        'relative flex flex-col rounded-2xl border border-border bg-background p-6 transition-all hover:shadow-lg',
-        plan.popular && 'border-primary/40 ring-1 ring-primary/15',
-        inCartQuantity > 0 && 'border-primary ring-2 ring-primary/20 shadow-lg',
+        'border-border bg-background relative flex flex-col rounded-2xl border p-6 transition-all hover:shadow-lg',
+        plan.popular && 'border-primary/40 ring-primary/15 ring-1',
+        inCartQuantity > 0 && 'border-primary ring-primary/20 shadow-lg ring-2',
         onSale && 'border-rose-300/50 dark:border-rose-500/30',
       )}
     >
       {plan.popular && (
-        <span className="absolute -top-3 start-4 rounded-full bg-primary px-3 py-0.5 text-xs font-medium text-primary-foreground">
+        <span className="bg-primary text-primary-foreground absolute start-4 -top-3 rounded-full px-3 py-0.5 text-xs font-medium">
           پرطرفدار
         </span>
       )}
       {discountLabel && (
-        <span className="absolute -top-3 end-4 rounded-full bg-rose-600 px-3 py-0.5 text-xs font-bold text-white shadow-sm">
+        <span className="absolute end-4 -top-3 rounded-full bg-rose-600 px-3 py-0.5 text-xs font-bold text-white shadow-sm">
           {discountLabel}
         </span>
       )}
 
       <div className="mb-3 flex items-center gap-2">
-        <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium">
+        <span className="bg-muted rounded-full px-2.5 py-0.5 text-xs font-medium">
           {PLAN_TYPE_LABELS[plan.type]}
         </span>
-        <span className="text-xs text-muted-foreground">{periodLabel}</span>
+        <span className="text-muted-foreground text-xs">{periodLabel}</span>
         {inCartQuantity > 0 && (
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+          <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-medium">
             {inCartQuantity} در سبد
           </span>
         )}
@@ -72,20 +72,20 @@ export function PlanCard({
       <div className="mt-3">
         {onSale ? (
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground line-through decoration-rose-400/80 tabular-nums">
+            <p className="text-muted-foreground text-sm tabular-nums line-through decoration-rose-400/80">
               {formatPrice(listPrice)} تومان
             </p>
             <p>
-              <span className="text-3xl font-bold tabular-nums text-rose-700 dark:text-rose-300">
+              <span className="text-3xl font-bold text-rose-700 tabular-nums dark:text-rose-300">
                 {formatPrice(salePrice)}
               </span>
-              <span className="text-sm text-muted-foreground"> تومان / واحد</span>
+              <span className="text-muted-foreground text-sm"> تومان / واحد</span>
             </p>
           </div>
         ) : (
           <p>
             <span className="text-3xl font-bold tabular-nums">{formatPrice(listPrice)}</span>
-            <span className="text-sm text-muted-foreground"> تومان / واحد</span>
+            <span className="text-muted-foreground text-sm"> تومان / واحد</span>
           </p>
         )}
       </div>
@@ -93,15 +93,15 @@ export function PlanCard({
       <ul className="my-6 flex-1 space-y-2.5">
         {plan.features.map((feature) => (
           <li key={feature} className="flex items-start gap-2 text-sm">
-            <span className="mt-0.5 text-primary">✓</span>
+            <span className="text-primary mt-0.5">✓</span>
             <span>{feature}</span>
           </li>
         ))}
       </ul>
 
       <div className="mb-3 flex items-center justify-between gap-3">
-        <span className="text-xs text-muted-foreground">تعداد</span>
-        <div className="inline-flex items-center rounded-lg border border-border">
+        <span className="text-muted-foreground text-xs">تعداد</span>
+        <div className="border-border inline-flex items-center rounded-lg border">
           <button
             type="button"
             className="px-2.5 py-1.5 text-sm"
@@ -122,20 +122,22 @@ export function PlanCard({
         </div>
       </div>
 
-      <p className="mb-3 text-center text-sm text-muted-foreground">
+      <p className="text-muted-foreground mb-3 text-center text-sm">
         جمع این انتخاب:{' '}
-        <span className="font-semibold text-foreground tabular-nums">{formatPrice(lineTotal)}</span>{' '}
+        <span className="text-foreground font-semibold tabular-nums">{formatPrice(lineTotal)}</span>{' '}
         تومان
       </p>
 
       {!checkoutReady && (
-        <p className="mb-3 text-center text-xs text-muted-foreground">پرداخت پس از فعال‌سازی درگاه</p>
+        <p className="text-muted-foreground mb-3 text-center text-xs">
+          پرداخت پس از فعال‌سازی درگاه
+        </p>
       )}
 
       <button
         type="button"
         onClick={() => onAddToCart?.(plan, quantity)}
-        className="h-11 rounded-xl bg-primary font-medium text-primary-foreground transition-colors hover:opacity-90"
+        className="bg-primary text-primary-foreground h-11 rounded-xl font-medium transition-colors hover:opacity-90"
       >
         افزودن به سبد
       </button>

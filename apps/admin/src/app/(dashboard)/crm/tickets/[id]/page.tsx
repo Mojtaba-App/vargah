@@ -98,8 +98,8 @@ export default async function TicketDetailPage({ params, searchParams }: PagePro
               </>
             )}
           </p>
-          <p className="whitespace-pre-wrap text-sm text-muted-foreground">{ticket.body}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-sm whitespace-pre-wrap">{ticket.body}</p>
+          <p className="text-muted-foreground text-xs">
             ایجاد: {formatJalali(ticket.createdAt, true)}
             {ticket.assignedTo?.name && <> — مسئول: {ticket.assignedTo.name}</>}
           </p>

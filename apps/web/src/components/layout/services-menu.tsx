@@ -14,9 +14,7 @@ export function ServicesMenu({ label, items }: ServicesMenuProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const isActive = items.some(
-    (link) => pathname === link.href || pathname.startsWith(link.href),
-  );
+  const isActive = items.some((link) => pathname === link.href || pathname.startsWith(link.href));
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -53,7 +51,7 @@ export function ServicesMenu({ label, items }: ServicesMenuProps) {
 
       {open && (
         <div
-          className="absolute start-0 top-[calc(100%+0.5rem)] z-50 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border bg-card/95 p-2 shadow-xl backdrop-blur-xl"
+          className="border-border bg-card/95 absolute start-0 top-[calc(100%+0.5rem)] z-50 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border p-2 shadow-xl backdrop-blur-xl"
           role="menu"
         >
           <div className="space-y-1">
@@ -87,16 +85,16 @@ function ServiceMenuCard({
       role="menuitem"
       onClick={onNavigate}
       className={cn(
-        'group flex gap-3 rounded-xl border border-transparent p-3 transition-colors hover:bg-muted/70',
+        'group hover:bg-muted/70 flex gap-3 rounded-xl border border-transparent p-3 transition-colors',
         active && 'border-primary/20 bg-primary/5',
       )}
     >
       <ServiceIconWell icon={item.icon} />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold leading-snug text-foreground group-hover:text-primary">
+        <p className="text-foreground group-hover:text-primary text-sm leading-snug font-semibold">
           {item.label}
         </p>
-        <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+        <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs leading-relaxed">
           {item.description}
         </p>
       </div>
@@ -114,7 +112,7 @@ export function ServiceIconWell({
   return (
     <div
       className={cn(
-        'flex shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary',
+        'bg-primary/10 text-primary flex shrink-0 items-center justify-center rounded-xl',
         size === 'sm' ? 'size-9 rounded-lg' : 'size-10',
       )}
     >

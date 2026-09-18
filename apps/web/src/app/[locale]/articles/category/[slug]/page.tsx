@@ -40,7 +40,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="lg:order-1 lg:col-span-3">
             {results.length === 0 ? (
-              <p className="py-12 text-center text-muted-foreground">مقاله‌ای در این دسته نیست.</p>
+              <p className="text-muted-foreground py-12 text-center">مقاله‌ای در این دسته نیست.</p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2">
                 {results.map((article) => (

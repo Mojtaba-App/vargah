@@ -14,9 +14,9 @@ export function PaymentsSettingsPanel({ paymentConfig, canEdit }: PaymentsSettin
   return (
     <div className="space-y-6">
       <PaymentSettingsForm initialConfig={paymentConfig} canEdit={canEdit} />
-      <div className="rounded-2xl border border-dashed border-border bg-muted/20 px-4 py-3 text-sm text-muted-foreground">
+      <div className="border-border bg-muted/20 text-muted-foreground rounded-2xl border border-dashed px-4 py-3 text-sm">
         مدیریت پلن‌های اشتراک در{' '}
-        <Link href="/subscription-plans" className="font-semibold text-primary hover:underline">
+        <Link href="/subscription-plans" className="text-primary font-semibold hover:underline">
           مدیریت محتوا → پلن‌های اشتراک
         </Link>{' '}
         است.

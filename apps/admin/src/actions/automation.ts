@@ -3,11 +3,7 @@
 import { recordAuditLog } from '@/lib/audit/record';
 
 import { revalidatePath } from 'next/cache';
-import {
-  AuditAction,
-  prisma,
-  WebhookProvider,
-} from '@vargah/database';
+import { AuditAction, prisma, WebhookProvider } from '@vargah/database';
 import { requirePermission } from '@/lib/auth-utils';
 import { PERMISSIONS } from '@/lib/permissions';
 import { runAllReminders } from '@/lib/communications/reminders';
@@ -83,7 +79,11 @@ export async function upsertWebhook(data: {
     });
   }
 
-  await recordAuditLog({ userId: session.user.id, action: AuditAction.UPDATE, entity: 'WebhookEndpoint' });
+  await recordAuditLog({
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'WebhookEndpoint',
+  });
 
   revalidateAutomation();
 }
@@ -123,10 +123,7 @@ export async function testWebhookSettings(data: {
   await requirePermission(PERMISSIONS.SETTINGS_EDIT);
 
   let secret = data.secret;
-  if (
-    (secret === SETTINGS_SECRET_PLACEHOLDER || !secret) &&
-    data.webhookId
-  ) {
+  if ((secret === SETTINGS_SECRET_PLACEHOLDER || !secret) && data.webhookId) {
     const row = await prisma.webhookEndpoint.findUnique({
       where: { id: data.webhookId },
       select: { secret: true },
@@ -154,10 +151,10 @@ export async function runRemindersNow() {
   const session = await requirePermission(PERMISSIONS.SETTINGS_EDIT);
   const result = await runAllReminders();
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'ReminderJob',
-      changes: result as object,
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'ReminderJob',
+    changes: result as object,
+  });
   revalidateAutomation();
 }

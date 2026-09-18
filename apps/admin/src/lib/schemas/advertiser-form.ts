@@ -1,7 +1,11 @@
 import { z } from 'zod';
 import { AdCampaignStatus } from '@vargah/database/enums';
 
-import { cityFieldSchema, provinceFieldSchema, refineProvinceCity } from '@/lib/schemas/location-fields';
+import {
+  cityFieldSchema,
+  provinceFieldSchema,
+  refineProvinceCity,
+} from '@/lib/schemas/location-fields';
 
 export const advertiserFormSchema = z
   .object({

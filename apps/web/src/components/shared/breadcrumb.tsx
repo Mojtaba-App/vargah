@@ -13,7 +13,7 @@ type BreadcrumbProps = {
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="مسیر صفحه" className={cn('text-sm text-muted-foreground', className)}>
+    <nav aria-label="مسیر صفحه" className={cn('text-muted-foreground text-sm', className)}>
       <ol className="flex flex-wrap items-center gap-1.5">
         {items.map((item, index) => (
           <li key={item.label} className="flex items-center gap-1.5">

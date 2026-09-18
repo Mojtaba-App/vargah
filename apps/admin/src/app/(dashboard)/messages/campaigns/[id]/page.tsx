@@ -7,11 +7,7 @@ import { requireAuth, requirePermission } from '@/lib/auth-utils';
 import { normalizeCampaignFilters } from '@/lib/campaigns/audience';
 import { PERMISSIONS } from '@/lib/permissions';
 import { hasPermissionAsync } from '@/lib/permissions-server';
-export default async function CampaignDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
   await requirePermission(PERMISSIONS.MESSAGE_VIEW);
   const session = await requireAuth();
   const { id } = await params;

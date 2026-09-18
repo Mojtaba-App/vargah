@@ -1,16 +1,8 @@
-import {
-  ArticleStatus,
-  SubscriptionStatus,
-  PaymentStatus,
-  prisma,
-} from '@vargah/database';
+import { ArticleStatus, SubscriptionStatus, PaymentStatus, prisma } from '@vargah/database';
 import { UserRole } from '@vargah/database/enums';
 
 import { getAdminAlerts, type AdminAlert } from '@/lib/admin-alerts';
-import {
-  buildDashboardScope,
-  type DashboardScope,
-} from '@/lib/dashboard-scope';
+import { buildDashboardScope, type DashboardScope } from '@/lib/dashboard-scope';
 import { PERMISSIONS, type Permission } from '@/lib/permissions';
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -139,9 +131,7 @@ export async function getDashboardMetrics(
     trafficSourcesRaw,
     notificationsRaw,
   ] = await Promise.all([
-    scope.showArticles
-      ? prisma.article.count({ where: publishedWhere })
-      : Promise.resolve(null),
+    scope.showArticles ? prisma.article.count({ where: publishedWhere }) : Promise.resolve(null),
     scope.showArticles
       ? prisma.article.count({ where: publishedThisMonthWhere })
       : Promise.resolve(null),
@@ -255,9 +245,9 @@ export async function getDashboardMetrics(
   const currentRevenue = Number(monthlyRevenue?._sum.amount ?? 0);
   const previousRevenue = Number(lastMonthRevenue?._sum.amount ?? 0);
 
-  const quickActions = QUICK_ACTIONS.filter((action) => permissions.includes(action.permission)).map(
-    ({ permission: _permission, ...action }) => action,
-  );
+  const quickActions = QUICK_ACTIONS.filter((action) =>
+    permissions.includes(action.permission),
+  ).map(({ permission: _permission, ...action }) => action);
 
   return {
     scope,

@@ -49,15 +49,22 @@ function formatTooltipValue(value: number | string | undefined) {
 
 export function FinanceTrendChart({ data }: { data: TrendPoint[] }) {
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h2 className="font-bold">روند درآمد و هزینه</h2>
-        <p className="mt-1 text-xs text-muted-foreground">۶ ماه اخیر — درآمد پرداخت‌شده در برابر بازگشت وجه</p>
+        <p className="text-muted-foreground mt-1 text-xs">
+          ۶ ماه اخیر — درآمد پرداخت‌شده در برابر بازگشت وجه
+        </p>
       </div>
       <ResponsiveContainer width="100%" height={320}>
         <ComposedChart data={data} barGap={4}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             tick={{ fontSize: 11, fill: '#64748b' }}
             axisLine={false}
@@ -72,8 +79,21 @@ export function FinanceTrendChart({ data }: { data: TrendPoint[] }) {
           />
           <Legend wrapperStyle={{ direction: 'rtl', fontSize: 12 }} />
           <Bar dataKey="income" name="درآمد" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={36} />
-          <Bar dataKey="expense" name="هزینه (بازگشت)" fill="#f43f5e" radius={[6, 6, 0, 0]} maxBarSize={36} />
-          <Line type="monotone" dataKey="net" name="خالص" stroke="#6366f1" strokeWidth={2.5} dot={{ r: 3 }} />
+          <Bar
+            dataKey="expense"
+            name="هزینه (بازگشت)"
+            fill="#f43f5e"
+            radius={[6, 6, 0, 0]}
+            maxBarSize={36}
+          />
+          <Line
+            type="monotone"
+            dataKey="net"
+            name="خالص"
+            stroke="#6366f1"
+            strokeWidth={2.5}
+            dot={{ r: 3 }}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </section>
@@ -84,13 +104,13 @@ export function FinanceTypeChart({ data }: { data: TypeSlice[] }) {
   const chartData = data.filter((d) => d.amount > 0);
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h2 className="font-bold">ترکیب درآمد ماه</h2>
-        <p className="mt-1 text-xs text-muted-foreground">اشتراک، تبلیغات و سایر</p>
+        <p className="text-muted-foreground mt-1 text-xs">اشتراک، تبلیغات و سایر</p>
       </div>
       {chartData.length === 0 ? (
-        <p className="py-16 text-center text-sm text-muted-foreground" dir="rtl">
+        <p className="text-muted-foreground py-16 text-center text-sm" dir="rtl">
           درآمدی برای این ماه ثبت نشده
         </p>
       ) : (
@@ -110,7 +130,10 @@ export function FinanceTypeChart({ data }: { data: TypeSlice[] }) {
                 <Cell key={entry.type} fill={PAYMENT_TYPE_COLORS[entry.type]} />
               ))}
             </Pie>
-            <Tooltip contentStyle={tooltipStyle} formatter={(value) => formatTooltipValue(value as number)} />
+            <Tooltip
+              contentStyle={tooltipStyle}
+              formatter={(value) => formatTooltipValue(value as number)}
+            />
             <Legend wrapperStyle={{ direction: 'rtl', fontSize: 12 }} />
           </PieChart>
         </ResponsiveContainer>
@@ -123,20 +146,25 @@ export function FinanceStatusChart({ data }: { data: StatusSlice[] }) {
   const chartData = data.filter((d) => d.count > 0);
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h2 className="font-bold">وضعیت پرداخت‌ها</h2>
-        <p className="mt-1 text-xs text-muted-foreground">تعداد و حجم بر اساس وضعیت</p>
+        <p className="text-muted-foreground mt-1 text-xs">تعداد و حجم بر اساس وضعیت</p>
       </div>
       {chartData.length === 0 ? (
-        <p className="py-16 text-center text-sm text-muted-foreground" dir="rtl">
+        <p className="text-muted-foreground py-16 text-center text-sm" dir="rtl">
           پرداختی ثبت نشده
         </p>
       ) : (
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 16 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 11, fill: '#64748b' }}
+              axisLine={false}
+              tickLine={false}
+            />
             <YAxis
               type="category"
               dataKey="label"
@@ -145,7 +173,10 @@ export function FinanceStatusChart({ data }: { data: StatusSlice[] }) {
               tickLine={false}
               width={88}
             />
-            <Tooltip contentStyle={tooltipStyle} formatter={(value) => formatTooltipValue(value as number)} />
+            <Tooltip
+              contentStyle={tooltipStyle}
+              formatter={(value) => formatTooltipValue(value as number)}
+            />
             <Bar dataKey="amount" radius={[0, 8, 8, 0]}>
               {chartData.map((entry) => (
                 <Cell key={entry.status} fill={PAYMENT_STATUS_COLORS[entry.status]} />
@@ -158,9 +189,7 @@ export function FinanceStatusChart({ data }: { data: StatusSlice[] }) {
   );
 }
 
-export function buildTypeChartData(
-  rows: { type: PaymentType; amount: number }[],
-): TypeSlice[] {
+export function buildTypeChartData(rows: { type: PaymentType; amount: number }[]): TypeSlice[] {
   return rows.map((row) => ({
     ...row,
     label: PAYMENT_TYPE_LABELS[row.type],

@@ -3,10 +3,7 @@ import jalaliday from 'jalaliday';
 
 dayjs.extend(jalaliday);
 
-export function formatJalaliDate(
-  date: Date | string | number,
-  format = 'D MMMM YYYY',
-) {
+export function formatJalaliDate(date: Date | string | number, format = 'D MMMM YYYY') {
   return dayjs(date).calendar('jalali').locale('fa').format(format);
 }
 

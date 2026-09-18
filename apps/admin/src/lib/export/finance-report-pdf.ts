@@ -267,13 +267,15 @@ export async function downloadFinanceReportPdf(payload: FinanceReportPayload) {
     autoTable(doc, {
       startY: y,
       head: [[fa('نوع'), fa('مبلغ'), fa('وضعیت'), fa('مشتری'), fa('تاریخ')]],
-      body: payload.transactions.slice(0, 40).map((tx) => [
-        fa(tx.type),
-        fa(formatPrice(tx.amount)),
-        fa(tx.status),
-        fa(tx.customer),
-        fa(tx.paidAt || '—'),
-      ]),
+      body: payload.transactions
+        .slice(0, 40)
+        .map((tx) => [
+          fa(tx.type),
+          fa(formatPrice(tx.amount)),
+          fa(tx.status),
+          fa(tx.customer),
+          fa(tx.paidAt || '—'),
+        ]),
       styles: {
         font: PDF_FONT,
         fontStyle: 'normal',

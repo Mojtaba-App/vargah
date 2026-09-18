@@ -80,7 +80,10 @@ export function proxy(request: NextRequest) {
   }
 
   if (pathname === '/admin' || pathname.startsWith('/admin/')) {
-    return withCsrfCookie(withCsp(NextResponse.next({ request: { headers: requestHeaders } }), nonce), request);
+    return withCsrfCookie(
+      withCsp(NextResponse.next({ request: { headers: requestHeaders } }), nonce),
+      request,
+    );
   }
 
   const response = intlMiddleware(requestWithNonce);

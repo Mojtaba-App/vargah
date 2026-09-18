@@ -117,13 +117,13 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   newsletter: {
     eyebrow: 'خبرنامه',
     title: 'عضویت در خبرنامه',
-    description:
-      'از انتشار شماره جدید، مطالب ویژه و رویدادهای ماهنامه باخبر شوید — بدون اسپم.',
+    description: 'از انتشار شماره جدید، مطالب ویژه و رویدادهای ماهنامه باخبر شوید — بدون اسپم.',
     emailLabel: 'ایمیل شما',
     placeholder: 'name@example.com',
     ctaLabel: 'عضویت',
     successMessage: 'با موفقیت ثبت شد! به‌زودی از تازه‌ها باخبر می‌شوید.',
-    privacyNote: 'با ثبت‌نام، اعلام شماره‌ها و مطالب ویژه را دریافت می‌کنید و هر زمان از صفحه لغو عضویت قابل توقف است.',
+    privacyNote:
+      'با ثبت‌نام، اعلام شماره‌ها و مطالب ویژه را دریافت می‌کنید و هر زمان از صفحه لغو عضویت قابل توقف است.',
   },
 };
 
@@ -156,12 +156,16 @@ function asRecord(value: unknown): Record<string, unknown> {
 export function mergeSiteSocial(value: unknown): SiteSocialLinks {
   const input = asRecord(value);
   return {
-    instagram: typeof input.instagram === 'string' ? input.instagram.trim() : DEFAULT_SITE_SOCIAL.instagram,
-    telegram: typeof input.telegram === 'string' ? input.telegram.trim() : DEFAULT_SITE_SOCIAL.telegram,
-    whatsapp: typeof input.whatsapp === 'string' ? input.whatsapp.trim() : DEFAULT_SITE_SOCIAL.whatsapp,
+    instagram:
+      typeof input.instagram === 'string' ? input.instagram.trim() : DEFAULT_SITE_SOCIAL.instagram,
+    telegram:
+      typeof input.telegram === 'string' ? input.telegram.trim() : DEFAULT_SITE_SOCIAL.telegram,
+    whatsapp:
+      typeof input.whatsapp === 'string' ? input.whatsapp.trim() : DEFAULT_SITE_SOCIAL.whatsapp,
     twitter: typeof input.twitter === 'string' ? input.twitter.trim() : DEFAULT_SITE_SOCIAL.twitter,
     eitaa: typeof input.eitaa === 'string' ? input.eitaa.trim() : DEFAULT_SITE_SOCIAL.eitaa,
-    linkedin: typeof input.linkedin === 'string' ? input.linkedin.trim() : DEFAULT_SITE_SOCIAL.linkedin,
+    linkedin:
+      typeof input.linkedin === 'string' ? input.linkedin.trim() : DEFAULT_SITE_SOCIAL.linkedin,
   };
 }
 
@@ -183,19 +187,28 @@ export function mergeSiteContact(value: unknown): SiteContactSettings {
     phone: typeof input.phone === 'string' ? input.phone : defaults.phone,
     email: typeof input.email === 'string' ? input.email : defaults.email,
     mapEmbedUrl: typeof input.mapEmbedUrl === 'string' ? input.mapEmbedUrl : defaults.mapEmbedUrl,
-    mapLat: typeof input.mapLat === 'number' && Number.isFinite(input.mapLat) ? input.mapLat : defaults.mapLat,
-    mapLng: typeof input.mapLng === 'number' && Number.isFinite(input.mapLng) ? input.mapLng : defaults.mapLng,
+    mapLat:
+      typeof input.mapLat === 'number' && Number.isFinite(input.mapLat)
+        ? input.mapLat
+        : defaults.mapLat,
+    mapLng:
+      typeof input.mapLng === 'number' && Number.isFinite(input.mapLng)
+        ? input.mapLng
+        : defaults.mapLng,
     pageEyebrow: typeof input.pageEyebrow === 'string' ? input.pageEyebrow : defaults.pageEyebrow,
     pageTitle: typeof input.pageTitle === 'string' ? input.pageTitle : defaults.pageTitle,
     pageDescription:
       typeof input.pageDescription === 'string' ? input.pageDescription : defaults.pageDescription,
     formTitle: typeof input.formTitle === 'string' ? input.formTitle : defaults.formTitle,
-    formSubtitle: typeof input.formSubtitle === 'string' ? input.formSubtitle : defaults.formSubtitle,
+    formSubtitle:
+      typeof input.formSubtitle === 'string' ? input.formSubtitle : defaults.formSubtitle,
     infoTitle: typeof input.infoTitle === 'string' ? input.infoTitle : defaults.infoTitle,
     socialTitle: typeof input.socialTitle === 'string' ? input.socialTitle : defaults.socialTitle,
     mapTitle: typeof input.mapTitle === 'string' ? input.mapTitle : defaults.mapTitle,
-    workingHours: typeof input.workingHours === 'string' ? input.workingHours : defaults.workingHours,
-    responseNote: typeof input.responseNote === 'string' ? input.responseNote : defaults.responseNote,
+    workingHours:
+      typeof input.workingHours === 'string' ? input.workingHours : defaults.workingHours,
+    responseNote:
+      typeof input.responseNote === 'string' ? input.responseNote : defaults.responseNote,
     social: mergeSiteSocial(input.social),
   };
 }
@@ -228,8 +241,7 @@ export function mergeSiteConfig(value: unknown): SiteConfig {
 }
 
 export type ContactMapView =
-  | { mode: 'embed'; src: string }
-  | { mode: 'coordinates'; lat: number; lng: number };
+  { mode: 'embed'; src: string } | { mode: 'coordinates'; lat: number; lng: number };
 
 /** ساخت URL embed استاندارد OpenStreetMap از مختصات */
 export function buildOpenStreetMapEmbedUrl(lat: number, lng: number, delta = 0.015): string {

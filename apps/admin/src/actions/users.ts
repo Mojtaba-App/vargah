@@ -149,12 +149,12 @@ export async function createAdminUser(formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.CREATE,
-      entity: 'User',
-      entityId: user.id,
-      changes: { email: user.email, role: user.role },
-    });
+    userId: session.user.id,
+    action: AuditAction.CREATE,
+    entity: 'User',
+    entityId: user.id,
+    changes: { email: user.email, role: user.role },
+  });
 
   revalidatePath('/users');
   redirect(`/users/${user.id}`);
@@ -180,14 +180,16 @@ export async function updateAdminUser(userId: string, formData: FormData) {
 
   if (parsed.username && parsed.username !== existing.username) {
     const usernameOwner = await prisma.user.findUnique({ where: { username: parsed.username } });
-    if (usernameOwner && usernameOwner.id !== userId) throw new Error('این نام کاربری قبلاً ثبت شده است');
+    if (usernameOwner && usernameOwner.id !== userId)
+      throw new Error('این نام کاربری قبلاً ثبت شده است');
   }
 
   if (parsed.phone && parsed.phone !== existing.phone) {
     const normalizedPhone = normalizeIranPhone(parsed.phone);
     parsed.phone = normalizedPhone;
     const phoneOwner = await prisma.user.findUnique({ where: { phone: normalizedPhone } });
-    if (phoneOwner && phoneOwner.id !== userId) throw new Error('این شماره موبایل قبلاً ثبت شده است');
+    if (phoneOwner && phoneOwner.id !== userId)
+      throw new Error('این شماره موبایل قبلاً ثبت شده است');
   }
 
   if (session.user.id === userId && parsed.status !== UserStatus.ACTIVE) {
@@ -207,12 +209,12 @@ export async function updateAdminUser(userId: string, formData: FormData) {
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'User',
-      entityId: userId,
-      changes: { role: parsed.role, status: parsed.status },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'User',
+    entityId: userId,
+    changes: { role: parsed.role, status: parsed.status },
+  });
 
   revalidatePath('/users');
   revalidatePath(`/users/${userId}`);
@@ -253,12 +255,12 @@ export async function updateAdminUserPassword(userId: string, formData: FormData
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'User',
-      entityId: userId,
-      changes: { field: 'password' },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'User',
+    entityId: userId,
+    changes: { field: 'password' },
+  });
 
   revalidatePath(`/users/${userId}`);
 }
@@ -284,9 +286,7 @@ export async function deleteAdminUser(userId: string, reason?: string) {
     throw new Error('کاربر یافت نشد');
   }
 
-  if (
-    !canActorDeleteTarget(session.user.role, existing.role, session.user.id, userId)
-  ) {
+  if (!canActorDeleteTarget(session.user.role, existing.role, session.user.id, userId)) {
     throw new Error('حذف این کاربر مجاز نیست');
   }
 
@@ -399,12 +399,12 @@ export async function updateRolePermissions(role: UserRole, permissions: Permiss
   });
 
   await recordAuditLog({
-      userId: session.user.id,
-      action: AuditAction.UPDATE,
-      entity: 'RolePermissionConfig',
-      entityId: parsed.role,
-      changes: { permissions: parsed.permissions },
-    });
+    userId: session.user.id,
+    action: AuditAction.UPDATE,
+    entity: 'RolePermissionConfig',
+    entityId: parsed.role,
+    changes: { permissions: parsed.permissions },
+  });
 
   revalidatePath('/users/permissions');
 }

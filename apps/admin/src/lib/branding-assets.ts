@@ -23,7 +23,11 @@ export function resolveBrandingAssetSrc(
 ) {
   const normalized = normalizeBrandingAssetPath(src);
   if (!normalized) return null;
-  if (normalized.startsWith('http') || normalized.startsWith('data:') || normalized.startsWith('blob:')) {
+  if (
+    normalized.startsWith('http') ||
+    normalized.startsWith('data:') ||
+    normalized.startsWith('blob:')
+  ) {
     return normalized;
   }
 
@@ -38,10 +42,7 @@ export function resolveBrandingAssetSrc(
   return query ? `${resolved}?${query}` : resolved;
 }
 
-export function resolveAdminLogoSrc(
-  loginLogo?: string | null,
-  adminLogo?: string | null,
-): string {
+export function resolveAdminLogoSrc(loginLogo?: string | null, adminLogo?: string | null): string {
   return (
     resolveBrandingAssetSrc(loginLogo, 'admin') ??
     resolveBrandingAssetSrc(adminLogo, 'admin') ??

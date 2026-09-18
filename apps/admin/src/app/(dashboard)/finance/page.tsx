@@ -1,18 +1,11 @@
-import {
-  PaymentStatus,
-  PaymentType,
-  prisma,
-} from '@vargah/database';
+import { PaymentStatus, PaymentType, prisma } from '@vargah/database';
 import { PageHeader } from '@/components/ui/data-table';
 import { PaginationLinks, parsePageParam } from '@/components/ui/pagination-links';
 import { FinanceWorkspace } from '@/components/finance/finance-workspace';
 import { requireAuth, requirePermission } from '@/lib/auth-utils';
 import { PERMISSIONS } from '@/lib/permissions';
 import { hasPermissionAsync } from '@/lib/permissions-server';
-import type {
-  FinanceSummary,
-  MonthlyFinancePoint,
-} from '@vargah/business/finance';
+import type { FinanceSummary, MonthlyFinancePoint } from '@vargah/business/finance';
 
 const PAGE_SIZE = 50;
 

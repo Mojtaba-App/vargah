@@ -1,9 +1,6 @@
 import { canTransition as canTransitionBase } from '@vargah/business/workflow';
 
-import {
-  COMMISSION_STATUS_LABELS,
-  COMMISSION_TRANSITIONS,
-} from '@/lib/contributors/constants';
+import { COMMISSION_STATUS_LABELS, COMMISSION_TRANSITIONS } from '@/lib/contributors/constants';
 
 export { COMMISSION_STATUS_LABELS, COMMISSION_TRANSITIONS };
 export { canTransitionBase as canTransition };

@@ -30,7 +30,9 @@ function verifyToken(token: string): LoginChallengePayload | null {
 
   let payload: LoginChallengePayload;
   try {
-    payload = JSON.parse(Buffer.from(bodyPart, 'base64url').toString('utf8')) as LoginChallengePayload;
+    payload = JSON.parse(
+      Buffer.from(bodyPart, 'base64url').toString('utf8'),
+    ) as LoginChallengePayload;
   } catch {
     return null;
   }

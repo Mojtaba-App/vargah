@@ -77,8 +77,8 @@ export function ClientInfoBadge({
   className?: string;
 }) {
   return (
-    <div className={cn('flex items-center gap-2 text-xs text-muted-foreground', className)}>
-      <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-foreground">
+    <div className={cn('text-muted-foreground flex items-center gap-2 text-xs', className)}>
+      <span className="bg-muted text-foreground flex size-6 shrink-0 items-center justify-center rounded-md">
         <OsIconSvg os={os} className="size-3.5" />
       </span>
       <div className="min-w-0">
@@ -127,7 +127,7 @@ export function UserAvatar({
     <div className={cn('relative shrink-0', className)}>
       <span
         className={cn(
-          'relative inline-flex overflow-hidden rounded-full bg-primary/10 ring-2 ring-background',
+          'bg-primary/10 ring-background relative inline-flex overflow-hidden rounded-full ring-2',
           box,
         )}
       >
@@ -146,7 +146,7 @@ export function UserAvatar({
         ) : (
           <span
             className={cn(
-              'flex size-full items-center justify-center font-bold text-primary',
+              'text-primary flex size-full items-center justify-center font-bold',
               text,
             )}
           >
@@ -156,7 +156,7 @@ export function UserAvatar({
       </span>
       {online ? (
         <span
-          className="absolute -bottom-0.5 -end-0.5 size-3 rounded-full border-2 border-card bg-emerald-500"
+          className="border-card absolute -end-0.5 -bottom-0.5 size-3 rounded-full border-2 bg-emerald-500"
           title="آنلاین"
         />
       ) : null}

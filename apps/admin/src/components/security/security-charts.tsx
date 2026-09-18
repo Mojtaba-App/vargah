@@ -23,15 +23,20 @@ const tooltipStyle = {
 
 export function LoginTrendChart({ data }: { data: DailyLoginPoint[] }) {
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h2 className="font-bold">روند تلاش‌های ورود</h2>
-        <p className="mt-1 text-xs text-muted-foreground">۱۴ روز اخیر — موفق در برابر ناموفق</p>
+        <p className="text-muted-foreground mt-1 text-xs">۱۴ روز اخیر — موفق در برابر ناموفق</p>
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={data} barGap={2}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 10, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             tick={{ fontSize: 11, fill: '#64748b' }}
             axisLine={false}
@@ -46,7 +51,13 @@ export function LoginTrendChart({ data }: { data: DailyLoginPoint[] }) {
           />
           <Legend wrapperStyle={{ direction: 'rtl', fontSize: 12 }} />
           <Bar dataKey="success" name="موفق" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={28} />
-          <Bar dataKey="failed" name="ناموفق" fill="#f43f5e" radius={[4, 4, 0, 0]} maxBarSize={28} />
+          <Bar
+            dataKey="failed"
+            name="ناموفق"
+            fill="#f43f5e"
+            radius={[4, 4, 0, 0]}
+            maxBarSize={28}
+          />
         </BarChart>
       </ResponsiveContainer>
     </section>

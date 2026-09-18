@@ -24,7 +24,8 @@ export function validateSiteContact(contact: SiteContactSettings): string | null
     return 'ایمیل تماس معتبر نیست.';
   }
   if (contact.mapLat < -90 || contact.mapLat > 90) return 'عرض جغرافیایی باید بین -90 و 90 باشد.';
-  if (contact.mapLng < -180 || contact.mapLng > 180) return 'طول جغرافیایی باید بین -180 و 180 باشد.';
+  if (contact.mapLng < -180 || contact.mapLng > 180)
+    return 'طول جغرافیایی باید بین -180 و 180 باشد.';
   return null;
 }
 

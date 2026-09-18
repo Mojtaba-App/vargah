@@ -16,7 +16,11 @@ type CommentSectionProps = {
   isMock?: boolean;
 };
 
-export function CommentSection({ comments: initialComments, articleId, isMock }: CommentSectionProps) {
+export function CommentSection({
+  comments: initialComments,
+  articleId,
+  isMock,
+}: CommentSectionProps) {
   const { customer, isAuthenticated, openLogin } = useCustomerAuth();
   const [comments, setComments] = useState(initialComments);
   const [name, setName] = useState('');
@@ -90,11 +94,11 @@ export function CommentSection({ comments: initialComments, articleId, isMock }:
       </h2>
 
       {!isAuthenticated && !isMock && (
-        <Card className="mb-4 border-primary/20 bg-primary/5 p-4 text-sm">
+        <Card className="border-primary/20 bg-primary/5 mb-4 p-4 text-sm">
           برای ثبت نظر،{' '}
           <button
             type="button"
-            className="font-semibold text-primary underline-offset-2 hover:underline"
+            className="text-primary font-semibold underline-offset-2 hover:underline"
             onClick={() => openLogin('comment')}
           >
             با موبایل وارد شوید
@@ -107,7 +111,10 @@ export function CommentSection({ comments: initialComments, articleId, isMock }:
         <form onSubmit={handleSubmit} aria-label="فرم ارسال نظر">
           <div className="space-y-3">
             {authNotice && (
-              <p role="status" className="rounded-lg border border-amber-200/80 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              <p
+                role="status"
+                className="rounded-lg border border-amber-200/80 bg-amber-50 px-3 py-2 text-sm text-amber-900"
+              >
                 {authNotice}
               </p>
             )}
@@ -145,10 +152,14 @@ export function CommentSection({ comments: initialComments, articleId, isMock }:
               />
             </div>
             <Button type="submit" disabled={pending || (!isAuthenticated && !isMock)}>
-              {pending ? 'در حال ارسال...' : isAuthenticated || isMock ? 'ارسال نظر' : 'ورود برای ثبت نظر'}
+              {pending
+                ? 'در حال ارسال...'
+                : isAuthenticated || isMock
+                  ? 'ارسال نظر'
+                  : 'ورود برای ثبت نظر'}
             </Button>
             {feedback === 'pending' && (
-              <p role="status" className="text-sm text-muted-foreground">
+              <p role="status" className="text-muted-foreground text-sm">
                 نظر شما ثبت شد و پس از تأیید سردبیر نمایش داده می‌شود.
               </p>
             )}
@@ -158,7 +169,7 @@ export function CommentSection({ comments: initialComments, articleId, isMock }:
               </p>
             )}
             {(feedback === 'error' || errorMsg) && (
-              <p role="alert" className="text-sm text-destructive">
+              <p role="alert" className="text-destructive text-sm">
                 {errorMsg || 'خطا در ثبت نظر'}
               </p>
             )}
@@ -168,17 +179,20 @@ export function CommentSection({ comments: initialComments, articleId, isMock }:
 
       <div className="space-y-4" role="list" aria-label="فهرست نظرات">
         {comments.length === 0 ? (
-          <p className="text-sm text-muted-foreground">هنوز نظری ثبت نشده است.</p>
+          <p className="text-muted-foreground text-sm">هنوز نظری ثبت نشده است.</p>
         ) : (
           comments.map((comment) => (
             <Card key={comment.id} className="p-4 sm:p-5" role="listitem">
               <div className="mb-2 flex items-center justify-between gap-4">
                 <span className="font-medium">{comment.authorName}</span>
-                <time className="shrink-0 text-xs text-muted-foreground" dateTime={comment.createdAt}>
+                <time
+                  className="text-muted-foreground shrink-0 text-xs"
+                  dateTime={comment.createdAt}
+                >
                   {formatJalaliDate(comment.createdAt, 'D MMMM YYYY')}
                 </time>
               </div>
-              <p className="text-sm leading-relaxed text-muted-foreground">{comment.content}</p>
+              <p className="text-muted-foreground text-sm leading-relaxed">{comment.content}</p>
             </Card>
           ))
         )}

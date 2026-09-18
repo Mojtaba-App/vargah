@@ -11,7 +11,11 @@ import type { AboutContent } from '@vargah/business/about-content';
 import { Badge } from '@vargah/ui/components/badge';
 
 import { AboutSettingsPanel } from '@/components/settings/about-settings-panel';
-import { AutomationPanel, type NotificationRow, type WebhookRow } from '@/components/settings/automation-panel';
+import {
+  AutomationPanel,
+  type NotificationRow,
+  type WebhookRow,
+} from '@/components/settings/automation-panel';
 import { MapSettingsForm } from '@/components/settings/map-settings-form';
 import { MessagingSettingsForm } from '@/components/settings/messaging-settings-form';
 import { PaymentsSettingsPanel } from '@/components/settings/payments-settings-panel';
@@ -103,7 +107,9 @@ export function SettingsWorkspace({
       emailEnabled: messagingConfig.email.enabled,
       smsEnabled: messagingConfig.sms.enabled,
       paymentEnabled: paymentConfig.enabled,
-      activeSmsTemplates: templates.filter((t) => t.isActive && t.channel === NotificationChannel.SMS).length,
+      activeSmsTemplates: templates.filter(
+        (t) => t.isActive && t.channel === NotificationChannel.SMS,
+      ).length,
       activeWebhooks: webhooks.filter((w) => w.isActive).length,
     }),
     [messagingConfig, paymentConfig, templates, webhooks],
@@ -121,40 +127,42 @@ export function SettingsWorkspace({
         <button
           type="button"
           onClick={() => selectTab(SettingsTab.MESSAGING)}
-          className="rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+          className="border-border bg-card hover:border-primary/40 rounded-2xl border p-4 text-start transition-colors"
         >
           <div className="flex items-center gap-2">
             <Badge variant={overview.emailEnabled ? 'default' : 'outline'}>SMTP</Badge>
             <Badge variant={overview.smsEnabled ? 'default' : 'outline'}>SMS</Badge>
-            <span className="text-sm tabular-nums">{formatNumber(overview.activeSmsTemplates)} الگو</span>
+            <span className="text-sm tabular-nums">
+              {formatNumber(overview.activeSmsTemplates)} الگو
+            </span>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">پیام‌رسانی</p>
+          <p className="text-muted-foreground mt-2 text-sm">پیام‌رسانی</p>
         </button>
         <button
           type="button"
           onClick={() => selectTab(SettingsTab.PAYMENTS)}
-          className="rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+          className="border-border bg-card hover:border-primary/40 rounded-2xl border p-4 text-start transition-colors"
         >
           <div className="flex items-center gap-2">
             <Badge variant={overview.paymentEnabled ? 'default' : 'outline'}>درگاه</Badge>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">درگاه پرداخت</p>
+          <p className="text-muted-foreground mt-2 text-sm">درگاه پرداخت</p>
         </button>
         <button
           type="button"
           onClick={() => selectTab(SettingsTab.AUTOMATION)}
-          className="rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+          className="border-border bg-card hover:border-primary/40 rounded-2xl border p-4 text-start transition-colors"
         >
           <p className="text-2xl font-bold tabular-nums">{formatNumber(overview.activeWebhooks)}</p>
-          <p className="mt-1 text-sm text-muted-foreground">Webhook فعال</p>
+          <p className="text-muted-foreground mt-1 text-sm">Webhook فعال</p>
         </button>
         <button
           type="button"
           onClick={() => selectTab(SettingsTab.GENERAL)}
-          className="rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+          className="border-border bg-card hover:border-primary/40 rounded-2xl border p-4 text-start transition-colors"
         >
           <p className="truncate font-semibold">{siteConfig.branding.siteName}</p>
-          <p className="mt-1 text-sm text-muted-foreground">هویت بصری سایت</p>
+          <p className="text-muted-foreground mt-1 text-sm">هویت بصری سایت</p>
         </button>
       </div>
 
@@ -164,10 +172,14 @@ export function SettingsWorkspace({
         ))}
       </div>
 
-      <p className="text-sm text-muted-foreground">{SETTINGS_TAB_DESCRIPTIONS[tab]}</p>
+      <p className="text-muted-foreground text-sm">{SETTINGS_TAB_DESCRIPTIONS[tab]}</p>
 
       {tab === SettingsTab.GENERAL && (
-        <SiteSettingsForm initialConfig={siteConfig} canEdit={canEdit} databaseInfo={databaseInfo} />
+        <SiteSettingsForm
+          initialConfig={siteConfig}
+          canEdit={canEdit}
+          databaseInfo={databaseInfo}
+        />
       )}
 
       {tab === SettingsTab.MESSAGING && (

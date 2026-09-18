@@ -24,7 +24,7 @@ export function UserAvatar({ name, avatar, size = 'md', className }: UserAvatarP
   return (
     <span
       className={cn(
-        'relative inline-flex shrink-0 overflow-hidden rounded-full bg-primary/10 ring-2 ring-background',
+        'bg-primary/10 ring-background relative inline-flex shrink-0 overflow-hidden rounded-full ring-2',
         config.box,
         className,
       )}
@@ -41,7 +41,7 @@ export function UserAvatar({ name, avatar, size = 'md', className }: UserAvatarP
       ) : (
         <span
           className={cn(
-            'flex size-full items-center justify-center font-bold text-primary',
+            'text-primary flex size-full items-center justify-center font-bold',
             config.text,
           )}
         >

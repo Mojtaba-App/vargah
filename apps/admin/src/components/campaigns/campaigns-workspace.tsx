@@ -50,7 +50,7 @@ export function CampaignsWorkspace({ campaigns, canManage }: CampaignsWorkspaceP
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">{campaigns.length} کمپین</p>
+        <p className="text-muted-foreground text-sm">{campaigns.length} کمپین</p>
         {canManage && (
           <Link href="/messages/campaigns/new">
             <Button className="rounded-xl">+ کمپین جدید</Button>
@@ -60,14 +60,9 @@ export function CampaignsWorkspace({ campaigns, canManage }: CampaignsWorkspaceP
 
       {campaigns.length === 0 ? (
         <Card className="rounded-2xl">
-          <CardContent className="py-12 text-center text-sm text-muted-foreground">
+          <CardContent className="text-muted-foreground py-12 text-center text-sm">
             هنوز کمپین ارسال دسته‌ای ساخته نشده است.
-            {canManage && (
-              <>
-                {' '}
-                از «کمپین جدید» شروع کنید.
-              </>
-            )}
+            {canManage && <> از «کمپین جدید» شروع کنید.</>}
           </CardContent>
         </Card>
       ) : (
@@ -76,12 +71,12 @@ export function CampaignsWorkspace({ campaigns, canManage }: CampaignsWorkspaceP
             <Link
               key={campaign.id}
               href={`/messages/campaigns/${campaign.id}`}
-              className="block rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/40"
+              className="border-border bg-card hover:border-primary/40 block rounded-2xl border p-4 transition-colors"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold">{campaign.title}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="text-muted-foreground mt-1 text-xs">
                     {campaign.channel === NotificationChannel.EMAIL ? 'ایمیل' : 'پیامک'}
                     {campaign.createdByName ? ` · ${campaign.createdByName}` : ''}
                     {' · '}
@@ -92,7 +87,7 @@ export function CampaignsWorkspace({ campaigns, canManage }: CampaignsWorkspaceP
                   {STATUS_LABELS[campaign.status]}
                 </Badge>
               </div>
-              <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
+              <div className="text-muted-foreground mt-3 flex flex-wrap gap-4 text-xs">
                 <span>کل: {campaign.totalCount}</span>
                 <span>ارسال‌شده: {campaign.sentCount}</span>
                 <span>ناموفق: {campaign.failedCount}</span>

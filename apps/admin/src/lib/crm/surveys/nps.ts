@@ -94,7 +94,9 @@ export function formatNpsScore(score: number | null): string {
   return score > 0 ? `+${score}` : String(score);
 }
 
-export function getNpsScoreTone(score: number | null): 'excellent' | 'good' | 'fair' | 'poor' | 'empty' {
+export function getNpsScoreTone(
+  score: number | null,
+): 'excellent' | 'good' | 'fair' | 'poor' | 'empty' {
   if (score === null) return 'empty';
   if (score >= 50) return 'excellent';
   if (score >= 0) return 'good';

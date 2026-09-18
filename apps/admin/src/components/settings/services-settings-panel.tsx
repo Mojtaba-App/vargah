@@ -11,10 +11,7 @@ import {
 import { Input, Label, Textarea, Select } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 
-import {
-  updateServicesContentSection,
-  type ServicesContentSection,
-} from '@/actions/settings';
+import { updateServicesContentSection, type ServicesContentSection } from '@/actions/settings';
 import { isNextRedirect } from '@/lib/action-state';
 import { SettingsAccordionSection } from '@/components/settings/settings-accordion-section';
 import { ReasonConfirmDialog } from '@/components/ui/feedback/reason-confirm-dialog';
@@ -324,7 +321,10 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-4">
           {content.nav.map((item, index) => (
-            <div key={item.href} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-2">
+            <div
+              key={item.href}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-2"
+            >
               <div>
                 <Label>عنوان</Label>
                 <Input
@@ -333,7 +333,9 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                   onChange={(e) =>
                     setContent((prev) => ({
                       ...prev,
-                      nav: prev.nav.map((n, i) => (i === index ? { ...n, label: e.target.value } : n)),
+                      nav: prev.nav.map((n, i) =>
+                        i === index ? { ...n, label: e.target.value } : n,
+                      ),
                     }))
                   }
                   className="mt-2 rounded-xl"
@@ -485,7 +487,10 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-3">
           {content.advertising.pricing.map((item, index) => (
-            <div key={item.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-6">
+            <div
+              key={item.id}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-6"
+            >
               <div className="md:col-span-2">
                 <Label>نام تعرفه</Label>
                 <Input
@@ -650,7 +655,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="justify-start px-0 text-destructive"
+                    className="text-destructive justify-start px-0"
                     onClick={() => setPendingDelete({ kind: 'adPricing', index })}
                   >
                     حذف
@@ -718,7 +723,10 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
           {content.advertising.placements.map((item, index) => {
             const slots = listSlotOptions(item.surface);
             return (
-              <div key={item.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-6">
+              <div
+                key={item.id}
+                className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-6"
+              >
                 <div className="md:col-span-2">
                   <Label>عنوان نمایشی</Label>
                   <Input
@@ -858,9 +866,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                         advertising: {
                           ...prev.advertising,
                           placements: prev.advertising.placements.map((row, i) =>
-                            i === index
-                              ? { ...row, pricingId: e.target.value || undefined }
-                              : row,
+                            i === index ? { ...row, pricingId: e.target.value || undefined } : row,
                           ),
                         },
                       }))
@@ -899,7 +905,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="justify-start px-0 text-destructive"
+                      className="text-destructive justify-start px-0"
                       onClick={() => setPendingDelete({ kind: 'adPlacement', index })}
                     >
                       حذف
@@ -954,8 +960,11 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-3">
           {content.advertising.portfolio.map((item, index) => (
-            <div key={item.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-6">
-              <div className="md:col-span-1 flex justify-center">
+            <div
+              key={item.id}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-6"
+            >
+              <div className="flex justify-center md:col-span-1">
                 <PortfolioImageUploader
                   image={item.image}
                   title={item.title || 'نمونه‌کار'}
@@ -1071,7 +1080,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="justify-start px-0 text-destructive"
+                    className="text-destructive justify-start px-0"
                     onClick={() => setPendingDelete({ kind: 'adPortfolio', index })}
                   >
                     حذف
@@ -1202,7 +1211,10 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-3">
           {content.collaborate.collaborationTypes.map((item, index) => (
-            <div key={item.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-6">
+            <div
+              key={item.id}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-6"
+            >
               <div className="md:col-span-2">
                 <Label>عنوان</Label>
                 <Input
@@ -1266,7 +1278,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="justify-start px-0 text-destructive"
+                    className="text-destructive justify-start px-0"
                     onClick={() => setPendingDelete({ kind: 'collaborationType', index })}
                   >
                     حذف
@@ -1320,7 +1332,10 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-3">
           {content.collaborate.jobs.map((job, index) => (
-            <div key={job.id} className="grid gap-3 rounded-xl border border-border p-4 md:grid-cols-2">
+            <div
+              key={job.id}
+              className="border-border grid gap-3 rounded-xl border p-4 md:grid-cols-2"
+            >
               <div>
                 <Label>عنوان</Label>
                 <Input
@@ -1479,7 +1494,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
       >
         <div className="space-y-3">
           {content.collaborate.guidelines.map((guide, index) => (
-            <div key={guide.id} className="grid gap-3 rounded-xl border border-border p-4">
+            <div key={guide.id} className="border-border grid gap-3 rounded-xl border p-4">
               <div>
                 <Label>عنوان</Label>
                 <Input
@@ -1524,7 +1539,7 @@ export function ServicesSettingsPanel({ initialContent, canEdit }: ServicesSetti
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="justify-start px-0 text-destructive"
+                  className="text-destructive justify-start px-0"
                   onClick={() => setPendingDelete({ kind: 'guideline', index })}
                 >
                   حذف
@@ -1562,10 +1577,9 @@ function PortfolioImageUploader({
   onFile: (file: File) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const preview =
-    image.startsWith('/uploads/')
-      ? adminPath(image)
-      : image || '/images/mock/placeholder-ad.svg';
+  const preview = image.startsWith('/uploads/')
+    ? adminPath(image)
+    : image || '/images/mock/placeholder-ad.svg';
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -1573,7 +1587,7 @@ function PortfolioImageUploader({
       <img
         src={preview}
         alt={title}
-        className="h-20 w-28 rounded-xl border border-border object-cover bg-muted"
+        className="border-border bg-muted h-20 w-28 rounded-xl border object-cover"
       />
       <input
         ref={inputRef}
@@ -1601,4 +1615,3 @@ function PortfolioImageUploader({
     </div>
   );
 }
-

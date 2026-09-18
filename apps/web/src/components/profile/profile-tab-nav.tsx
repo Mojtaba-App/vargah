@@ -28,7 +28,10 @@ type ProfileTabNavProps = {
 
 export function ProfileTabNav({ active, onChange, counts }: ProfileTabNavProps) {
   return (
-    <nav className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0" aria-label="بخش‌های پروفایل">
+    <nav
+      className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0"
+      aria-label="بخش‌های پروفایل"
+    >
       {PROFILE_TABS.map((tab) => {
         const Icon = tab.icon;
         const isActive = active === tab.id;
@@ -41,9 +44,9 @@ export function ProfileTabNav({ active, onChange, counts }: ProfileTabNavProps) 
             onClick={() => onChange(tab.id)}
             aria-current={isActive ? 'page' : undefined}
             className={cn(
-              'group flex min-w-[9.5rem] shrink-0 items-center gap-3 rounded-2xl border px-3.5 py-3 text-start transition-all duration-200 lg:min-w-0 lg:w-full',
+              'group flex min-w-[9.5rem] shrink-0 items-center gap-3 rounded-2xl border px-3.5 py-3 text-start transition-all duration-200 lg:w-full lg:min-w-0',
               isActive
-                ? 'border-primary/30 bg-primary text-primary-foreground shadow-md shadow-primary/15'
+                ? 'border-primary/30 bg-primary text-primary-foreground shadow-primary/15 shadow-md'
                 : 'border-border/70 bg-background/80 text-foreground hover:border-primary/25 hover:bg-muted/70 dark:bg-card/70 dark:hover:bg-muted/50',
             )}
           >
@@ -53,7 +56,9 @@ export function ProfileTabNav({ active, onChange, counts }: ProfileTabNavProps) 
                 isActive ? 'bg-primary-foreground/15' : 'bg-muted group-hover:bg-primary/10',
               )}
             >
-              <Icon className={cn('size-[18px]', isActive ? 'text-primary-foreground' : 'text-primary')} />
+              <Icon
+                className={cn('size-[18px]', isActive ? 'text-primary-foreground' : 'text-primary')}
+              />
             </span>
             <span className="min-w-0 flex-1">
               <span className="flex items-center gap-2">
@@ -90,7 +95,12 @@ export function ProfileTabNav({ active, onChange, counts }: ProfileTabNavProps) 
 function OverviewIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+      <path
+        d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -99,7 +109,12 @@ function AccountIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M5 20c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path
+        d="M5 20c0-3.314 3.134-6 7-6s7 2.686 7 6"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -107,7 +122,11 @@ function AccountIcon({ className }: { className?: string }) {
 function AddressIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 21s7-4.35 7-10a7 7 0 1 0-14 0c0 5.65 7 10 7 10Z" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M12 21s7-4.35 7-10a7 7 0 1 0-14 0c0 5.65 7 10 7 10Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
       <circle cx="12" cy="11" r="2.5" stroke="currentColor" strokeWidth="1.75" />
     </svg>
   );
@@ -125,10 +144,30 @@ function PaymentsIcon({ className }: { className?: string }) {
 function SupportIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M4 12a8 8 0 0 1 8-8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-      <path d="M4 12v5a1 1 0 0 0 1 1h1v-6H5a1 1 0 0 0-1 1Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
-      <path d="M20 12a8 8 0 0 0-8-8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-      <path d="M20 12v5a1 1 0 0 1-1 1h-1v-6h1a1 1 0 0 1 1 1Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+      <path
+        d="M4 12a8 8 0 0 1 8-8"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4 12v5a1 1 0 0 0 1 1h1v-6H5a1 1 0 0 0-1 1Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 12a8 8 0 0 0-8-8"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M20 12v5a1 1 0 0 1-1 1h-1v-6h1a1 1 0 0 1 1 1Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

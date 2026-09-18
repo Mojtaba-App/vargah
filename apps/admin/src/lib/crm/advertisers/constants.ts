@@ -44,7 +44,11 @@ export function getCampaignTypeLabel(type: string): string {
 
 export type CampaignStatusFilter = 'ALL' | AdCampaignStatus;
 
-export function isCampaignRunning(status: AdCampaignStatus, startDate: Date, endDate: Date): boolean {
+export function isCampaignRunning(
+  status: AdCampaignStatus,
+  startDate: Date,
+  endDate: Date,
+): boolean {
   if (status !== AdCampaignStatus.ACTIVE) return false;
   const now = Date.now();
   return startDate.getTime() <= now && endDate.getTime() >= now;

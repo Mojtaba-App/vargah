@@ -34,7 +34,11 @@ type MessagingSettingsFormProps = {
   canEdit: boolean;
 };
 
-export function MessagingSettingsForm({ initialConfig, templates, canEdit }: MessagingSettingsFormProps) {
+export function MessagingSettingsForm({
+  initialConfig,
+  templates,
+  canEdit,
+}: MessagingSettingsFormProps) {
   const router = useRouter();
   const hasStoredEmailPassword = Boolean(initialConfig.email.password);
   const hasStoredSmsApiKey = Boolean(initialConfig.sms.apiKey);
@@ -47,14 +51,21 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
   const prepareEmailForSave = (value: EmailConfig): EmailConfig => ({
     ...value,
     password:
-      !value.password || value.password === maskedEmailPassword ? SETTINGS_SECRET_PLACEHOLDER : value.password,
+      !value.password || value.password === maskedEmailPassword
+        ? SETTINGS_SECRET_PLACEHOLDER
+        : value.password,
   });
 
   const prepareSmsForSave = (value: SmsConfig): SmsConfig => ({
     ...value,
-    apiKey: !value.apiKey || value.apiKey === maskedSmsApiKey ? SETTINGS_SECRET_PLACEHOLDER : value.apiKey,
+    apiKey:
+      !value.apiKey || value.apiKey === maskedSmsApiKey
+        ? SETTINGS_SECRET_PLACEHOLDER
+        : value.apiKey,
     password:
-      !value.password || value.password === maskedSmsPassword ? SETTINGS_SECRET_PLACEHOLDER : value.password,
+      !value.password || value.password === maskedSmsPassword
+        ? SETTINGS_SECRET_PLACEHOLDER
+        : value.password,
   });
 
   const [email, setEmail] = useState<EmailConfig>({
@@ -227,7 +238,9 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
               type="number"
               dir="ltr"
               value={email.port}
-              onChange={(e) => updateEmail('port', Number(e.target.value) || DEFAULT_MESSAGING_CONFIG.email.port)}
+              onChange={(e) =>
+                updateEmail('port', Number(e.target.value) || DEFAULT_MESSAGING_CONFIG.email.port)
+              }
               className="mt-2 rounded-xl"
               disabled={!canEdit || isSavingEmail}
             />
@@ -289,7 +302,7 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
           اتصال امن (SSL/TLS)
         </label>
 
-        <div className="flex flex-wrap items-end gap-3 border-t border-border/60 pt-4">
+        <div className="border-border/60 flex flex-wrap items-end gap-3 border-t pt-4">
           <Input
             dir="ltr"
             value={testEmailTo}
@@ -322,9 +335,9 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
           </LoadingButton>
         </div>
 
-        <div className="border-t border-border/60 pt-6">
+        <div className="border-border/60 border-t pt-6">
           <h3 className="text-base font-semibold">الگوهای ایمیل</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             متن اعلان‌های ایمیل با متغیرهای داینامیک
           </p>
           <div className="mt-4">
@@ -369,7 +382,7 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
               id="smsProvider"
               value={sms.provider}
               onChange={(e) => updateSms('provider', e.target.value as SmsProvider)}
-              className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
+              className="border-border bg-background mt-2 w-full rounded-xl border px-3 py-2 text-sm"
               disabled={!canEdit || isSavingSms}
             >
               {(Object.keys(SMS_PROVIDER_LABELS) as SmsProvider[]).map((provider) => (
@@ -440,7 +453,7 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
           )}
         </div>
 
-        <div className="flex flex-wrap items-end gap-3 border-t border-border/60 pt-4">
+        <div className="border-border/60 flex flex-wrap items-end gap-3 border-t pt-4">
           <Input
             dir="ltr"
             value={testSmsTo}
@@ -475,9 +488,9 @@ export function MessagingSettingsForm({ initialConfig, templates, canEdit }: Mes
           )}
         </div>
 
-        <div className="border-t border-border/60 pt-6">
+        <div className="border-border/60 border-t pt-6">
           <h3 className="text-base font-semibold">الگوهای پیامک</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {sms.provider === 'sms_ir'
               ? 'برای SMS.ir شناسه الگو را در هر الگو تنظیم کنید'
               : 'متن پیامک‌ها با متغیرهای داینامیک'}

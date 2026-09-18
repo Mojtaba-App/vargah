@@ -52,7 +52,7 @@ export function OptimizedImage({
     return (
       <div
         ref={wrapperRef}
-        className={cn('relative size-full overflow-hidden bg-muted', wrapperClassName)}
+        className={cn('bg-muted relative size-full overflow-hidden', wrapperClassName)}
       >
         {isLoading && <Skeleton className="absolute inset-0 z-0 rounded-none" />}
         <Image
@@ -72,7 +72,7 @@ export function OptimizedImage({
   }
 
   return (
-    <div ref={wrapperRef} className={cn('relative overflow-hidden bg-muted', wrapperClassName)}>
+    <div ref={wrapperRef} className={cn('bg-muted relative overflow-hidden', wrapperClassName)}>
       {isLoading && <Skeleton className="absolute inset-0 z-0 rounded-none" />}
       <Image
         alt={alt}

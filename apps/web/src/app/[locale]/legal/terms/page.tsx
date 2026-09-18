@@ -21,8 +21,7 @@ const sections = [
   },
   {
     title: 'تخلفات',
-    content:
-      'در صورت نقض حقوق مالکیت معنوی، ماهنامه حق پیگیری قانونی را برای خود محفوظ می‌دارد.',
+    content: 'در صورت نقض حقوق مالکیت معنوی، ماهنامه حق پیگیری قانونی را برای خود محفوظ می‌دارد.',
   },
 ];
 
@@ -32,13 +31,16 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
 
   return (
     <>
-      <PageHeader title="قوانین استفاده از محتوا" description="کپی‌رایت و شرایط استفاده از مطالب ماهنامه" />
+      <PageHeader
+        title="قوانین استفاده از محتوا"
+        description="کپی‌رایت و شرایط استفاده از مطالب ماهنامه"
+      />
       <Container className="py-12">
         <div className="mx-auto max-w-3xl space-y-8">
           {sections.map((section) => (
             <section key={section.title}>
               <h2 className="mb-3 text-lg font-bold">{section.title}</h2>
-              <p className="leading-relaxed text-muted-foreground">{section.content}</p>
+              <p className="text-muted-foreground leading-relaxed">{section.content}</p>
             </section>
           ))}
         </div>

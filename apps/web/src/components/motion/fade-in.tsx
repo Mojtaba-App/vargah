@@ -36,7 +36,11 @@ type StaggerContainerProps = {
   staggerDelay?: number;
 };
 
-export function StaggerContainer({ children, className, staggerDelay = 0.08 }: StaggerContainerProps) {
+export function StaggerContainer({
+  children,
+  className,
+  staggerDelay = 0.08,
+}: StaggerContainerProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -59,7 +63,13 @@ export function StaggerContainer({ children, className, staggerDelay = 0.08 }: S
   );
 }
 
-export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {

@@ -7,7 +7,13 @@ import { resolveContactMapView } from '@vargah/business/site-settings';
 import { Button } from '@vargah/ui/components/button';
 import { Input, Label, Textarea } from '@vargah/ui/components/input';
 
-import { testDatabaseConnection, updateSiteBranding, updateSiteContact, updateSiteFooter, updateSiteNewsletter } from '@/actions/settings';
+import {
+  testDatabaseConnection,
+  updateSiteBranding,
+  updateSiteContact,
+  updateSiteFooter,
+  updateSiteNewsletter,
+} from '@/actions/settings';
 import { adminApiPath } from '@/lib/base-path';
 import { csrfHeaders } from '@/lib/csrf-client';
 import { isNextRedirect } from '@/lib/action-state';
@@ -32,17 +38,9 @@ type SiteSettingsFormProps = {
 };
 
 type UploadField =
-  | 'siteLogo'
-  | 'favicon'
-  | 'adminLogo'
-  | 'loginLogo'
-  | 'loginBackground'
-  | 'heroBanner';
+  'siteLogo' | 'favicon' | 'adminLogo' | 'loginLogo' | 'loginBackground' | 'heroBanner';
 
-const UPLOAD_META: Record<
-  UploadField,
-  { label: string; target: 'web' | 'admin'; hint: string }
-> = {
+const UPLOAD_META: Record<UploadField, { label: string; target: 'web' | 'admin'; hint: string }> = {
   siteLogo: { label: 'لوگوی سایت', target: 'web', hint: 'نمایش در هدر سایت اصلی' },
   favicon: {
     label: 'آیکن مرورگر (Favicon)',
@@ -66,7 +64,7 @@ function AssetPreview({ src, alt, target }: { src: string; alt: string; target: 
   const resolved = resolveBrandingAssetSrc(src, target) ?? src;
 
   return (
-    <div className="relative size-16 overflow-hidden rounded-xl border border-border bg-muted/30">
+    <div className="border-border bg-muted/30 relative size-16 overflow-hidden rounded-xl border">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={resolved} alt={alt} className="size-full object-cover" />
     </div>
@@ -93,7 +91,7 @@ function BrandingUploadCard({
   onPathChange: (field: UploadField, value: string) => void;
 }) {
   return (
-    <div className="rounded-xl border border-border/80 p-4">
+    <div className="border-border/80 rounded-xl border p-4">
       <div className="flex items-start gap-3">
         <AssetPreview
           src={config.branding[field]}
@@ -102,7 +100,7 @@ function BrandingUploadCard({
         />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold">{UPLOAD_META[field].label}</p>
-          <p className="mt-0.5 text-xs text-muted-foreground">{UPLOAD_META[field].hint}</p>
+          <p className="text-muted-foreground mt-0.5 text-xs">{UPLOAD_META[field].hint}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Button
               type="button"
@@ -332,13 +330,13 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
         defaultOpen={false}
       >
         <dl className="grid gap-2 text-sm sm:grid-cols-2">
-          <div className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2">
+          <div className="border-border/60 bg-muted/20 rounded-xl border px-3 py-2">
             <dt className="text-muted-foreground">نام دیتابیس</dt>
             <dd className="mt-1 font-mono text-xs" dir="ltr">
               {databaseInfo.databaseName ?? '—'}
             </dd>
           </div>
-          <div className="rounded-xl border border-border/60 bg-muted/20 px-3 py-2">
+          <div className="border-border/60 bg-muted/20 rounded-xl border px-3 py-2">
             <dt className="text-muted-foreground">میزبان</dt>
             <dd className="mt-1 font-mono text-xs" dir="ltr">
               {databaseInfo.host
@@ -379,14 +377,19 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
         saveLabel="ذخیره هویت بصری"
         feedback={
           brandingError || brandingMessage
-            ? { type: brandingError ? 'error' : 'success', message: brandingError ?? brandingMessage! }
+            ? {
+                type: brandingError ? 'error' : 'success',
+                message: brandingError ?? brandingMessage!,
+              }
             : null
         }
         onDismissFeedback={() => setBrandingMessage(null)}
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <Label htmlFor="siteName" required>نام سایت</Label>
+            <Label htmlFor="siteName" required>
+              نام سایت
+            </Label>
             <Input
               id="siteName"
               value={config.branding.siteName}
@@ -410,7 +413,7 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
         <div className="mt-8 space-y-4">
           <div>
             <h3 className="text-base font-semibold">پنل مدیریت</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               لوگو و پس‌زمینه صفحه ورود و سایدبار پنل ادمین
             </p>
           </div>
@@ -442,7 +445,7 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
         <div className="mt-8 space-y-4">
           <div>
             <h3 className="text-base font-semibold">سایت عمومی</h3>
-            <p className="mt-1 text-sm text-muted-foreground">لوگو، favicon و بنر صفحه اصلی سایت</p>
+            <p className="text-muted-foreground mt-1 text-sm">لوگو، favicon و بنر صفحه اصلی سایت</p>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
             {WEB_BRANDING_FIELDS.map((field) => (
@@ -607,7 +610,7 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
             />
           </div>
 
-          <div className="rounded-xl border border-border/70 p-4 space-y-3">
+          <div className="border-border/70 space-y-3 rounded-xl border p-4">
             <p className="text-sm font-semibold">متن صفحه تماس</p>
             <div className="grid gap-3 md:grid-cols-2">
               <div>
@@ -686,9 +689,11 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
             </div>
           </div>
 
-          <div className="rounded-xl border border-border/70 p-4 space-y-3">
+          <div className="border-border/70 space-y-3 rounded-xl border p-4">
             <p className="text-sm font-semibold">شبکه‌های اجتماعی</p>
-            <p className="text-xs text-muted-foreground">در صفحه تماس و فوتر سایت نمایش داده می‌شود</p>
+            <p className="text-muted-foreground text-xs">
+              در صفحه تماس و فوتر سایت نمایش داده می‌شود
+            </p>
             <div className="grid gap-3 md:grid-cols-2">
               {(
                 [
@@ -764,14 +769,14 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
               className="mt-2 rounded-xl font-mono text-xs"
               disabled={!canEdit || isSavingContact}
             />
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-xs">
               اگر خالی باشد، نقشه تعاملی Leaflet از مختصات بالا ساخته می‌شود. در غیر این صورت embed
               (OpenStreetMap، نشان، بلد یا گوگل) نمایش داده می‌شود.
             </p>
           </div>
           {mapPreview?.mode === 'embed' && (
-            <div className="overflow-hidden rounded-xl border border-border">
-              <p className="border-b border-border bg-muted/30 px-4 py-2 text-xs text-muted-foreground">
+            <div className="border-border overflow-hidden rounded-xl border">
+              <p className="border-border bg-muted/30 text-muted-foreground border-b px-4 py-2 text-xs">
                 پیش‌نمایش embed
               </p>
               <iframe
@@ -783,9 +788,10 @@ export function SiteSettingsForm({ initialConfig, canEdit, databaseInfo }: SiteS
             </div>
           )}
           {mapPreview?.mode === 'coordinates' && (
-            <p className="rounded-xl border border-dashed border-border px-4 py-3 text-xs text-muted-foreground">
+            <p className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-3 text-xs">
               نقشه تعاملی (Leaflet + Carto/OSM) با مختصات {mapPreview.lat.toFixed(4)}،{' '}
-              {mapPreview.lng.toFixed(4)} در سایت نمایش داده می‌شود؛ لینک‌های نشان و بلد نیز اضافه می‌شوند.
+              {mapPreview.lng.toFixed(4)} در سایت نمایش داده می‌شود؛ لینک‌های نشان و بلد نیز اضافه
+              می‌شوند.
             </p>
           )}
         </div>

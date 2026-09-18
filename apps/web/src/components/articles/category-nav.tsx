@@ -14,7 +14,7 @@ export function CategoryNav({ categories, activeSlug, className }: CategoryNavPr
       <Link
         href="/articles"
         className={cn(
-          'block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted',
+          'hover:bg-muted block rounded-lg px-3 py-2 text-sm font-medium transition-colors',
           !activeSlug && 'bg-primary/10 text-primary',
         )}
       >
@@ -25,20 +25,20 @@ export function CategoryNav({ categories, activeSlug, className }: CategoryNavPr
           <Link
             href={`/articles/category/${cat.slug}`}
             className={cn(
-              'block rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted',
+              'hover:bg-muted block rounded-lg px-3 py-2 text-sm font-medium transition-colors',
               activeSlug === cat.slug && 'bg-primary/10 text-primary',
             )}
           >
             {cat.name}
           </Link>
           {cat.children.length > 0 && (
-            <div className="me-3 border-s border-border ps-2">
+            <div className="border-border me-3 border-s ps-2">
               {cat.children.map((child) => (
                 <Link
                   key={child.id}
                   href={`/articles/category/${child.slug}`}
                   className={cn(
-                    'block rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+                    'text-muted-foreground hover:bg-muted hover:text-foreground block rounded-lg px-3 py-1.5 text-sm transition-colors',
                     activeSlug === child.slug && 'bg-primary/10 text-primary',
                   )}
                 >

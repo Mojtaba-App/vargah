@@ -95,11 +95,11 @@ export function ExportToolbar({
             aria-label="بستن"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute end-0 top-[calc(100%+0.35rem)] z-50 min-w-[12rem] overflow-hidden rounded-xl border border-border bg-card p-1 shadow-xl">
+          <div className="border-border bg-card absolute end-0 top-[calc(100%+0.35rem)] z-50 min-w-[12rem] overflow-hidden rounded-xl border p-1 shadow-xl">
             <ExportItem label="Excel (.xlsx)" hint="جدول مدیریتی" onClick={() => run('xlsx')} />
             <ExportItem label="PDF فارسی" hint="فونت Noto Naskh" onClick={() => run('pdf')} />
             <ExportItem label="CSV" hint="سازگار با اکسل" onClick={() => run('csv')} />
-            <p className="border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+            <p className="border-border text-muted-foreground border-t px-3 py-2 text-[11px]">
               {rows.length.toLocaleString('fa-IR')} ردیف فیلترشده
             </p>
           </div>
@@ -122,10 +122,10 @@ function ExportItem({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full flex-col rounded-lg px-3 py-2 text-start transition-colors hover:bg-muted"
+      className="hover:bg-muted flex w-full flex-col rounded-lg px-3 py-2 text-start transition-colors"
     >
       <span className="text-sm font-medium">{label}</span>
-      <span className="text-[11px] text-muted-foreground">{hint}</span>
+      <span className="text-muted-foreground text-[11px]">{hint}</span>
     </button>
   );
 }
@@ -140,12 +140,7 @@ function ExportIcon({ className }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M5 19h14"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M5 19h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

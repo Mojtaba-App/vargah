@@ -15,8 +15,7 @@ type StatusBannerProps = {
 };
 
 const styles = {
-  success:
-    'border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300',
+  success: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300',
   error: 'border-destructive/25 bg-destructive/10 text-destructive',
   info: 'border-primary/25 bg-primary/10 text-primary',
 };
@@ -38,8 +37,7 @@ export function StatusBanner({
   const onDismissRef = useRef(onDismiss);
   onDismissRef.current = onDismiss;
 
-  const hideAfter =
-    autoHideMs === undefined ? DEFAULT_AUTO_HIDE_MS[type] : autoHideMs;
+  const hideAfter = autoHideMs === undefined ? DEFAULT_AUTO_HIDE_MS[type] : autoHideMs;
 
   useEffect(() => {
     setVisible(true);
@@ -59,7 +57,7 @@ export function StatusBanner({
     <div
       role={type === 'error' ? 'alert' : 'status'}
       className={cn(
-        'rounded-xl border px-4 py-3 text-sm font-medium animate-in fade-in-0 duration-200',
+        'animate-in fade-in-0 rounded-xl border px-4 py-3 text-sm font-medium duration-200',
         styles[type],
         className,
       )}

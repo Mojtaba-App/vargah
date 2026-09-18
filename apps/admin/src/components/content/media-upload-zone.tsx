@@ -58,7 +58,9 @@ export function MediaUploadZone({ onUploaded, disabled, className }: MediaUpload
         if (!res.ok || !data.id) {
           setQueue((prev) =>
             prev.map((item) =>
-              item.id === itemId ? { ...item, status: 'error', error: data.error ?? 'آپلود ناموفق' } : item,
+              item.id === itemId
+                ? { ...item, status: 'error', error: data.error ?? 'آپلود ناموفق' }
+                : item,
             ),
           );
           return;
@@ -129,8 +131,16 @@ export function MediaUploadZone({ onUploaded, disabled, className }: MediaUpload
       >
         <span className="text-3xl">📁</span>
         <p className="font-medium">فایل را بکشید و رها کنید یا کلیک کنید</p>
-        <p className="text-xs text-muted-foreground">JPG, PNG, WebP, GIF, PDF — حداکثر ۲۵ مگابایت</p>
-        <Button type="button" variant="outline" size="sm" className="mt-2 rounded-xl" disabled={disabled || isUploading}>
+        <p className="text-muted-foreground text-xs">
+          JPG, PNG, WebP, GIF, PDF — حداکثر ۲۵ مگابایت
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-2 rounded-xl"
+          disabled={disabled || isUploading}
+        >
           {isUploading ? 'در حال آپلود...' : 'انتخاب فایل'}
         </Button>
       </div>
@@ -153,7 +163,10 @@ export function MediaUploadZone({ onUploaded, disabled, className }: MediaUpload
       {queue.length > 0 && (
         <ul className="space-y-1 text-sm">
           {queue.slice(-5).map((item) => (
-            <li key={item.id} className="flex items-center justify-between gap-2 rounded-lg bg-muted/50 px-3 py-2">
+            <li
+              key={item.id}
+              className="bg-muted/50 flex items-center justify-between gap-2 rounded-lg px-3 py-2"
+            >
               <span className="truncate">{item.name}</span>
               <span
                 className={cn(

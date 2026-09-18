@@ -1,7 +1,10 @@
 const PERSIAN_SCRIPT = /[\u0600-\u06FF]/;
 
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /** Estimate reading time in minutes — tuned for Persian and Latin content. */

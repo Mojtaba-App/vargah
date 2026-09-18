@@ -32,9 +32,10 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
     [placements, activeSurface],
   );
 
-  const selectedId = activePlacementId && surfacePlacements.some((p) => p.id === activePlacementId)
-    ? activePlacementId
-    : surfacePlacements[0]?.id ?? null;
+  const selectedId =
+    activePlacementId && surfacePlacements.some((p) => p.id === activePlacementId)
+      ? activePlacementId
+      : (surfacePlacements[0]?.id ?? null);
 
   const pricingById = useMemo(() => {
     const map = new Map<string, AdPricing>();
@@ -44,7 +45,7 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
 
   if (surfacesWithPlacements.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground">
+      <p className="border-border text-muted-foreground rounded-2xl border border-dashed px-6 py-10 text-center text-sm">
         جایگاهی برای نمایش تعریف نشده است.
       </p>
     );
@@ -82,8 +83,8 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <div className="rounded-2xl border border-border bg-card/40 p-4 sm:p-5">
-          <p className="mb-4 text-sm text-muted-foreground">
+        <div className="border-border bg-card/40 rounded-2xl border p-4 sm:p-5">
+          <p className="text-muted-foreground mb-4 text-sm">
             {AD_SURFACE_META.find((s) => s.id === activeSurface)?.description}
           </p>
           <SchematicFrame frame={frame}>
@@ -102,10 +103,10 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
                   title={placement.label}
                   onClick={() => setActivePlacementId(placement.id)}
                   className={cn(
-                    'absolute rounded-md border text-[10px] font-semibold leading-tight transition-all sm:text-[11px]',
+                    'absolute rounded-md border text-[10px] leading-tight font-semibold transition-all sm:text-[11px]',
                     isSelected
-                      ? 'z-20 border-primary bg-primary/25 text-foreground shadow-sm ring-2 ring-primary/40'
-                      : 'z-10 border-amber-600/40 bg-amber-500/15 text-foreground/80 hover:bg-amber-500/25',
+                      ? 'border-primary bg-primary/25 text-foreground ring-primary/40 z-20 shadow-sm ring-2'
+                      : 'text-foreground/80 z-10 border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25',
                   )}
                   style={{
                     left: `${slot.x}%`,
@@ -121,12 +122,12 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
               );
             })}
             {surfacePlacements.length === 0 && (
-              <p className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+              <p className="text-muted-foreground absolute inset-0 flex items-center justify-center text-sm">
                 جایگاهی فعال نیست
               </p>
             )}
           </SchematicFrame>
-          <p className="mt-3 text-center text-[11px] text-muted-foreground">
+          <p className="text-muted-foreground mt-3 text-center text-[11px]">
             نمای شماتیک — برای جزئیات روی هر جایگاه کلیک کنید
           </p>
         </div>
@@ -151,23 +152,25 @@ export function PlacementSchematics({ placements, pricing }: PlacementSchematics
                   <div>
                     <h4 className="font-semibold">{placement.label}</h4>
                     {placement.sizeHint && (
-                      <p className="mt-0.5 text-xs text-muted-foreground">{placement.sizeHint}</p>
+                      <p className="text-muted-foreground mt-0.5 text-xs">{placement.sizeHint}</p>
                     )}
                   </div>
                   {linked && (
-                    <p className="shrink-0 text-end text-sm font-bold tabular-nums text-primary">
+                    <p className="text-primary shrink-0 text-end text-sm font-bold tabular-nums">
                       {formatPrice(linked.price)}
-                      <span className="block text-[10px] font-normal text-muted-foreground">تومان</span>
+                      <span className="text-muted-foreground block text-[10px] font-normal">
+                        تومان
+                      </span>
                     </p>
                   )}
                 </div>
                 {placement.description && (
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                     {placement.description}
                   </p>
                 )}
                 {linked && (
-                  <p className="mt-2 text-xs text-muted-foreground">تعرفه مرتبط: {linked.name}</p>
+                  <p className="text-muted-foreground mt-2 text-xs">تعرفه مرتبط: {linked.name}</p>
                 )}
               </button>
             );
@@ -203,7 +206,7 @@ function SchematicFrame({
   return (
     <div
       className={cn(
-        'relative w-full overflow-hidden rounded-xl border border-dashed border-border/80 bg-muted/30',
+        'border-border/80 bg-muted/30 relative w-full overflow-hidden rounded-xl border border-dashed',
         aspect,
       )}
     >
@@ -217,8 +220,8 @@ function ChromeBars({ frame }: { frame: 'site' | 'article' | 'print' | 'newslett
   if (frame === 'print') {
     return (
       <>
-        <div className="absolute inset-x-[8%] top-[4%] h-1 rounded bg-border/60" />
-        <div className="absolute inset-y-[6%] start-[4%] w-1 rounded bg-border/50" />
+        <div className="bg-border/60 absolute inset-x-[8%] top-[4%] h-1 rounded" />
+        <div className="bg-border/50 absolute inset-y-[6%] start-[4%] w-1 rounded" />
       </>
     );
   }
@@ -226,18 +229,18 @@ function ChromeBars({ frame }: { frame: 'site' | 'article' | 'print' | 'newslett
   if (frame === 'newsletter') {
     return (
       <>
-        <div className="absolute inset-x-[10%] top-[3%] h-2 rounded bg-border/50" />
-        <div className="absolute inset-x-[18%] top-[28%] h-[8%] rounded bg-border/25" />
-        <div className="absolute inset-x-[18%] top-[70%] h-[8%] rounded bg-border/25" />
+        <div className="bg-border/50 absolute inset-x-[10%] top-[3%] h-2 rounded" />
+        <div className="bg-border/25 absolute inset-x-[18%] top-[28%] h-[8%] rounded" />
+        <div className="bg-border/25 absolute inset-x-[18%] top-[70%] h-[8%] rounded" />
       </>
     );
   }
 
   return (
     <>
-      <div className="absolute inset-x-[5%] top-[2%] h-2 rounded-full bg-border/50" />
-      <div className="absolute inset-x-[28%] top-[16%] h-[55%] rounded bg-border/20" />
-      <div className="absolute inset-x-[5%] bottom-[2%] h-1.5 rounded bg-border/40" />
+      <div className="bg-border/50 absolute inset-x-[5%] top-[2%] h-2 rounded-full" />
+      <div className="bg-border/20 absolute inset-x-[28%] top-[16%] h-[55%] rounded" />
+      <div className="bg-border/40 absolute inset-x-[5%] bottom-[2%] h-1.5 rounded" />
     </>
   );
 }

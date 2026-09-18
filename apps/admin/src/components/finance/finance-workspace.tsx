@@ -96,14 +96,14 @@ function StatCard({
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-2xl border border-border bg-card p-4 text-start transition-colors',
-        onClick && 'cursor-pointer hover:border-primary/40 hover:bg-muted/30',
-        active && 'border-primary ring-1 ring-primary/20',
+        'border-border bg-card rounded-2xl border p-4 text-start transition-colors',
+        onClick && 'hover:border-primary/40 hover:bg-muted/30 cursor-pointer',
+        active && 'border-primary ring-primary/20 ring-1',
       )}
     >
-      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground text-sm">{label}</p>
       <p className={cn('mt-1 text-2xl font-bold tabular-nums', toneClass)}>{value}</p>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-muted-foreground mt-1 text-xs">{hint}</p>}
     </Comp>
   );
 }
@@ -294,9 +294,11 @@ export function FinanceWorkspace({
         header: 'مشتری',
         cell: ({ row }) => (
           <button type="button" className="text-start" onClick={() => setSelected(row.original)}>
-            <p className="font-medium text-primary hover:underline">{row.original.customerName}</p>
+            <p className="text-primary font-medium hover:underline">{row.original.customerName}</p>
             {row.original.description && (
-              <p className="line-clamp-1 text-xs text-muted-foreground">{row.original.description}</p>
+              <p className="text-muted-foreground line-clamp-1 text-xs">
+                {row.original.description}
+              </p>
             )}
           </button>
         ),
@@ -310,7 +312,7 @@ export function FinanceWorkspace({
         accessorKey: 'paidAt',
         header: 'تاریخ',
         cell: ({ row }) => (
-          <span className="whitespace-nowrap text-sm">
+          <span className="text-sm whitespace-nowrap">
             {row.original.paidAt ? formatJalali(row.original.paidAt, true) : '—'}
           </span>
         ),
@@ -325,21 +327,19 @@ export function FinanceWorkspace({
         <StatusBanner type={error ? 'error' : 'success'} message={error ?? message!} />
       )}
 
-      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-border bg-card flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-bold">گزارش‌گیری مالی</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             خروجی جامع با درآمد، سود خالص، شماتیک ترکیب درآمد، روند ماهانه و توضیحات فارسی
           </p>
         </div>
         {canExport ? (
-          <FinanceExportMenu
-            payload={reportPayload}
-            onDone={setMessage}
-            onError={setError}
-          />
+          <FinanceExportMenu payload={reportPayload} onDone={setMessage} onError={setError} />
         ) : (
-          <p className="text-xs text-muted-foreground">برای خروجی به دسترسی «خروجی مالی» نیاز است.</p>
+          <p className="text-muted-foreground text-xs">
+            برای خروجی به دسترسی «خروجی مالی» نیاز است.
+          </p>
         )}
       </div>
 
@@ -464,26 +464,30 @@ export function FinanceWorkspace({
                 <button
                   type="button"
                   onClick={() => setSelected(row)}
-                  className="w-full rounded-2xl border border-border bg-card p-4 text-start transition-colors hover:border-primary/40"
+                  className="border-border bg-card hover:border-primary/40 w-full rounded-2xl border p-4 text-start transition-colors"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                      <p className="text-lg font-bold tabular-nums">{formatPrice(row.amount)} تومان</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{row.customerName}</p>
+                      <p className="text-lg font-bold tabular-nums">
+                        {formatPrice(row.amount)} تومان
+                      </p>
+                      <p className="text-muted-foreground mt-1 text-sm">{row.customerName}</p>
                     </div>
                     <Badge variant={PAYMENT_STATUS_VARIANT[row.status]}>
                       {PAYMENT_STATUS_LABELS[row.status]}
                     </Badge>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                    <Badge variant={PAYMENT_TYPE_VARIANT[row.type]}>{PAYMENT_TYPE_LABELS[row.type]}</Badge>
+                  <div className="text-muted-foreground mt-3 flex flex-wrap gap-2 text-xs">
+                    <Badge variant={PAYMENT_TYPE_VARIANT[row.type]}>
+                      {PAYMENT_TYPE_LABELS[row.type]}
+                    </Badge>
                     <span>{formatJalali(row.createdAt, true)}</span>
                   </div>
                 </button>
               </li>
             ))}
             {filtered.length === 0 && (
-              <li className="rounded-2xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+              <li className="border-border text-muted-foreground rounded-2xl border border-dashed px-4 py-8 text-center text-sm">
                 تراکنشی یافت نشد.
               </li>
             )}
@@ -492,7 +496,7 @@ export function FinanceWorkspace({
       </Card>
 
       {selected && (
-        <Card className="rounded-2xl border-primary/20">
+        <Card className="border-primary/20 rounded-2xl">
           <CardContent className="space-y-4 pt-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2">
@@ -503,7 +507,13 @@ export function FinanceWorkspace({
                   {PAYMENT_STATUS_LABELS[selected.status]}
                 </Badge>
               </div>
-              <Button type="button" variant="outline" size="sm" className="rounded-xl" onClick={() => setSelected(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-xl"
+                onClick={() => setSelected(null)}
+              >
                 بستن
               </Button>
             </div>
@@ -540,7 +550,9 @@ export function FinanceWorkspace({
             </div>
 
             {selected.description && (
-              <p className="rounded-xl border border-border bg-muted/20 p-3 text-sm">{selected.description}</p>
+              <p className="border-border bg-muted/20 rounded-xl border p-3 text-sm">
+                {selected.description}
+              </p>
             )}
 
             <div className="flex flex-wrap gap-2">

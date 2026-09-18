@@ -55,12 +55,12 @@ export function ProfileWorkspace({ profile }: ProfileWorkspaceProps) {
   if (!isAuthenticated || !profile) {
     return (
       <Card className="mx-auto max-w-lg overflow-hidden p-0 text-center">
-        <div className="bg-gradient-to-br from-primary/15 to-transparent px-8 pb-8 pt-10">
-          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-background shadow-sm">
+        <div className="from-primary/15 bg-gradient-to-br to-transparent px-8 pt-10 pb-8">
+          <div className="bg-background mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl shadow-sm">
             <span className="text-2xl">👤</span>
           </div>
           <h2 className="text-xl font-bold">پروفایل کاربری</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
             برای مدیریت اشتراک، آدرس، سوابق خرید و پشتیبانی با شماره موبایل وارد شوید.
           </p>
           <FormActionButton className="mt-6" type="button" onClick={() => openLogin('profile')}>
@@ -98,12 +98,12 @@ function ProfileWorkspaceContent({
   return (
     <div className="grid gap-6 lg:grid-cols-[17.5rem_minmax(0,1fr)] lg:gap-8">
       <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-        <Card className="overflow-hidden border-primary/15 bg-gradient-to-br from-primary/10 via-background to-background p-4">
+        <Card className="border-primary/15 from-primary/10 via-background to-background overflow-hidden bg-gradient-to-br p-4">
           <div className="flex items-center gap-3">
             <CustomerAvatar name={profile.name} avatar={profile.avatar} size="md" />
             <div className="min-w-0">
               <p className="truncate font-bold">{profile.name}</p>
-              <p className="mt-0.5 truncate text-xs text-muted-foreground" dir="ltr">
+              <p className="text-muted-foreground mt-0.5 truncate text-xs" dir="ltr">
                 {profile.phone ? maskPhone(profile.phone) : '—'}
               </p>
             </div>
@@ -185,14 +185,14 @@ function OverviewTab({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold">سبد خرید باز دارید</p>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-sm">
                 {itemCount} مورد · جمع {formatPrice(totalAmount)} تومان
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                className="rounded-xl border border-border px-3 py-2 text-sm font-medium hover:bg-muted"
+                className="border-border hover:bg-muted rounded-xl border px-3 py-2 text-sm font-medium"
                 onClick={() => onNavigate('payments')}
               >
                 مشاهده در خریدها
@@ -211,7 +211,7 @@ function OverviewTab({
           {(recentPurchases.length > 0 || items.length > 0) && (
             <button
               type="button"
-              className="text-xs font-medium text-primary hover:underline"
+              className="text-primary text-xs font-medium hover:underline"
               onClick={() => onNavigate('payments')}
             >
               مشاهده همه
@@ -219,11 +219,11 @@ function OverviewTab({
           )}
         </div>
         {recentPurchases.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border px-4 py-8 text-center">
-            <p className="text-sm text-muted-foreground">هنوز خریدی ثبت نشده است.</p>
+          <div className="border-border rounded-xl border border-dashed px-4 py-8 text-center">
+            <p className="text-muted-foreground text-sm">هنوز خریدی ثبت نشده است.</p>
             <Link
               href="/subscription"
-              className="mt-3 inline-flex text-sm font-semibold text-primary underline-offset-2 hover:underline"
+              className="text-primary mt-3 inline-flex text-sm font-semibold underline-offset-2 hover:underline"
             >
               مشاهده پلن‌های اشتراک
             </Link>
@@ -233,11 +233,11 @@ function OverviewTab({
             {recentPurchases.map((payment) => (
               <li
                 key={payment.id}
-                className="flex items-start justify-between gap-3 rounded-xl border border-border/70 px-3 py-2.5"
+                className="border-border/70 flex items-start justify-between gap-3 rounded-xl border px-3 py-2.5"
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{payment.plan}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
+                  <p className="text-muted-foreground mt-0.5 text-xs">
                     {formatJalaliDate(payment.date, 'D MMMM YYYY')}
                   </p>
                 </div>
@@ -290,7 +290,13 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
             <Label htmlFor="profile-name" required>
               نام
             </Label>
-            <Input id="profile-name" value={name} onChange={(e) => setName(e.target.value)} required className="rounded-xl" />
+            <Input
+              id="profile-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="rounded-xl"
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="profile-email" required>
@@ -311,8 +317,8 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
             <Label>موبایل (تأیید‌شده)</Label>
             <Input value={profile.phone ?? ''} disabled dir="ltr" className="rounded-xl" />
           </div>
-          {message && <p className="md:col-span-2 text-sm text-emerald-600">{message}</p>}
-          {error && <p className="md:col-span-2 text-sm text-destructive">{error}</p>}
+          {message && <p className="text-sm text-emerald-600 md:col-span-2">{message}</p>}
+          {error && <p className="text-destructive text-sm md:col-span-2">{error}</p>}
           <div className="md:col-span-2">
             <FormActionButton loading={pending} loadingText="در حال ذخیره...">
               ذخیره تغییرات
@@ -329,9 +335,7 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
   const deliveryContact = useDeliveryContactPhone(profile);
   const [editing, setEditing] = useState(!profile.address);
   const [name, setName] = useState(profile.name);
-  const [deliveryPhone, setDeliveryPhone] = useState(
-    profile.deliveryPhone ?? profile.phone ?? '',
-  );
+  const [deliveryPhone, setDeliveryPhone] = useState(profile.deliveryPhone ?? profile.phone ?? '');
   const [province, setProvince] = useState(profile.province ?? '');
   const [city, setCity] = useState(profile.city ?? '');
   const [address, setAddress] = useState(profile.address ?? '');
@@ -372,14 +376,14 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
           <dl className="grid gap-3 text-sm sm:grid-cols-2">
             <InfoRow label="نام گیرنده" value={profile.name} />
             <InfoRow label="موبایل حساب (ورود)" value={profile.phone ?? '—'} dir="ltr" />
-            <InfoRow
-              label="تلفن تماس برای ارسال"
-              value={deliveryContact ?? '—'}
-              dir="ltr"
-            />
+            <InfoRow label="تلفن تماس برای ارسال" value={deliveryContact ?? '—'} dir="ltr" />
             <InfoRow label="استان" value={profile.province ?? '—'} />
             <InfoRow label="شهر" value={profile.city ?? '—'} />
-            <InfoRow label="آدرس کامل" value={profile.address ?? 'ثبت نشده'} className="sm:col-span-2" />
+            <InfoRow
+              label="آدرس کامل"
+              value={profile.address ?? 'ثبت نشده'}
+              className="sm:col-span-2"
+            />
           </dl>
         </Card>
       </div>
@@ -394,12 +398,12 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
       />
       <Card className="p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="rounded-xl border border-border/70 bg-muted/30 px-4 py-3 text-sm">
+          <div className="border-border/70 bg-muted/30 rounded-xl border px-4 py-3 text-sm">
             <p className="font-medium">موبایل حساب (ورود)</p>
-            <p className="mt-1 text-muted-foreground" dir="ltr">
+            <p className="text-muted-foreground mt-1" dir="ltr">
               {profile.phone ?? '—'}
             </p>
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-xs">
               این شماره با OTP تأیید شده و از این بخش قابل تغییر نیست.
             </p>
           </div>
@@ -430,7 +434,7 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
                 placeholder="09xxxxxxxxx"
                 className="rounded-xl"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 برای تماس پستی — می‌تواند با موبایل حساب یکی باشد.
               </p>
             </div>
@@ -461,7 +465,7 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
           </div>
 
           {message && <p className="text-sm text-emerald-600">{message}</p>}
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-destructive text-sm">{error}</p>}
 
           <div className="flex flex-wrap gap-2">
             <FormActionButton loading={pending} loadingText="در حال ذخیره...">
@@ -546,7 +550,7 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
             />
           </div>
           {message && <p className="text-sm text-emerald-600">{message}</p>}
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-destructive text-sm">{error}</p>}
           <FormActionButton loading={pending} loadingText="در حال ارسال...">
             ارسال تیکت
           </FormActionButton>
@@ -556,7 +560,7 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
       <div>
         <h3 className="mb-3 font-semibold">تیکت‌های قبلی ({sortedTickets.length})</h3>
         {sortedTickets.length === 0 ? (
-          <Card className="border-dashed p-8 text-center text-sm text-muted-foreground">
+          <Card className="text-muted-foreground border-dashed p-8 text-center text-sm">
             هنوز تیکتی ثبت نکرده‌اید.
           </Card>
         ) : (
@@ -566,7 +570,7 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <p className="font-medium">{ticket.subject}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    <p className="text-muted-foreground mt-1 text-xs">
                       {formatJalaliDate(ticket.createdAt, 'D MMMM YYYY — HH:mm')}
                     </p>
                   </div>
@@ -574,9 +578,9 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
                     {TICKET_STATUS_LABELS[ticket.status] ?? ticket.status}
                   </Badge>
                 </div>
-                <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{ticket.body}</p>
+                <p className="text-muted-foreground mt-3 line-clamp-3 text-sm">{ticket.body}</p>
                 {ticket.replyCount > 0 && (
-                  <p className="mt-2 text-xs text-primary">{ticket.replyCount} پاسخ از پشتیبانی</p>
+                  <p className="text-primary mt-2 text-xs">{ticket.replyCount} پاسخ از پشتیبانی</p>
                 )}
               </Card>
             ))}
@@ -591,23 +595,15 @@ function SectionHeader({ title, description }: { title: string; description: str
   return (
     <div>
       <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-      <p className="mt-1.5 text-sm text-muted-foreground">{description}</p>
+      <p className="text-muted-foreground mt-1.5 text-sm">{description}</p>
     </div>
   );
 }
 
-function StatCard({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: boolean;
-}) {
+function StatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
     <Card className="p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-muted-foreground text-xs">{label}</p>
       <p className={cn('mt-2 text-lg font-bold', accent && 'text-primary')}>{value}</p>
     </Card>
   );
@@ -626,7 +622,7 @@ function InfoRow({
 }) {
   return (
     <div className={className}>
-      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dt className="text-muted-foreground text-xs">{label}</dt>
       <dd className="mt-1 font-medium" dir={dir}>
         {value}
       </dd>

@@ -147,7 +147,7 @@ export function MapExportDialog({
     <dialog
       ref={dialogRef}
       className={cn(
-        'fixed inset-0 z-50 m-auto w-[min(100%-1.5rem,56rem)] rounded-2xl border border-border bg-card p-0 shadow-2xl backdrop:bg-black/50',
+        'border-border bg-card fixed inset-0 z-50 m-auto w-[min(100%-1.5rem,56rem)] rounded-2xl border p-0 shadow-2xl backdrop:bg-black/50',
       )}
       onCancel={(event) => {
         event.preventDefault();
@@ -155,36 +155,36 @@ export function MapExportDialog({
       }}
       onClose={onClose}
     >
-      <div className="border-b border-border px-5 py-4">
+      <div className="border-border border-b px-5 py-4">
         <h2 className="text-lg font-bold">{title}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           {subtitle ?? 'پیش‌نمایش را بررسی کنید، اطلاعات زیرین را انتخاب کنید و دانلود کنید.'}
         </p>
       </div>
 
-      <div className="grid gap-0 border-b border-border lg:grid-cols-[minmax(0,1fr)_16rem]">
-        <div className="max-h-[58vh] overflow-auto bg-muted/30 p-4">
+      <div className="border-border grid gap-0 border-b lg:grid-cols-[minmax(0,1fr)_16rem]">
+        <div className="bg-muted/30 max-h-[58vh] overflow-auto p-4">
           {pending && !preview ? (
-            <p className="py-16 text-center text-sm text-muted-foreground">
+            <p className="text-muted-foreground py-16 text-center text-sm">
               در حال آماده‌سازی پیش‌نمایش...
             </p>
           ) : preview ? (
             <div
               ref={composeRef}
-              className="mx-auto w-full max-w-3xl space-y-3 rounded-xl bg-white p-3 text-foreground shadow-sm"
+              className="text-foreground mx-auto w-full max-w-3xl space-y-3 rounded-xl bg-white p-3 shadow-sm"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={preview}
                 alt="پیش‌نمایش نقشه"
-                className="mx-auto max-h-[40vh] w-auto rounded-lg border border-border"
+                className="border-border mx-auto max-h-[40vh] w-auto rounded-lg border"
               />
               {enabledSections.length > 0 ? (
-                <div className="space-y-3 border-t border-border pt-3 text-start">
+                <div className="border-border space-y-3 border-t pt-3 text-start">
                   {sections.summary ? (
                     <section>
                       <h3 className="text-sm font-bold">خلاصه خروجی</h3>
-                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                      <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                         {meta.entityLabel} · فیلتر: {meta.filterLabel} · نما: {meta.mapViewLabel}
                         {meta.topCityLabel ? ` · شهر برتر: ${meta.topCityLabel}` : ''}
                       </p>
@@ -202,7 +202,10 @@ export function MapExportDialog({
                       <h3 className="text-sm font-bold">۱۰ شهر برتر</h3>
                       <ul className="mt-1.5 space-y-1 text-xs">
                         {meta.topCities.slice(0, 10).map((city, index) => (
-                          <li key={`${city.city}-${city.province}`} className="flex justify-between gap-2">
+                          <li
+                            key={`${city.city}-${city.province}`}
+                            className="flex justify-between gap-2"
+                          >
                             <span>
                               {index + 1}. {city.city}
                               <span className="text-muted-foreground"> ({city.province})</span>
@@ -230,25 +233,27 @@ export function MapExportDialog({
                   ) : null}
                 </div>
               ) : (
-                <p className="border-t border-border pt-3 text-center text-xs text-muted-foreground">
+                <p className="border-border text-muted-foreground border-t pt-3 text-center text-xs">
                   هیچ بلوک اطلاعاتی انتخاب نشده — فقط خود نقشه خروجی می‌شود.
                 </p>
               )}
             </div>
           ) : (
-            <p className="py-16 text-center text-sm text-muted-foreground">پیش‌نمایش در دسترس نیست.</p>
+            <p className="text-muted-foreground py-16 text-center text-sm">
+              پیش‌نمایش در دسترس نیست.
+            </p>
           )}
         </div>
 
-        <aside className="border-t border-border p-4 lg:border-t-0 lg:border-s">
+        <aside className="border-border border-t p-4 lg:border-s lg:border-t-0">
           <p className="text-sm font-semibold">اطلاعات زیرین فایل</p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             هر موردی که تیک بزنید همراه نقشه در PNG/PDF چاپ می‌شود.
           </p>
           <ul className="mt-3 space-y-2">
             {META_OPTIONS.map((option) => (
               <li key={option.id}>
-                <label className="flex cursor-pointer items-start gap-2 rounded-xl border border-border/70 px-3 py-2 text-sm hover:bg-muted/40">
+                <label className="border-border/70 hover:bg-muted/40 flex cursor-pointer items-start gap-2 rounded-xl border px-3 py-2 text-sm">
                   <input
                     type="checkbox"
                     className="mt-1"
@@ -257,7 +262,9 @@ export function MapExportDialog({
                   />
                   <span>
                     <span className="font-medium">{option.label}</span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">{option.hint}</span>
+                    <span className="text-muted-foreground mt-0.5 block text-xs">
+                      {option.hint}
+                    </span>
                   </span>
                 </label>
               </li>
@@ -292,18 +299,10 @@ export function MapExportDialog({
   );
 }
 
-function MetaStat({
-  label,
-  value,
-  suffix,
-}: {
-  label: string;
-  value: number;
-  suffix?: string;
-}) {
+function MetaStat({ label, value, suffix }: { label: string; value: number; suffix?: string }) {
   return (
-    <div className="rounded-lg border border-border bg-muted/20 px-2 py-2">
-      <p className="text-[10px] text-muted-foreground">{label}</p>
+    <div className="border-border bg-muted/20 rounded-lg border px-2 py-2">
+      <p className="text-muted-foreground text-[10px]">{label}</p>
       <p className="mt-0.5 text-sm font-bold tabular-nums">
         {formatNumber(value)}
         {suffix}

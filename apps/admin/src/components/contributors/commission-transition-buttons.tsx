@@ -110,7 +110,9 @@ export function CommissionTransitionButtons({
               variant="destructive"
               className="rounded-xl"
               loading={pending}
-              onClick={() => runTransition(CommissionStatus.REJECTED, reviewNote.trim() || undefined)}
+              onClick={() =>
+                runTransition(CommissionStatus.REJECTED, reviewNote.trim() || undefined)
+              }
             >
               تأیید رد
             </LoadingButton>

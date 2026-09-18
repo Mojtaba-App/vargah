@@ -120,7 +120,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-muted/20 p-5">
+    <div className="border-border bg-muted/20 rounded-2xl border p-5">
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
         <div className="relative">
           <CustomerAvatar name={name} avatar={displayAvatar} size="lg" />
@@ -128,7 +128,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
             type="button"
             disabled={isUploading}
             onClick={() => fileInputRef.current?.click()}
-            className="absolute -bottom-1 -end-1 inline-flex size-9 items-center justify-center rounded-full border border-border bg-background shadow-sm transition-colors hover:bg-muted"
+            className="border-border bg-background hover:bg-muted absolute -end-1 -bottom-1 inline-flex size-9 items-center justify-center rounded-full border shadow-sm transition-colors"
             aria-label="تغییر تصویر پروفایل"
           >
             <CameraIcon />
@@ -137,7 +137,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
 
         <div className="min-w-0 flex-1 text-center sm:text-start">
           <h3 className="font-semibold">تصویر پروفایل</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             JPG، PNG یا WebP — حداکثر ۲ مگابایت. این تصویر در هدر سایت هم نمایش داده می‌شود.
           </p>
 
@@ -165,7 +165,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
               className="hidden"
               onChange={handleFileChange}
             />
-            <p className="text-sm text-muted-foreground">فایل را بکشید و رها کنید یا</p>
+            <p className="text-muted-foreground text-sm">فایل را بکشید و رها کنید یا</p>
             <FormActionButton
               type="button"
               variant="secondary"
@@ -182,7 +182,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
               type="button"
               variant="ghost"
               size="sm"
-              className="mt-2 text-destructive hover:text-destructive"
+              className="text-destructive hover:text-destructive mt-2"
               disabled={isUploading}
               onClick={removeAvatar}
             >
@@ -191,7 +191,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
           )}
 
           {message && <p className="mt-2 text-sm text-emerald-600">{message}</p>}
-          {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
+          {error && <p className="text-destructive mt-2 text-sm">{error}</p>}
         </div>
       </div>
     </div>

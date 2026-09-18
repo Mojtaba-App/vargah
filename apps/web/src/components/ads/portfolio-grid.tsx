@@ -8,7 +8,7 @@ type PortfolioGridProps = {
 export function PortfolioGrid({ items }: PortfolioGridProps) {
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-border px-6 py-10 text-center text-sm text-muted-foreground">
+      <p className="border-border text-muted-foreground rounded-2xl border border-dashed px-6 py-10 text-center text-sm">
         نمونه‌کاری برای نمایش وجود ندارد.
       </p>
     );
@@ -19,9 +19,9 @@ export function PortfolioGrid({ items }: PortfolioGridProps) {
       {items.map((item) => (
         <article
           key={item.id}
-          className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-md"
+          className="group border-border bg-card overflow-hidden rounded-2xl border transition-all hover:-translate-y-0.5 hover:shadow-md"
         >
-          <div className="relative aspect-[3/2] overflow-hidden bg-muted">
+          <div className="bg-muted relative aspect-[3/2] overflow-hidden">
             <Image
               src={item.image}
               alt={item.title}
@@ -29,13 +29,13 @@ export function PortfolioGrid({ items }: PortfolioGridProps) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="400px"
             />
-            <span className="absolute start-3 top-3 rounded-full bg-background/90 px-2.5 py-0.5 text-xs font-medium backdrop-blur-sm">
+            <span className="bg-background/90 absolute start-3 top-3 rounded-full px-2.5 py-0.5 text-xs font-medium backdrop-blur-sm">
               {item.type === 'print' ? 'چاپی' : 'دیجیتال'}
             </span>
           </div>
           <div className="p-4">
             <h4 className="font-semibold">{item.title}</h4>
-            <p className="mt-1 text-sm text-muted-foreground">{item.client}</p>
+            <p className="text-muted-foreground mt-1 text-sm">{item.client}</p>
           </div>
         </article>
       ))}

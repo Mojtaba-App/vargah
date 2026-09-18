@@ -27,7 +27,9 @@ async function clearAuthCookies() {
 async function getLogoutUserId() {
   const cookieStore = await cookies();
   const token = await getToken({
-    req: { cookies: Object.fromEntries(cookieStore.getAll().map((c) => [c.name, c.value])) } as never,
+    req: {
+      cookies: Object.fromEntries(cookieStore.getAll().map((c) => [c.name, c.value])),
+    } as never,
     secret: process.env.AUTH_SECRET,
     cookieName: SESSION_COOKIE,
   });

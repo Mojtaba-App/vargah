@@ -19,14 +19,14 @@ export function GeoLayerPanel({
 }: GeoLayerPanelProps) {
   if (customLayers.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-border p-4 text-sm text-muted-foreground">
+      <div className="border-border text-muted-foreground rounded-2xl border border-dashed p-4 text-sm">
         لایه سفارشی تعریف نشده. از تنظیمات → نقشه می‌توانید GeoJSON اضافه کنید.
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-border p-4">
+    <div className="border-border rounded-2xl border p-4">
       <div className="flex items-center justify-between gap-2">
         <h3 className="font-semibold">مدیریت لایه‌ها</h3>
         <Badge variant="outline">{customLayers.length} لایه</Badge>
@@ -37,11 +37,11 @@ export function GeoLayerPanel({
           return (
             <li
               key={layer.id}
-              className="flex items-center justify-between gap-2 rounded-xl border border-border/70 px-3 py-2"
+              className="border-border/70 flex items-center justify-between gap-2 rounded-xl border px-3 py-2"
             >
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium">{layer.name}</p>
-                <p className="truncate text-xs text-muted-foreground">{layer.geoJsonUrl}</p>
+                <p className="text-muted-foreground truncate text-xs">{layer.geoJsonUrl}</p>
               </div>
               <Button
                 type="button"

@@ -26,7 +26,13 @@ type DashboardShellProps = {
   alerts?: AdminAlert[];
 };
 
-export function DashboardShell({ children, user, branding, grantedPermissions, alerts = [] }: DashboardShellProps) {
+export function DashboardShell({
+  children,
+  user,
+  branding,
+  grantedPermissions,
+  alerts = [],
+}: DashboardShellProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -40,7 +46,10 @@ export function DashboardShell({ children, user, branding, grantedPermissions, a
   }, [mobileOpen]);
 
   return (
-    <div className="min-h-screen bg-background bg-[radial-gradient(ellipse_at_top,_color-mix(in_oklab,var(--brand-400)_8%,transparent),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,_color-mix(in_oklab,var(--brand-400)_12%,transparent),transparent_50%)]" dir="rtl">
+    <div
+      className="bg-background min-h-screen bg-[radial-gradient(ellipse_at_top,_color-mix(in_oklab,var(--brand-400)_8%,transparent),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top,_color-mix(in_oklab,var(--brand-400)_12%,transparent),transparent_50%)]"
+      dir="rtl"
+    >
       {mobileOpen ? (
         <button
           type="button"

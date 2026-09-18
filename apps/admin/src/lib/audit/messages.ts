@@ -117,5 +117,7 @@ export function formatRelativeTime(date: Date | string): string {
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days} روز پیش`;
 
-  return new Intl.DateTimeFormat('fa-IR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date));
+  return new Intl.DateTimeFormat('fa-IR', { dateStyle: 'medium', timeStyle: 'short' }).format(
+    new Date(date),
+  );
 }

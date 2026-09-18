@@ -43,12 +43,12 @@ export default async function ArticlesPage({ params, searchParams }: ArticlesPag
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="lg:order-1 lg:col-span-3">
             {q && (
-              <p className="mb-4 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mb-4 text-sm">
                 {results.length} نتیجه برای «{q}»
               </p>
             )}
             {results.length === 0 ? (
-              <p className="py-12 text-center text-muted-foreground">مقاله‌ای یافت نشد.</p>
+              <p className="text-muted-foreground py-12 text-center">مقاله‌ای یافت نشد.</p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2">
                 {results.map((article) => (

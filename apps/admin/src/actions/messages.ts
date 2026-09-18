@@ -107,11 +107,7 @@ export async function markMessageRead(id: string) {
   return { ok: true as const, changed: true };
 }
 
-export async function replyToMessage(
-  id: string,
-  body: string,
-  options?: { isInternal?: boolean },
-) {
+export async function replyToMessage(id: string, body: string, options?: { isInternal?: boolean }) {
   await verifyCsrfFromRequest();
   const session = await requirePermission(PERMISSIONS.MESSAGE_MANAGE);
 
@@ -150,8 +146,7 @@ export async function replyToMessage(
         );
         emailSent = true;
       } catch {
-        emailWarning =
-          'پاسخ ذخیره شد، اما ارسال ایمیل ناموفق بود. تنظیمات SMTP را بررسی کنید.';
+        emailWarning = 'پاسخ ذخیره شد، اما ارسال ایمیل ناموفق بود. تنظیمات SMTP را بررسی کنید.';
       }
     }
   }
@@ -207,7 +202,12 @@ export async function convertMessageToTicket(messageId: string) {
     include: {
       replies: {
         orderBy: { createdAt: 'asc' },
-        select: { body: true, isInternal: true, createdAt: true, author: { select: { name: true } } },
+        select: {
+          body: true,
+          isInternal: true,
+          createdAt: true,
+          author: { select: { name: true } },
+        },
       },
     },
   });
@@ -217,9 +217,7 @@ export async function convertMessageToTicket(messageId: string) {
   }
 
   const customerType =
-    message.type === 'ADVERTISEMENT'
-      ? TicketCustomerType.ADVERTISER
-      : TicketCustomerType.GUEST;
+    message.type === 'ADVERTISEMENT' ? TicketCustomerType.ADVERTISER : TicketCustomerType.GUEST;
 
   const replyTranscript = message.replies
     .map((reply) => {

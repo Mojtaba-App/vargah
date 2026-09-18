@@ -36,14 +36,20 @@ export function UnsubscribeForm({ initialToken }: { initialToken: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4 rounded-2xl border border-border bg-card p-6">
+    <form onSubmit={onSubmit} className="border-border bg-card space-y-4 rounded-2xl border p-6">
       {error ? (
-        <p role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="border-destructive/30 bg-destructive/5 text-destructive rounded-xl border px-3 py-2 text-sm"
+        >
           {error}
         </p>
       ) : null}
       {message ? (
-        <p role="status" className="rounded-xl border border-success/30 bg-success/10 px-3 py-2 text-sm text-success">
+        <p
+          role="status"
+          className="border-success/30 bg-success/10 text-success rounded-xl border px-3 py-2 text-sm"
+        >
           {message}
         </p>
       ) : null}

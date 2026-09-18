@@ -26,10 +26,10 @@ type TrafficChartProps = {
 
 export function TrafficChart({ data }: TrafficChartProps) {
   return (
-    <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border/80 bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4 flex items-center justify-between gap-2" dir="rtl">
         <h2 className="font-bold">ترافیک هفتگی</h2>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-3 text-xs">
           <span className="inline-flex items-center gap-1.5">
             <span className="size-2.5 rounded-full bg-[#6366f1]" />
             بازدیدکننده
@@ -43,8 +43,18 @@ export function TrafficChart({ data }: TrafficChartProps) {
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} barGap={6}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-          <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} width={40} />
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+            width={40}
+          />
           <Tooltip
             cursor={{ fill: 'rgba(99, 102, 241, 0.08)' }}
             contentStyle={{
@@ -81,15 +91,20 @@ export function TrafficSourcesChart({ data }: { data: SourceRow[] }) {
   }));
 
   return (
-    <section className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm" dir="ltr">
+    <section className="border-border/80 bg-card rounded-2xl border p-5 shadow-sm" dir="ltr">
       <div className="mb-4" dir="rtl">
         <h2 className="font-bold">منابع ترافیک</h2>
-        <p className="mt-1 text-xs text-muted-foreground">۳۰ روز اخیر</p>
+        <p className="text-muted-foreground mt-1 text-xs">۳۰ روز اخیر</p>
       </div>
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={chartData} layout="vertical" margin={{ left: 8, right: 16 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-          <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <XAxis
+            type="number"
+            tick={{ fontSize: 11, fill: '#64748b' }}
+            axisLine={false}
+            tickLine={false}
+          />
           <YAxis
             type="category"
             dataKey="name"
