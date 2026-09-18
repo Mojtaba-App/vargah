@@ -24,6 +24,7 @@ import {
   readLoginChallengeCookie,
   setLoginChallengeCookie,
 } from '@/lib/security/login-challenge';
+import { verifyAndConsumeCaptcha } from '@/lib/security/login-captcha';
 
 async function completeAdminLogin(userId: string, email: string | null, ip: string) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -99,6 +100,13 @@ export async function POST(request: Request) {
     }
 
     const { identifier, password, smsCode, totpCode } = loginSchema.parse(body);
+
+    if (!smsCode && !totpCode) {
+      const captchaAnswer = typeof body?.captcha === 'string' ? body.captcha : '';
+      if (!(await verifyAndConsumeCaptcha(captchaAnswer))) {
+        return NextResponse.json({ error: 'CAPTCHA_INVALID' }, { status: 400 });
+      }
+    }
 
     if (totpCode && !smsCode) {
       const challenge = await readLoginChallengeCookie();

@@ -16,7 +16,7 @@ export const PROFILE_TABS: TabConfig[] = [
   { id: 'overview', label: 'خلاصه', description: 'نمای کلی حساب', icon: OverviewIcon },
   { id: 'account', label: 'حساب', description: 'اطلاعات و تصویر', icon: AccountIcon },
   { id: 'address', label: 'آدرس', description: 'آدرس پستی', icon: AddressIcon },
-  { id: 'payments', label: 'خریدها', description: 'اشتراک و پرداخت', icon: PaymentsIcon },
+  { id: 'payments', label: 'سوابق خرید', description: 'اشتراک و پرداخت', icon: PaymentsIcon },
   { id: 'tickets', label: 'پشتیبانی', description: 'تیکت‌ها', icon: SupportIcon },
 ];
 

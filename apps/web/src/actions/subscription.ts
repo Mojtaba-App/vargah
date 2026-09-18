@@ -48,6 +48,7 @@ export type SubscriberDashboard = {
   province: string | null;
   city: string | null;
   address: string | null;
+  postalCode: string | null;
   status: SubscriptionStatus;
   planType: string | null;
   planName: string | null;
@@ -75,11 +76,19 @@ export async function initiateSubscriptionCheckout(input: {
   province?: string;
   city?: string;
   address?: string;
+  postalCode?: string;
   discountCode?: string;
 }) {
   await verifyCsrfFromRequest();
   const customerSession = await requireCustomerSession();
-  const parsed = subscriptionCheckoutSchema.parse(input);
+  const parsedResult = subscriptionCheckoutSchema.safeParse({
+    ...input,
+    phone: customerSession.phone,
+  });
+  if (!parsedResult.success) {
+    throw new Error(parsedResult.error.issues[0]?.message ?? 'اطلاعات پرداخت را بررسی کنید.');
+  }
+  const parsed = parsedResult.data;
   await assertSubscriptionRateLimit(
     `checkout:${customerSession.subscriberId}`,
     CHECKOUT_LIMIT,
@@ -130,6 +139,9 @@ export async function initiateSubscriptionCheckout(input: {
     if (!parsed.province?.trim() || !parsed.city?.trim() || !parsed.address?.trim()) {
       throw new Error('برای اشتراک چاپی یا ترکیبی، آدرس کامل الزامی است.');
     }
+    if (!parsed.postalCode) {
+      throw new Error('برای ارسال نسخه فیزیکی، کد پستی ۱۰ رقمی لازم است.');
+    }
   }
 
   const description = formatSubscriptionCartPaymentDescription(lines);
@@ -148,6 +160,7 @@ export async function initiateSubscriptionCheckout(input: {
         parsed.city ? sanitizePlainText(parsed.city) : null,
       ),
       address: parsed.address ? sanitizePlainText(parsed.address) : null,
+      postalCode: parsed.postalCode ?? undefined,
       planType: primaryPlan.slug,
       status: SubscriptionStatus.PENDING_PAYMENT,
     },
@@ -308,6 +321,7 @@ export async function getSubscriberDashboardFromSession(): Promise<SubscriberDas
     province: subscriber.province,
     city: subscriber.city,
     address: subscriber.address,
+    postalCode: subscriber.postalCode,
     status: subscriber.status,
     planType: subscriber.planType,
     planName,

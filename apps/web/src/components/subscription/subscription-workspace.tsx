@@ -177,6 +177,7 @@ export function SubscriptionWorkspace({
           province: String(fd.get('province') ?? ''),
           city: String(fd.get('city') ?? ''),
           address: String(fd.get('address') ?? ''),
+          postalCode: needsAddress ? String(fd.get('postalCode') ?? '') : undefined,
           discountCode: appliedDiscount?.code,
         });
         window.location.href = result.redirectUrl;
@@ -394,12 +395,15 @@ export function SubscriptionWorkspace({
               <Input
                 id="checkout-phone"
                 name="phone"
-                required
                 value={customer?.phone ?? ''}
                 readOnly
+                disabled
+                tabIndex={-1}
+                aria-readonly="true"
                 dir="ltr"
-                className="bg-muted/40 rounded-xl"
+                className="bg-muted text-muted-foreground cursor-not-allowed rounded-xl"
               />
+              <p className="text-muted-foreground text-xs">شماره موبایل حساب قابل ویرایش نیست.</p>
             </div>
 
             {needsAddress && (
@@ -436,6 +440,20 @@ export function SubscriptionWorkspace({
                     rows={3}
                     className="rounded-xl"
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="checkout-postal-code">کد پستی</Label>
+                  <Input
+                    id="checkout-postal-code"
+                    name="postalCode"
+                    required
+                    inputMode="numeric"
+                    dir="ltr"
+                    maxLength={10}
+                    placeholder="۱۰ رقم"
+                    className="rounded-xl"
+                  />
+                  <p className="text-muted-foreground text-xs">برای ارسال نسخه فیزیکی لازم است.</p>
                 </div>
               </>
             )}

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { isValidIranPhone } from '../phone';
+
 export const siteBrandingSchema = z.object({
   siteName: z.string().min(1).max(120),
   siteTagline: z.string().max(200),
@@ -211,6 +213,13 @@ export const mapConfigSchema = z.object({
   showMessagesOnMap: z.boolean(),
 });
 
+function normalizePostalDigits(value: string): string {
+  const ascii = value
+    .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+    .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
+  return ascii.replace(/\D/g, '');
+}
+
 export const subscriptionCheckoutSchema = z.object({
   items: z
     .array(
@@ -228,16 +237,51 @@ export const subscriptionCheckoutSchema = z.object({
   province: z.string().max(80).optional(),
   city: z.string().max(80).optional(),
   address: z.string().max(500).optional(),
-  postalCode: z.string().max(20).optional(),
+  postalCode: z
+    .string()
+    .trim()
+    .optional()
+    .transform((value) => {
+      if (!value) return undefined;
+      return normalizePostalDigits(value);
+    })
+    .refine((value) => value === undefined || /^\d{10}$/.test(value), {
+      message: 'کد پستی باید ۱۰ رقم باشد.',
+    }),
   discountCode: z.string().max(40).optional(),
 });
 
+const iranPostalCodeSchema = z
+  .string()
+  .trim()
+  .min(1, 'کد پستی برای ارسال نسخه فیزیکی لازم است.')
+  .transform(normalizePostalDigits)
+  .refine((value) => /^\d{10}$/.test(value), {
+    message: 'کد پستی باید ۱۰ رقم باشد.',
+  });
+
 export const customerAddressSchema = z.object({
-  name: z.string().min(2).max(100),
-  deliveryPhone: z.string().min(8).max(20),
-  province: z.string().min(2).max(80),
-  city: z.string().min(2).max(80),
-  address: z.string().min(5).max(500),
+  name: z
+    .string()
+    .trim()
+    .min(2, 'نام گیرنده حداقل ۲ کاراکتر باشد.')
+    .max(100, 'نام گیرنده طولانی است.'),
+  deliveryPhone: z
+    .string()
+    .trim()
+    .min(8, 'تلفن تماس برای ارسال لازم است.')
+    .max(20, 'تلفن تماس طولانی است.')
+    .refine((value) => isValidIranPhone(value), {
+      message: 'شماره تماس معتبر نیست. نمونه: 09123456789',
+    }),
+  province: z.string().trim().min(2, 'استان را انتخاب کنید.').max(80),
+  city: z.string().trim().min(2, 'شهر را انتخاب کنید.').max(80),
+  address: z
+    .string()
+    .trim()
+    .min(5, 'آدرس کامل حداقل ۵ کاراکتر باشد.')
+    .max(500, 'آدرس حداکثر ۵۰۰ کاراکتر باشد.'),
+  postalCode: iranPostalCodeSchema,
 });
 
 export const subscriberLookupSchema = z.object({

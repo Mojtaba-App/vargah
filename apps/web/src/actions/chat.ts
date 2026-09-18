@@ -6,6 +6,7 @@ import { isValidIranPhone, normalizeIranPhone } from '@vargah/security/phone';
 import { sanitizePlainText } from '@vargah/security/sanitize';
 import { z } from 'zod';
 
+import { getCustomerSession } from '@/lib/customer-auth/session';
 import { rateLimitOrThrow } from '@/lib/rate-limit';
 import { verifyCsrfFromRequest } from '@/lib/security/request';
 import {
@@ -232,9 +233,11 @@ export async function startGuestChat(input: {
   { ok: true; conversation: ChatConversationDto; messages: ChatMessageDto[] } | ChatActionFailure
 > {
   await verifyCsrfFromRequest();
+  const customer = await getCustomerSession().catch(() => null);
+  const sessionName = customer?.name?.trim() ?? '';
   const parsed = startSchema.safeParse({
-    name: input.name ?? '',
-    phone: input.phone ?? '',
+    name: customer ? (sessionName.length >= 2 ? sessionName : 'مشترک') : (input.name ?? ''),
+    phone: customer?.phone?.trim() || input.phone || '',
     message: input.message?.trim() ? input.message : undefined,
   });
 

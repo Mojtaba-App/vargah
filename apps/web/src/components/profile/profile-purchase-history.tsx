@@ -34,22 +34,26 @@ type ProfilePurchaseHistoryProps = {
 const STATUS_STYLES = {
   paid: {
     badge:
-      'border border-emerald-300 bg-emerald-100 text-emerald-950 dark:border-emerald-500/40 dark:bg-emerald-500/20 dark:text-emerald-100',
+      'border border-primary/35 bg-accent text-accent-foreground dark:border-primary/45 dark:bg-primary/15 dark:text-primary',
+    rail: 'bg-primary',
     label: 'پرداخت‌شده',
   },
   pending: {
     badge:
-      'border border-sky-400 bg-sky-100 text-sky-950 dark:border-sky-400/50 dark:bg-sky-500/25 dark:text-sky-50',
+      'border border-amber-400 bg-amber-100 text-amber-950 dark:border-amber-400/50 dark:bg-amber-500/20 dark:text-amber-50',
+    rail: 'bg-amber-500',
     label: 'در انتظار',
   },
   failed: {
     badge:
-      'border border-rose-300 bg-rose-100 text-rose-950 dark:border-rose-500/40 dark:bg-rose-500/20 dark:text-rose-100',
+      'border border-rose-400 bg-rose-100 text-rose-900 dark:border-rose-400/45 dark:bg-rose-500/20 dark:text-rose-50',
+    rail: 'bg-rose-500',
     label: 'ناموفق',
   },
   cart: {
     badge:
-      'border border-violet-400 bg-violet-100 text-violet-950 dark:border-violet-400/50 dark:bg-violet-500/25 dark:text-violet-50',
+      'border border-primary/40 bg-primary/10 text-primary dark:border-primary/50 dark:bg-primary/20 dark:text-primary',
+    rail: 'bg-primary',
     label: 'سبد باز',
   },
 } as const;
@@ -76,7 +80,7 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
         </p>
       </div>
 
-      <Card className="border-primary/15 from-primary/8 via-background to-background overflow-hidden bg-gradient-to-br">
+      <Card className="border-primary/20 from-primary/10 via-background to-background overflow-hidden bg-gradient-to-br">
         <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
           <SummaryItem label="وضعیت اشتراک" value={subscription.statusLabel} highlight />
           <SummaryItem label="پلن فعلی" value={subscription.planName ?? 'بدون اشتراک'} />
@@ -89,7 +93,7 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
           <SummaryItem label="مجموع پرداخت‌های موفق" value={`${formatPrice(paidTotal)} تومان`} />
         </div>
         {(subscription.showExpiredNotice || subscription.showPendingNotice) && (
-          <div className="border-border/70 border-t bg-sky-50/80 px-5 py-3 text-sm dark:bg-sky-950/25">
+          <div className="border-primary/15 bg-accent text-accent-foreground border-t px-5 py-3 text-sm">
             {subscription.showExpiredNotice
               ? 'اشتراک شما منقضی شده است.'
               : 'پرداخت اشتراک در انتظار تأیید است.'}{' '}
@@ -104,8 +108,8 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
       </Card>
 
       {hasOpenCart && (
-        <Card className="via-background to-background relative overflow-hidden border-violet-500/25 bg-gradient-to-br from-violet-500/8 p-4 sm:p-5">
-          <div className="absolute inset-y-0 start-0 w-1 bg-violet-500/70" aria-hidden="true" />
+        <Card className="border-primary/25 from-primary/10 via-background to-background relative overflow-hidden bg-gradient-to-br p-4 sm:p-5">
+          <div className="bg-primary absolute inset-y-0 start-0 w-1" aria-hidden="true" />
           <div className="flex flex-col gap-4 ps-2 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0 space-y-2">
               <div className="flex flex-wrap items-center gap-2">
@@ -201,10 +205,10 @@ export function ProfilePurchaseHistory({ payments, subscription }: ProfilePurcha
               return (
                 <Card
                   key={payment.id}
-                  className="relative overflow-hidden p-4 transition-shadow hover:shadow-md sm:p-5"
+                  className="border-border/80 bg-card relative overflow-hidden p-4 transition-shadow hover:shadow-md sm:p-5"
                 >
                   <div
-                    className="bg-primary/70 absolute inset-y-0 start-0 w-1"
+                    className={cn('absolute inset-y-0 start-0 w-1', style.rail)}
                     aria-hidden="true"
                   />
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -254,7 +258,7 @@ function SummaryItem({
   highlight?: boolean;
 }) {
   return (
-    <div className="border-border/60 bg-background/70 rounded-xl border px-4 py-3">
+    <div className="border-border/70 bg-background rounded-xl border px-4 py-3">
       <p className="text-muted-foreground text-xs">{label}</p>
       <p className={cn('mt-1 text-sm font-bold', highlight && 'text-primary')}>{value}</p>
     </div>

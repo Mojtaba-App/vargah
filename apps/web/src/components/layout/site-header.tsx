@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { HeaderLogo } from '@/components/layout/header-logo';
 import { HeaderSearch } from '@/components/layout/header-search';
 import { HeaderCartButton } from '@/components/layout/header-cart-button';
+import { NotificationBell } from '@/components/layout/notification-bell';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { ServicesMenu } from '@/components/layout/services-menu';
 import { ThemeToggle } from '@/components/layout/theme-toggle';
@@ -107,6 +108,7 @@ export function SiteHeader({ primaryLinks, serviceNavItems, labels, branding }: 
               className="hidden md:block"
             />
             <HeaderCartButton label={labels.cart} className="relative z-10" />
+            <NotificationBell className="relative z-10" />
             <ThemeToggle className="relative z-10" />
             <CustomerAuthButton className="relative z-10" />
             <Link href="/subscription" className="hidden sm:block">

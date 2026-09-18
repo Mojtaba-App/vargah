@@ -595,6 +595,7 @@ model Subscriber {
   city          String?
   cityId        String?
   address       String?
+  postalCode    String?
   status        SubscriptionStatus @default(NONE)
   planType  String?
   expiresAt DateTime?
@@ -812,6 +813,7 @@ model TicketReply {
   authorId   String?
   body       String   @db.Text
   isInternal Boolean  @default(false)
+  customerReadAt DateTime?
   createdAt  DateTime @default(now())
 
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)

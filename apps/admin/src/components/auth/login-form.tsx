@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { loginSchema } from '@vargah/security/schemas';
 import { BrandLogoMark } from '@/components/brand-logo';
 import { adminApiPath } from '@/lib/base-path';
 import { Input, Label } from '@vargah/ui/components/input';
 import { Button } from '@vargah/ui/components/button';
 import { DevOtpBanner } from '@/components/auth/dev-otp-banner';
+import { FieldMessage } from '@/components/ui/form/field-message';
+import { isCaptchaAnswerShape } from '@/lib/security/login-captcha-shared';
 import { cn } from '@/lib/utils';
 
 function UserIcon({ className }: { className?: string }) {
@@ -154,6 +157,24 @@ function formatLockMinutes(iso: string): number {
   return Math.max(1, Math.ceil(diff / 60_000));
 }
 
+type LoginField = 'identifier' | 'password' | 'captcha' | 'smsCode' | 'totpCode';
+
+function issuesFor(result: ReturnType<typeof loginSchema.safeParse>, fields: LoginField[]) {
+  const errors: Partial<Record<LoginField, string>> = {};
+  if (result.success) return errors;
+  for (const issue of result.error.issues) {
+    const key = issue.path[0];
+    if (
+      typeof key === 'string' &&
+      fields.includes(key as LoginField) &&
+      !errors[key as LoginField]
+    ) {
+      errors[key as LoginField] = issue.message;
+    }
+  }
+  return errors;
+}
+
 export function LoginForm({
   siteName = 'وارگه',
   siteTagline = 'پنل مدیریت تحریریه',
@@ -177,6 +198,9 @@ export function LoginForm({
   const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const [captcha, setCaptcha] = useState('');
+  const [captchaVersion, setCaptchaVersion] = useState(0);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<LoginField, string>>>({});
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -208,30 +232,53 @@ export function LoginForm({
     setError('');
   };
 
+  const refreshCaptcha = () => {
+    setCaptcha('');
+    setCaptchaVersion((version) => version + 1);
+  };
+
   const handleCredentialsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const parsed = loginSchema.safeParse({ identifier, password });
+    const nextErrors = issuesFor(parsed, ['identifier', 'password']);
+    if (!isCaptchaAnswerShape(captcha)) {
+      nextErrors.captcha = 'کد امنیتی ۵ نویسه‌ای تصویر را وارد کنید.';
+    }
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
     setLoading(true);
 
     try {
       const res = await fetch(adminApiPath('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password }),
+        body: JSON.stringify({ identifier, password, captcha }),
       });
 
       const data = await res.json();
+      const stayOnCredentials = !data.requiresSmsOtp;
+
+      if (data.error === 'CAPTCHA_INVALID') {
+        setFieldErrors({ captcha: 'کد امنیتی نادرست یا منقضی شده است. تصویر را تازه کنید.' });
+        refreshCaptcha();
+        return;
+      }
 
       if (data.error === 'ACCOUNT_LOCKED') {
         const minutes = data.lockedUntil ? formatLockMinutes(data.lockedUntil) : 15;
         setError(
           `به دلیل ۳ بار ورود ناموفق، دسترسی شما به مدت ${minutes} دقیقه مسدود شده است. لطفاً با مدیر سیستم تماس بگیرید.`,
         );
+        if (stayOnCredentials) refreshCaptcha();
         return;
       }
 
       if (res.status === 429) {
         setError('تعداد تلاش‌های ورود بیش از حد مجاز است. لطفاً چند دقیقه صبر کنید.');
+        refreshCaptcha();
         return;
       }
 
@@ -241,6 +288,7 @@ export function LoginForm({
       }
 
       if (!res.ok) {
+        refreshCaptcha();
         if (data.error === 'PHONE_NOT_REGISTERED') {
           setError('شماره موبایل برای این حساب ثبت نشده است. با مدیر سیستم تماس بگیرید.');
           return;
@@ -258,6 +306,7 @@ export function LoginForm({
       router.push('/');
       router.refresh();
     } catch {
+      refreshCaptcha();
       setError('خطا در برقراری ارتباط با سرور.');
     } finally {
       setLoading(false);
@@ -267,6 +316,10 @@ export function LoginForm({
   const handleSmsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    const parsed = loginSchema.safeParse({ smsCode });
+    const nextErrors = issuesFor(parsed, ['smsCode']);
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
     setLoading(true);
 
     try {
@@ -309,6 +362,10 @@ export function LoginForm({
   const handleTotpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    const parsed = loginSchema.safeParse({ totpCode });
+    const nextErrors = issuesFor(parsed, ['totpCode']);
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
     setLoading(true);
 
     try {
@@ -456,25 +513,30 @@ export function LoginForm({
                   id="identifier"
                   type="text"
                   value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
+                  onChange={(e) => {
+                    setIdentifier(e.target.value);
+                    setFieldErrors((current) => ({ ...current, identifier: undefined }));
+                  }}
                   dir="ltr"
                   autoComplete="username"
-                  required
-                  aria-invalid={Boolean(error)}
+                  aria-invalid={Boolean(fieldErrors.identifier)}
                   className="h-12 rounded-xl ps-10 text-left"
                   placeholder="name@magazine.ir"
                 />
               </Field>
+              <FieldMessage message={fieldErrors.identifier} />
 
               <Field id="password" label="رمز عبور" icon={<LockIcon className="size-4" />}>
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setFieldErrors((current) => ({ ...current, password: undefined }));
+                  }}
                   autoComplete="current-password"
-                  required
-                  aria-invalid={Boolean(error)}
+                  aria-invalid={Boolean(fieldErrors.password)}
                   className="h-12 rounded-xl ps-10 pe-11 text-left"
                   dir="ltr"
                 />
@@ -491,49 +553,105 @@ export function LoginForm({
                   )}
                 </button>
               </Field>
+              <FieldMessage message={fieldErrors.password} />
+
+              <div>
+                <Label htmlFor="captcha" required className="text-foreground/90 mb-2">
+                  کد امنیتی
+                </Label>
+                <div className="flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`${adminApiPath('/api/auth/captcha')}?v=${captchaVersion}`}
+                    alt="کد امنیتی تصویری"
+                    width={168}
+                    height={52}
+                    className="border-border h-[52px] w-[168px] rounded-xl border bg-stone-100"
+                  />
+                  <button
+                    type="button"
+                    onClick={refreshCaptcha}
+                    className="text-muted-foreground hover:text-foreground border-border rounded-xl border px-3 py-2 text-xs"
+                  >
+                    تصویر تازه
+                  </button>
+                </div>
+                <Input
+                  id="captcha"
+                  type="text"
+                  value={captcha}
+                  onChange={(e) => {
+                    setCaptcha(e.target.value.toUpperCase());
+                    setFieldErrors((current) => ({ ...current, captcha: undefined }));
+                  }}
+                  dir="ltr"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  maxLength={5}
+                  aria-invalid={Boolean(fieldErrors.captcha)}
+                  aria-describedby="captcha-hint"
+                  className="mt-2 h-12 rounded-xl text-center text-lg tracking-[0.3em]"
+                  placeholder="کد تصویر"
+                />
+                <p id="captcha-hint" className="text-muted-foreground mt-1.5 text-xs">
+                  حروف بزرگ انگلیسی و عدد، بدون صفر و یک.
+                </p>
+                <FieldMessage message={fieldErrors.captcha} />
+              </div>
             </>
           ) : step === 'sms' ? (
-            <Field id="smsCode" label="کد پیامکی (۶ رقم)" icon={<ShieldIcon className="size-4" />}>
-              <Input
+            <>
+              <Field
                 id="smsCode"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]{6}"
-                maxLength={6}
-                value={smsCode}
-                onChange={(e) => setSmsCode(e.target.value.replace(/\D/g, ''))}
-                dir="ltr"
-                autoComplete="one-time-code"
-                required
-                autoFocus
-                aria-invalid={Boolean(error)}
-                className="h-12 w-full max-w-full rounded-xl ps-10 text-center text-lg tracking-widest"
-                placeholder="••••••"
-              />
-            </Field>
+                label="کد پیامکی (۶ رقم)"
+                icon={<ShieldIcon className="size-4" />}
+              >
+                <Input
+                  id="smsCode"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]{6}"
+                  maxLength={6}
+                  value={smsCode}
+                  onChange={(e) => setSmsCode(e.target.value.replace(/\D/g, ''))}
+                  dir="ltr"
+                  autoComplete="one-time-code"
+                  required
+                  autoFocus
+                  aria-invalid={Boolean(fieldErrors.smsCode)}
+                  className="h-12 w-full max-w-full rounded-xl ps-10 text-center text-lg tracking-widest"
+                  placeholder="••••••"
+                />
+              </Field>
+              <FieldMessage message={fieldErrors.smsCode} />
+            </>
           ) : (
-            <Field
-              id="totpCode"
-              label="کد احراز دو مرحله‌ای (۶ رقم)"
-              icon={<ShieldIcon className="size-4" />}
-            >
-              <Input
+            <>
+              <Field
                 id="totpCode"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]{6}"
-                maxLength={6}
-                value={totpCode}
-                onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ''))}
-                dir="ltr"
-                autoComplete="one-time-code"
-                required
-                autoFocus
-                aria-invalid={Boolean(error)}
-                className="h-12 w-full max-w-full rounded-xl ps-10 text-center text-lg tracking-widest"
-                placeholder="••••••"
-              />
-            </Field>
+                label="کد احراز دو مرحله‌ای (۶ رقم)"
+                icon={<ShieldIcon className="size-4" />}
+              >
+                <Input
+                  id="totpCode"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]{6}"
+                  maxLength={6}
+                  value={totpCode}
+                  onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ''))}
+                  dir="ltr"
+                  autoComplete="one-time-code"
+                  required
+                  autoFocus
+                  aria-invalid={Boolean(fieldErrors.totpCode)}
+                  className="h-12 w-full max-w-full rounded-xl ps-10 text-center text-lg tracking-widest"
+                  placeholder="••••••"
+                />
+              </Field>
+              <FieldMessage message={fieldErrors.totpCode} />
+            </>
           )}
 
           {error && (

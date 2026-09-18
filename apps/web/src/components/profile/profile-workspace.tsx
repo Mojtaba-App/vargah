@@ -4,16 +4,26 @@ import { useMemo, useState, useTransition, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Link } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
-import { Input, Label, Textarea } from '@vargah/ui/components/input';
+import { Input, Label, Select, Textarea } from '@vargah/ui/components/input';
 import { Badge } from '@vargah/ui/components/badge';
 import { Card } from '@vargah/ui/components/card';
 
 import type { CustomerProfile } from '@/actions/profile';
 import {
   createCustomerTicket,
+  replyToCustomerTicket,
   updateCustomerAddress,
   updateCustomerProfile,
 } from '@/actions/profile';
+import { markCustomerTicketNotificationsRead } from '@/actions/notifications';
+import { customerAddressSchema } from '@vargah/security/schemas';
+import { toPublicUserError, zodFieldErrors } from '@/lib/forms/public-errors';
+import {
+  profileUpdateSchema,
+  TICKET_TOPICS,
+  ticketCreateSchema,
+  CUSTOMER_TICKET_PRIORITIES,
+} from '@/lib/profile/form-schemas';
 import { useCustomerAuth } from '@/components/auth/customer-auth-provider';
 import { ProvinceCityField } from '@/components/forms/province-city-field';
 import { ProfileAvatarEditor } from '@/components/profile/profile-avatar-editor';
@@ -33,9 +43,56 @@ import { cn, formatPrice } from '@/lib/utils';
 const TICKET_STATUS_LABELS: Record<string, string> = {
   OPEN: 'باز',
   IN_PROGRESS: 'در حال پیگیری',
+  WAITING_CUSTOMER: 'منتظر پاسخ شما',
   RESOLVED: 'حل‌شده',
   CLOSED: 'بسته',
 };
+
+const ACCOUNT_FIELDS = ['name', 'email'] as const;
+const ADDRESS_FIELDS = [
+  'name',
+  'deliveryPhone',
+  'province',
+  'city',
+  'address',
+  'postalCode',
+] as const;
+const TICKET_FIELDS = ['subject', 'priority', 'body'] as const;
+
+const TICKET_STATUS_STYLES: Record<string, string> = {
+  OPEN: 'border-primary/30 bg-accent text-accent-foreground',
+  IN_PROGRESS:
+    'border-amber-400 bg-amber-100 text-amber-950 dark:border-amber-400/50 dark:bg-amber-500/20 dark:text-amber-50',
+  WAITING_CUSTOMER:
+    'border-primary bg-primary/10 text-primary dark:border-primary/60 dark:bg-primary/20',
+  RESOLVED:
+    'border-emerald-400 bg-emerald-100 text-emerald-950 dark:border-emerald-400/40 dark:bg-emerald-500/20 dark:text-emerald-50',
+  CLOSED: 'border-border bg-muted text-muted-foreground',
+};
+
+const TICKET_PRIORITY_STYLES: Record<string, string> = {
+  LOW: 'border-border bg-background text-muted-foreground',
+  NORMAL: 'border-primary/25 bg-accent text-accent-foreground',
+  HIGH: 'border-rose-400 bg-rose-100 text-rose-900 dark:border-rose-400/50 dark:bg-rose-500/20 dark:text-rose-50',
+  URGENT:
+    'border-rose-500 bg-rose-100 text-rose-950 dark:border-rose-400/60 dark:bg-rose-500/25 dark:text-rose-50',
+};
+
+const TICKET_RAIL: Record<string, string> = {
+  LOW: 'bg-border',
+  NORMAL: 'bg-primary/70',
+  HIGH: 'bg-rose-500',
+  URGENT: 'bg-rose-600',
+};
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p role="alert" className="text-destructive text-xs">
+      {message}
+    </p>
+  );
+}
 
 type ProfileWorkspaceProps = {
   profile: CustomerProfile | null;
@@ -44,9 +101,15 @@ type ProfileWorkspaceProps = {
 export function ProfileWorkspace({ profile }: ProfileWorkspaceProps) {
   const { openLogin, isAuthenticated } = useCustomerAuth();
   const { itemCount } = useSubscriptionCart();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialTab = parseProfileTab(searchParams.get('tab'));
   const [tab, setTab] = useState<ProfileTabId>(initialTab);
+
+  const selectTab = (next: ProfileTabId) => {
+    setTab(next);
+    router.replace(`/profile?tab=${next}`, { scroll: false });
+  };
 
   useEffect(() => {
     setTab(parseProfileTab(searchParams.get('tab')));
@@ -78,7 +141,7 @@ export function ProfileWorkspace({ profile }: ProfileWorkspaceProps) {
   };
 
   return (
-    <ProfileWorkspaceContent profile={profile} tab={tab} setTab={setTab} tabCounts={tabCounts} />
+    <ProfileWorkspaceContent profile={profile} tab={tab} setTab={selectTab} tabCounts={tabCounts} />
   );
 }
 
@@ -94,6 +157,13 @@ function ProfileWorkspaceContent({
   tabCounts: { payments: number; tickets: number };
 }) {
   const subscriptionView = useCustomerSubscriptionView(profile);
+
+  useEffect(() => {
+    if (tab !== 'tickets') return;
+    void markCustomerTicketNotificationsRead()
+      .then(() => window.dispatchEvent(new Event('vargah-notifications-changed')))
+      .catch(() => undefined);
+  }, [tab]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-[17.5rem_minmax(0,1fr)] lg:gap-8">
@@ -262,20 +332,33 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
   );
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<(typeof ACCOUNT_FIELDS)[number], string>>
+  >({});
   const [pending, startTransition] = useTransition();
+
+  const clearField = (key: (typeof ACCOUNT_FIELDS)[number]) => {
+    setFieldErrors((current) => ({ ...current, [key]: undefined }));
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    const parsed = profileUpdateSchema.safeParse({ name, email });
+    if (!parsed.success) {
+      setFieldErrors(zodFieldErrors(parsed.error, ACCOUNT_FIELDS));
+      return;
+    }
+    setFieldErrors({});
     startTransition(async () => {
       try {
-        await updateCustomerProfile({ name, email });
-        if (customer) setCustomer({ ...customer, name });
+        await updateCustomerProfile(parsed.data);
+        if (customer) setCustomer({ ...customer, name: parsed.data.name });
         setMessage('اطلاعات حساب ذخیره شد.');
-        router.refresh();
+        stayOnProfileTab(router, 'account');
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'خطا در ذخیره');
+        setError(toPublicUserError(err, 'ذخیره اطلاعات ممکن نشد. دوباره تلاش کنید.'));
       }
     });
   };
@@ -285,7 +368,7 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
       <SectionHeader title="حساب کاربری" description="تصویر پروفایل و اطلاعات تماس" />
       <ProfileAvatarEditor name={profile.name} avatar={profile.avatar} />
       <Card className="p-6">
-        <form onSubmit={handleSave} className="grid gap-4 md:grid-cols-2">
+        <form onSubmit={handleSave} noValidate className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="profile-name" required>
               نام
@@ -293,10 +376,14 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
             <Input
               id="profile-name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
+              onChange={(e) => {
+                setName(e.target.value);
+                clearField('name');
+              }}
+              aria-invalid={Boolean(fieldErrors.name)}
               className="rounded-xl"
             />
+            <FieldError message={fieldErrors.name} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="profile-email" required>
@@ -306,19 +393,39 @@ function AccountTab({ profile }: { profile: CustomerProfile }) {
               id="profile-email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+                clearField('email');
+              }}
+              aria-invalid={Boolean(fieldErrors.email)}
               dir="ltr"
               placeholder="example@mail.com"
               className="rounded-xl"
             />
+            <FieldError message={fieldErrors.email} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>موبایل (تأیید‌شده)</Label>
-            <Input value={profile.phone ?? ''} disabled dir="ltr" className="rounded-xl" />
+            <Label htmlFor="profile-phone">موبایل حساب</Label>
+            <Input
+              id="profile-phone"
+              value={profile.phone ?? ''}
+              readOnly
+              disabled
+              tabIndex={-1}
+              aria-readonly="true"
+              dir="ltr"
+              className="bg-muted text-muted-foreground cursor-not-allowed rounded-xl"
+            />
+            <p className="text-muted-foreground text-xs">
+              این شماره با ورود تأیید شده و قابل ویرایش نیست.
+            </p>
           </div>
-          {message && <p className="text-sm text-emerald-600 md:col-span-2">{message}</p>}
-          {error && <p className="text-destructive text-sm md:col-span-2">{error}</p>}
+          {message && <p className="text-sm text-emerald-700 md:col-span-2">{message}</p>}
+          {error && (
+            <p role="alert" className="text-destructive text-sm md:col-span-2">
+              {error}
+            </p>
+          )}
           <div className="md:col-span-2">
             <FormActionButton loading={pending} loadingText="در حال ذخیره...">
               ذخیره تغییرات
@@ -339,22 +446,43 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
   const [province, setProvince] = useState(profile.province ?? '');
   const [city, setCity] = useState(profile.city ?? '');
   const [address, setAddress] = useState(profile.address ?? '');
+  const [postalCode, setPostalCode] = useState(profile.postalCode ?? '');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<(typeof ADDRESS_FIELDS)[number], string>>
+  >({});
   const [pending, startTransition] = useTransition();
+
+  const clearField = (key: (typeof ADDRESS_FIELDS)[number]) => {
+    setFieldErrors((current) => ({ ...current, [key]: undefined }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    const parsed = customerAddressSchema.safeParse({
+      name,
+      deliveryPhone,
+      province,
+      city,
+      address,
+      postalCode,
+    });
+    if (!parsed.success) {
+      setFieldErrors(zodFieldErrors(parsed.error, ADDRESS_FIELDS));
+      return;
+    }
+    setFieldErrors({});
     startTransition(async () => {
       try {
-        await updateCustomerAddress({ name, deliveryPhone, province, city, address });
+        await updateCustomerAddress(parsed.data);
         setMessage('آدرس با موفقیت ذخیره شد.');
         setEditing(false);
-        router.refresh();
+        stayOnProfileTab(router, 'address');
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'خطا در ذخیره آدرس');
+        setError(toPublicUserError(err, 'ذخیره آدرس ممکن نشد. دوباره تلاش کنید.'));
       }
     });
   };
@@ -379,6 +507,7 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
             <InfoRow label="تلفن تماس برای ارسال" value={deliveryContact ?? '—'} dir="ltr" />
             <InfoRow label="استان" value={profile.province ?? '—'} />
             <InfoRow label="شهر" value={profile.city ?? '—'} />
+            <InfoRow label="کد پستی" value={profile.postalCode ?? 'ثبت نشده'} dir="ltr" />
             <InfoRow
               label="آدرس کامل"
               value={profile.address ?? 'ثبت نشده'}
@@ -397,14 +526,14 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
         description="تلفن تماس برای ارسال با موبایل ورود به حساب متفاوت است و اینجا فقط برای پست استفاده می‌شود"
       />
       <Card className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="border-border/70 bg-muted/30 rounded-xl border px-4 py-3 text-sm">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+          <div className="border-border/70 bg-muted/40 rounded-xl border px-4 py-3 text-sm">
             <p className="font-medium">موبایل حساب (ورود)</p>
             <p className="text-muted-foreground mt-1" dir="ltr">
               {profile.phone ?? '—'}
             </p>
             <p className="text-muted-foreground mt-2 text-xs">
-              این شماره با OTP تأیید شده و از این بخش قابل تغییر نیست.
+              این شماره با ورود تأیید شده و قابل ویرایش نیست.
             </p>
           </div>
 
@@ -416,10 +545,14 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
               <Input
                 id="addr-name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                onChange={(e) => {
+                  setName(e.target.value);
+                  clearField('name');
+                }}
+                aria-invalid={Boolean(fieldErrors.name)}
                 className="rounded-xl"
               />
+              <FieldError message={fieldErrors.name} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="addr-delivery-phone" required>
@@ -428,27 +561,39 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
               <Input
                 id="addr-delivery-phone"
                 value={deliveryPhone}
-                onChange={(e) => setDeliveryPhone(e.target.value)}
-                required
+                onChange={(e) => {
+                  setDeliveryPhone(e.target.value);
+                  clearField('deliveryPhone');
+                }}
                 dir="ltr"
                 placeholder="09xxxxxxxxx"
+                aria-invalid={Boolean(fieldErrors.deliveryPhone)}
                 className="rounded-xl"
               />
               <p className="text-muted-foreground text-xs">
-                برای تماس پستی — می‌تواند با موبایل حساب یکی باشد.
+                فقط برای تماس پستی است و موبایل ورود را عوض نمی‌کند.
               </p>
+              <FieldError message={fieldErrors.deliveryPhone} />
             </div>
           </div>
 
           <ProvinceCityField
             province={province}
             city={city}
-            onProvinceChange={setProvince}
-            onCityChange={setCity}
+            onProvinceChange={(value) => {
+              setProvince(value);
+              clearField('province');
+              clearField('city');
+            }}
+            onCityChange={(value) => {
+              setCity(value);
+              clearField('city');
+            }}
             disabled={pending}
             provinceId="addr-province"
             cityId="addr-city"
           />
+          <FieldError message={fieldErrors.province || fieldErrors.city} />
 
           <div className="space-y-2">
             <Label htmlFor="addr-address" required>
@@ -457,11 +602,37 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
             <Textarea
               id="addr-address"
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
+              onChange={(e) => {
+                setAddress(e.target.value);
+                clearField('address');
+              }}
               rows={3}
+              aria-invalid={Boolean(fieldErrors.address)}
               className="rounded-xl"
             />
+            <FieldError message={fieldErrors.address} />
+          </div>
+
+          <div className="space-y-2 md:max-w-xs">
+            <Label htmlFor="addr-postal-code" required>
+              کد پستی
+            </Label>
+            <Input
+              id="addr-postal-code"
+              value={postalCode}
+              onChange={(e) => {
+                setPostalCode(e.target.value);
+                clearField('postalCode');
+              }}
+              inputMode="numeric"
+              dir="ltr"
+              maxLength={10}
+              placeholder="۱۰ رقم"
+              aria-invalid={Boolean(fieldErrors.postalCode)}
+              className="rounded-xl"
+            />
+            <p className="text-muted-foreground text-xs">برای ارسال نسخه فیزیکی مجله لازم است.</p>
+            <FieldError message={fieldErrors.postalCode} />
           </div>
 
           {message && <p className="text-sm text-emerald-600">{message}</p>}
@@ -486,10 +657,16 @@ function AddressTab({ profile }: { profile: CustomerProfile }) {
 function TicketsTab({ profile }: { profile: CustomerProfile }) {
   const router = useRouter();
   const [subject, setSubject] = useState('');
+  const [priority, setPriority] = useState('');
   const [body, setBody] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<(typeof TICKET_FIELDS)[number], string>>
+  >({});
   const [pending, startTransition] = useTransition();
+  const selectedTopic = TICKET_TOPICS.find((topic) => topic.value === subject);
+  const selectedPriority = CUSTOMER_TICKET_PRIORITIES.find((item) => item.value === priority);
 
   const sortedTickets = useMemo(
     () =>
@@ -503,15 +680,22 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
     e.preventDefault();
     setMessage(null);
     setError(null);
+    const parsed = ticketCreateSchema.safeParse({ subject, priority, body });
+    if (!parsed.success) {
+      setFieldErrors(zodFieldErrors(parsed.error, TICKET_FIELDS));
+      return;
+    }
+    setFieldErrors({});
     startTransition(async () => {
       try {
-        await createCustomerTicket({ subject, body });
+        await createCustomerTicket(parsed.data);
         setSubject('');
+        setPriority('');
         setBody('');
         setMessage('تیکت شما ثبت شد و در پنل پشتیبانی پیگیری می‌شود.');
-        router.refresh();
+        stayOnProfileTab(router, 'tickets');
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'خطا در ثبت تیکت');
+        setError(toPublicUserError(err, 'ثبت تیکت ممکن نشد. دوباره تلاش کنید.'));
       }
     });
   };
@@ -521,19 +705,67 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
       <SectionHeader title="پشتیبانی" description="ثبت و پیگیری تیکت‌های پشتیبانی" />
 
       <Card className="p-6">
-        <form onSubmit={handleCreate} className="space-y-4">
+        <form onSubmit={handleCreate} noValidate className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="ticket-subject" required>
               موضوع
             </Label>
-            <Input
+            <Select
               id="ticket-subject"
               value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              required
-              maxLength={200}
+              onChange={(e) => {
+                setSubject(e.target.value);
+                setFieldErrors((current) => ({ ...current, subject: undefined }));
+              }}
+              aria-invalid={Boolean(fieldErrors.subject)}
               className="rounded-xl"
-            />
+            >
+              <option value="">موضوع را انتخاب کنید</option>
+              {TICKET_TOPICS.map((topic) => (
+                <option key={topic.value} value={topic.value}>
+                  {topic.value}
+                </option>
+              ))}
+            </Select>
+            <FieldError message={fieldErrors.subject} />
+            {selectedTopic && (
+              <p className="border-primary/20 bg-primary/5 text-foreground rounded-xl border px-3 py-2 text-xs leading-relaxed">
+                {selectedTopic.hint}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="ticket-priority" required>
+              اولویت
+            </Label>
+            <Select
+              id="ticket-priority"
+              value={priority}
+              onChange={(e) => {
+                setPriority(e.target.value);
+                setFieldErrors((current) => ({ ...current, priority: undefined }));
+              }}
+              aria-invalid={Boolean(fieldErrors.priority)}
+              className="rounded-xl"
+            >
+              <option value="">اولویت را انتخاب کنید</option>
+              {CUSTOMER_TICKET_PRIORITIES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.level.toLocaleString('fa-IR')} — {item.label}
+                </option>
+              ))}
+            </Select>
+            <FieldError message={fieldErrors.priority} />
+            {selectedPriority && (
+              <p
+                className={cn(
+                  'rounded-xl border px-3 py-2 text-xs leading-relaxed',
+                  TICKET_PRIORITY_STYLES[selectedPriority.value],
+                )}
+              >
+                اولویت {selectedPriority.level.toLocaleString('fa-IR')}: {selectedPriority.hint}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="ticket-body" required>
@@ -542,15 +774,24 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
             <Textarea
               id="ticket-body"
               value={body}
-              onChange={(e) => setBody(e.target.value)}
-              required
+              onChange={(e) => {
+                setBody(e.target.value);
+                setFieldErrors((current) => ({ ...current, body: undefined }));
+              }}
               rows={4}
               maxLength={5000}
+              placeholder={selectedTopic?.placeholder ?? 'ابتدا موضوع را انتخاب کنید.'}
+              aria-invalid={Boolean(fieldErrors.body)}
               className="rounded-xl"
             />
+            <FieldError message={fieldErrors.body} />
           </div>
-          {message && <p className="text-sm text-emerald-600">{message}</p>}
-          {error && <p className="text-destructive text-sm">{error}</p>}
+          {message && <p className="text-sm text-emerald-700">{message}</p>}
+          {error && (
+            <p role="alert" className="text-destructive text-sm">
+              {error}
+            </p>
+          )}
           <FormActionButton loading={pending} loadingText="در حال ارسال...">
             ارسال تیکت
           </FormActionButton>
@@ -565,29 +806,155 @@ function TicketsTab({ profile }: { profile: CustomerProfile }) {
           </Card>
         ) : (
           <div className="space-y-3">
-            {sortedTickets.map((ticket) => (
-              <Card key={ticket.id} className="p-4 sm:p-5">
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <div>
-                    <p className="font-medium">{ticket.subject}</p>
-                    <p className="text-muted-foreground mt-1 text-xs">
-                      {formatJalaliDate(ticket.createdAt, 'D MMMM YYYY — HH:mm')}
-                    </p>
+            {sortedTickets.map((ticket) => {
+              const priorityMeta = CUSTOMER_TICKET_PRIORITIES.find(
+                (item) => item.value === ticket.priority,
+              );
+              const priorityLabel = priorityMeta
+                ? `${priorityMeta.level.toLocaleString('fa-IR')} — ${priorityMeta.label}`
+                : ticket.priority === 'URGENT'
+                  ? 'فوری'
+                  : '—';
+              return (
+                <Card key={ticket.id} className="relative overflow-hidden p-4 sm:p-5">
+                  <div
+                    className={cn(
+                      'absolute inset-y-0 start-0 w-1',
+                      TICKET_RAIL[ticket.priority] ?? 'bg-primary/70',
+                    )}
+                    aria-hidden="true"
+                  />
+                  <div className="flex flex-wrap items-start justify-between gap-2 ps-2">
+                    <div>
+                      <p className="font-medium">{ticket.subject}</p>
+                      <p className="text-muted-foreground mt-1 text-xs">
+                        {formatJalaliDate(ticket.createdAt, 'D MMMM YYYY — HH:mm')}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span
+                        className={cn(
+                          'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+                          TICKET_STATUS_STYLES[ticket.status] ?? TICKET_STATUS_STYLES.OPEN,
+                        )}
+                      >
+                        {TICKET_STATUS_LABELS[ticket.status] ?? 'باز'}
+                      </span>
+                      <span
+                        className={cn(
+                          'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+                          TICKET_PRIORITY_STYLES[ticket.priority] ?? TICKET_PRIORITY_STYLES.NORMAL,
+                        )}
+                      >
+                        {priorityLabel}
+                      </span>
+                    </div>
                   </div>
-                  <Badge variant="secondary">
-                    {TICKET_STATUS_LABELS[ticket.status] ?? ticket.status}
-                  </Badge>
-                </div>
-                <p className="text-muted-foreground mt-3 line-clamp-3 text-sm">{ticket.body}</p>
-                {ticket.replyCount > 0 && (
-                  <p className="text-primary mt-2 text-xs">{ticket.replyCount} پاسخ از پشتیبانی</p>
-                )}
-              </Card>
-            ))}
+                  <p className="mt-4 text-xs font-semibold">گفتگو</p>
+                  <div className="mt-2 space-y-2">
+                    <div className="bg-muted/50 rounded-xl px-3 py-2.5">
+                      <p className="text-xs font-medium">کاربر</p>
+                      <p className="mt-1 text-sm leading-relaxed whitespace-pre-wrap">
+                        {ticket.body}
+                      </p>
+                    </div>
+                    {ticket.replies.length === 0 ? (
+                      <p className="text-muted-foreground text-xs">
+                        هنوز پاسخی از پشتیبانی ثبت نشده.
+                      </p>
+                    ) : (
+                      ticket.replies.map((reply) => (
+                        <div
+                          key={reply.id}
+                          className={cn(
+                            'rounded-xl border px-3 py-2.5',
+                            reply.fromSupport
+                              ? 'border-primary/30 bg-accent text-accent-foreground'
+                              : 'border-border bg-muted/40',
+                          )}
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-xs font-semibold">
+                              {reply.fromSupport ? 'پشتیبانی' : 'کاربر'}
+                            </p>
+                            <p className="text-muted-foreground text-[11px]">
+                              {formatJalaliDate(reply.createdAt, 'D MMMM YYYY — HH:mm')}
+                            </p>
+                          </div>
+                          <p className="mt-1 text-sm leading-relaxed whitespace-pre-wrap">
+                            {reply.body}
+                          </p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {ticket.status === 'WAITING_CUSTOMER' ? (
+                    <TicketReplyForm ticketId={ticket.id} />
+                  ) : ticket.status !== 'RESOLVED' && ticket.status !== 'CLOSED' ? (
+                    <p className="text-muted-foreground mt-3 text-xs leading-relaxed">
+                      تا وقتی پشتیبانی پاسخ نداده، ارسال پیام بعدی ممکن نیست.
+                    </p>
+                  ) : null}
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+function TicketReplyForm({ ticketId }: { ticketId: string }) {
+  const router = useRouter();
+  const [body, setBody] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    const text = body.trim();
+    if (text.length < 2) {
+      setError('پاسخ حداقل ۲ کاراکتر باشد.');
+      return;
+    }
+    startTransition(async () => {
+      try {
+        await replyToCustomerTicket({ ticketId, body: text });
+        setBody('');
+        stayOnProfileTab(router, 'tickets');
+      } catch (err) {
+        setError(toPublicUserError(err, 'ارسال پاسخ ممکن نشد. دوباره تلاش کنید.'));
+      }
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} noValidate className="mt-3 space-y-2">
+      <Label htmlFor={`ticket-reply-${ticketId}`}>پاسخ شما</Label>
+      <Textarea
+        id={`ticket-reply-${ticketId}`}
+        value={body}
+        onChange={(event) => {
+          setBody(event.target.value);
+          if (error) setError(null);
+        }}
+        rows={3}
+        maxLength={5000}
+        placeholder="اگر توضیح بیشتری دارید بنویسید."
+        aria-invalid={Boolean(error)}
+        className="rounded-xl"
+      />
+      {error && (
+        <p role="alert" className="text-destructive text-xs">
+          {error}
+        </p>
+      )}
+      <FormActionButton loading={pending} loadingText="در حال ارسال...">
+        ارسال پاسخ
+      </FormActionButton>
+    </form>
   );
 }
 
@@ -630,10 +997,21 @@ function InfoRow({
   );
 }
 
-const PROFILE_TABS: ProfileTabId[] = ['overview', 'account', 'address', 'payments', 'tickets'];
+const PROFILE_SECTION_TABS: ProfileTabId[] = [
+  'overview',
+  'account',
+  'address',
+  'payments',
+  'tickets',
+];
+
+function stayOnProfileTab(router: ReturnType<typeof useRouter>, tab: ProfileTabId) {
+  router.replace(`/profile?tab=${tab}`, { scroll: false });
+  router.refresh();
+}
 
 function parseProfileTab(value: string | null): ProfileTabId {
-  if (value && PROFILE_TABS.includes(value as ProfileTabId)) {
+  if (value && PROFILE_SECTION_TABS.includes(value as ProfileTabId)) {
     return value as ProfileTabId;
   }
   return 'overview';

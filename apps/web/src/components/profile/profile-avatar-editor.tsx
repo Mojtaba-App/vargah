@@ -78,6 +78,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
       setAvatar(data.avatar);
       syncSessionAvatar(data.avatar);
       setMessage('تصویر پروفایل به‌روزرسانی شد.');
+      router.replace('/profile?tab=account', { scroll: false });
       router.refresh();
     } catch {
       setError('خطا در آپلود تصویر');
@@ -105,6 +106,7 @@ export function ProfileAvatarEditor({ name, avatar: initialAvatar }: ProfileAvat
       setAvatar(null);
       syncSessionAvatar(null);
       setMessage('تصویر پروفایل حذف شد.');
+      router.replace('/profile?tab=account', { scroll: false });
       router.refresh();
     } catch {
       setError('خطا در حذف تصویر');

@@ -5,6 +5,7 @@ import { Button } from '@vargah/ui/components/button';
 import { Input, Label, Textarea } from '@vargah/ui/components/input';
 import { isValidIranPhone } from '@vargah/security/phone';
 
+import { useCustomerAuth } from '@/components/auth/customer-auth-provider';
 import {
   endGuestChatSession,
   getGuestChatState,
@@ -15,6 +16,8 @@ import {
   type ChatFieldErrors,
   type ChatMessageDto,
 } from '@/actions/chat';
+import { markCustomerChatNotificationsRead } from '@/actions/notifications';
+import { maskPhone } from '@/lib/customer-auth/phone';
 import { cn } from '@/lib/utils';
 
 const POLL_MS = 2500;
@@ -112,6 +115,7 @@ function validateStartForm(input: {
 }
 
 export function LiveChatWidget() {
+  const { customer, isAuthenticated } = useCustomerAuth();
   const [open, setOpen] = useState(false);
   const [booting, setBooting] = useState(true);
   const [conversation, setConversation] = useState<ChatConversationDto | null>(null);
@@ -132,12 +136,38 @@ export function LiveChatWidget() {
   openRef.current = open;
   lastMessageIdRef.current = messages[messages.length - 1]?.id ?? null;
 
+  const accountName = customer?.name?.trim() ?? '';
+  const accountPhone = customer?.phone?.trim() ?? '';
+  const signedInReady = Boolean(isAuthenticated && accountPhone);
+
+  useEffect(() => {
+    if (!signedInReady) return;
+    setName(accountName.length >= 2 ? accountName : 'مشترک');
+    setPhone(accountPhone);
+  }, [accountName, accountPhone, signedInReady]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (sessionStorage.getItem(CHAT_NOTICED_KEY) === '1') return;
     setAttract(true);
   }, []);
+
+  useEffect(() => {
+    const openChat = () => {
+      setOpen(true);
+      setUnread(0);
+    };
+    window.addEventListener('vargah-open-chat', openChat);
+    return () => window.removeEventListener('vargah-open-chat', openChat);
+  }, []);
+
+  useEffect(() => {
+    if (!open || !isAuthenticated) return;
+    void markCustomerChatNotificationsRead()
+      .then(() => window.dispatchEvent(new Event('vargah-notifications-changed')))
+      .catch(() => undefined);
+  }, [open, isAuthenticated]);
 
   const clearFieldError = (key: keyof ChatFieldErrors) => {
     setFieldErrors((prev) => {
@@ -297,6 +327,35 @@ export function LiveChatWidget() {
     });
   };
 
+  const beginSignedInChat = (text: string) => {
+    setError(null);
+    setDraftError(null);
+    setDraft('');
+    startTransition(async () => {
+      try {
+        const result = await startGuestChat({
+          name: accountName.length >= 2 ? accountName : 'مشترک',
+          phone: accountPhone,
+          message: text,
+        });
+        if (!result.ok) {
+          setDraft(text);
+          setDraftError(result.fields?.message ? toPublicChatError(result.fields.message) : null);
+          setError(toPublicChatError(result.message));
+          return;
+        }
+        setConversation(result.conversation);
+        setMessages(result.messages);
+        setUnread(0);
+        setError(null);
+        setFieldErrors({});
+      } catch (err) {
+        setDraft(text);
+        setError(toPublicChatError(err instanceof Error ? err.message : FALLBACK_ERROR));
+      }
+    });
+  };
+
   const handleSend = (event: React.FormEvent) => {
     event.preventDefault();
     const text = draft.trim();
@@ -312,6 +371,10 @@ export function LiveChatWidget() {
     setError(null);
     setDraftError(null);
     setDraft('');
+    if (!conversation && signedInReady) {
+      beginSignedInChat(text);
+      return;
+    }
     startTransition(async () => {
       try {
         const result = await sendGuestChatMessage(text);
@@ -360,7 +423,9 @@ export function LiveChatWidget() {
                   ? conversation.status === 'WAITING'
                     ? 'در انتظار کارشناس'
                     : 'متصل به پشتیبانی'
-                  : 'نام و موبایل را وارد کنید'}
+                  : signedInReady
+                    ? 'آماده ارسال پیام'
+                    : 'نام و موبایل را وارد کنید'}
               </p>
             </div>
             <button
@@ -376,7 +441,7 @@ export function LiveChatWidget() {
           <div className="flex min-h-0 flex-1 flex-col">
             {booting ? (
               <p className="text-muted-foreground p-4 text-sm">در حال بارگذاری…</p>
-            ) : !conversation ? (
+            ) : !conversation && !signedInReady ? (
               <form
                 onSubmit={handleStart}
                 onInvalid={handleStartInvalid}
@@ -472,6 +537,12 @@ export function LiveChatWidget() {
             ) : (
               <>
                 <div ref={listRef} className="flex-1 space-y-2 overflow-y-auto px-3 py-3">
+                  {signedInReady && !conversation ? (
+                    <p className="text-muted-foreground px-2 py-4 text-center text-xs leading-relaxed">
+                      سلام {accountName || 'مشترک'}. پیام شما با نام حساب و موبایل{' '}
+                      <span dir="ltr">{maskPhone(accountPhone)}</span> ارسال می‌شود.
+                    </p>
+                  ) : null}
                   {messages.map((message) => (
                     <MessageBubble key={message.id} message={message} />
                   ))}
@@ -505,13 +576,15 @@ export function LiveChatWidget() {
                     </Button>
                   </div>
                   <FieldError id="chat-draft-error" message={draftError ?? undefined} />
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="text-muted-foreground hover:text-foreground mt-2 text-[11px]"
-                  >
-                    شروع گفتگوی جدید
-                  </button>
+                  {conversation ? (
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="text-muted-foreground hover:text-foreground mt-2 text-[11px]"
+                    >
+                      شروع گفتگوی جدید
+                    </button>
+                  ) : null}
                 </form>
               </>
             )}
