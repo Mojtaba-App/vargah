@@ -11,4 +11,8 @@ describe('humanizePaymentError', () => {
   it('passes through unknown persian messages', () => {
     expect(humanizePaymentError('خطای سفارشی')).toBe('خطای سفارشی');
   });
+
+  it('translates fetch failed into a network guidance message', () => {
+    expect(humanizePaymentError('fetch failed')).toMatch(/زرین‌پال|VPN|اتصال/);
+  });
 });

@@ -5,11 +5,22 @@ import {
   scryptSync,
   timingSafeEqual,
 } from 'node:crypto';
+import { env as nodeEnv } from 'node:process';
 
 const PREFIX = 'enc:v1:';
+const ENCRYPTION_KEY_NAME = 'SECRETS_ENCRYPTION_KEY';
+
+/**
+ * Read via node:process.env — Next/Turbopack inlines `process.env.SECRETS_*`
+ * from each app .env at compile time (often empty in a monorepo) and breaks decrypt.
+ */
+function readSecretsEncryptionKey(): string | undefined {
+  const raw = nodeEnv[ENCRYPTION_KEY_NAME];
+  return typeof raw === 'string' && raw.trim() ? raw.trim() : undefined;
+}
 
 function deriveKey(): Buffer | null {
-  const raw = process.env.SECRETS_ENCRYPTION_KEY?.trim();
+  const raw = readSecretsEncryptionKey();
   if (!raw) return null;
   if (/^[0-9a-fA-F]{64}$/.test(raw)) {
     return Buffer.from(raw, 'hex');
@@ -28,7 +39,7 @@ export function encryptSecret(plaintext: string): string {
 
   const key = deriveKey();
   if (!key) {
-    if (process.env.NODE_ENV === 'production') {
+    if (nodeEnv.NODE_ENV === 'production') {
       throw new Error('SECRETS_ENCRYPTION_KEY در production الزامی است');
     }
     return plaintext;

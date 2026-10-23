@@ -29,6 +29,23 @@ export const DEFAULT_PAYMENT_CONFIG: PaymentConfig = {
   callbackBaseUrl: '',
 };
 
+/** نرمال‌سازی آدرس پایه — اصلاح http://http:// و اسلش انتهایی */
+export function normalizeCallbackBaseUrl(raw: string): string {
+  let value = raw.trim();
+  if (!value) return '';
+
+  value = value.replace(/^(https?:\/\/)+/i, (match) => {
+    const isHttps = /https:\/\//i.test(match);
+    return isHttps ? 'https://' : 'http://';
+  });
+
+  if (!/^https?:\/\//i.test(value)) {
+    value = `http://${value}`;
+  }
+
+  return value.replace(/\/+$/, '');
+}
+
 export function mergePaymentConfig(value: unknown): PaymentConfig {
   const input = (value && typeof value === 'object' ? value : {}) as Partial<PaymentConfig>;
   const zarinpal = {
@@ -41,18 +58,26 @@ export function mergePaymentConfig(value: unknown): PaymentConfig {
     ...input,
     zarinpal,
     provider: 'zarinpal',
+    callbackBaseUrl: normalizeCallbackBaseUrl(
+      typeof input.callbackBaseUrl === 'string'
+        ? input.callbackBaseUrl
+        : DEFAULT_PAYMENT_CONFIG.callbackBaseUrl,
+    ),
   };
 }
 
 export function resolvePaymentConfig(config: PaymentConfig): PaymentConfig {
-  const envMerchant = process.env.ZARINPAL_MERCHANT_ID?.trim() ?? '';
-  const envBaseUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() ?? '';
-  const isDev = process.env.NODE_ENV === 'development';
+  // Read live process env (avoid Next compile-time inlining of process.env.*)
+  const liveEnv = process.env;
+  const envMerchant = liveEnv.ZARINPAL_MERCHANT_ID?.trim() ?? '';
+  const envBaseUrl = liveEnv.NEXT_PUBLIC_SITE_URL?.trim() ?? '';
+  const isDev = liveEnv.NODE_ENV === 'development';
 
-  const sandbox = config.zarinpal.sandbox ?? process.env.ZARINPAL_SANDBOX !== 'false';
+  const sandbox = config.zarinpal.sandbox ?? liveEnv.ZARINPAL_SANDBOX !== 'false';
   const merchantId = config.zarinpal.merchantId || envMerchant;
-  const callbackBaseUrl =
-    config.callbackBaseUrl || envBaseUrl || (isDev ? 'http://localhost:3000' : '');
+  const callbackBaseUrl = normalizeCallbackBaseUrl(
+    config.callbackBaseUrl || envBaseUrl || (isDev ? 'http://localhost:3000' : ''),
+  );
 
   return {
     ...config,

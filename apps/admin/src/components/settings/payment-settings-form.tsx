@@ -183,21 +183,28 @@ export function PaymentSettingsForm({ initialConfig, canEdit }: PaymentSettingsF
             </p>
           </div>
 
-          <label className="border-border flex items-center gap-2 rounded-xl border px-4 py-3 text-sm">
-            <input
-              type="checkbox"
-              checked={config.zarinpal.sandbox}
-              disabled={!canEdit}
-              onChange={(e) =>
-                setConfig((prev) => ({
-                  ...prev,
-                  zarinpal: { ...prev.zarinpal, sandbox: e.target.checked },
-                }))
-              }
-              className="border-border size-4 rounded"
-            />
-            حالت Sandbox (تست)
-          </label>
+          <div className="space-y-2 sm:col-span-2">
+            <label className="border-border flex items-center gap-2 rounded-xl border px-4 py-3 text-sm">
+              <input
+                type="checkbox"
+                checked={config.zarinpal.sandbox}
+                disabled={!canEdit}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    zarinpal: { ...prev.zarinpal, sandbox: e.target.checked },
+                  }))
+                }
+                className="border-border size-4 rounded"
+              />
+              حالت Sandbox (تست)
+            </label>
+            <p className="text-muted-foreground text-xs leading-relaxed">
+              برای سندباکس یک UUID دلخواه ۳۶ کاراکتری وارد کنید و این گزینه را روشن بگذارید. اگر
+              پیام «اتصال برقرار نشد» دیدید، VPN را خاموش کنید؛ سرور زرین‌پال از داخل ایران در دسترس
+              است.
+            </p>
+          </div>
         </div>
 
         {callbackUrl && (

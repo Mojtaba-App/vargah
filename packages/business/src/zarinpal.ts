@@ -2,12 +2,71 @@ import { humanizePaymentError } from './payment-errors';
 
 type ZarinpalResponse<T> = {
   data?: T & { code?: number; message?: string };
-  errors?: { code: number; message: string; validations?: unknown[] };
+  errors?: { code: number; message: string; validations?: unknown[] } | unknown[];
 };
 
+const MERCHANT_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const REQUEST_TIMEOUT_MS = 20_000;
+
 function zarinpalErrorMessage(fallback: string, json: ZarinpalResponse<unknown>) {
-  const raw = json.errors?.message || json.data?.message || fallback;
+  const errors = json.errors;
+  const errorMessage =
+    errors && !Array.isArray(errors) && typeof errors.message === 'string'
+      ? errors.message
+      : undefined;
+  const raw = errorMessage || json.data?.message || fallback;
   return humanizePaymentError(raw);
+}
+
+function assertMerchantId(merchantId: string) {
+  const trimmed = merchantId.trim();
+  if (!trimmed) {
+    throw new Error('Merchant ID الزامی است');
+  }
+  if (!MERCHANT_UUID_RE.test(trimmed)) {
+    throw new Error(
+      'شناسه پذیرنده باید ۳۶ کاراکتر با فرمت UUID باشد. نمونه: 00000000-0000-0000-0000-000000000000',
+    );
+  }
+  return trimmed;
+}
+
+function networkFailureMessage(error: unknown): string {
+  const parts: string[] = [];
+  let current: unknown = error;
+  for (let depth = 0; depth < 4 && current; depth += 1) {
+    if (current instanceof Error) {
+      parts.push(current.message);
+      current = (current as Error & { cause?: unknown }).cause;
+      continue;
+    }
+    if (typeof current === 'object' && current && 'code' in current) {
+      parts.push(String((current as { code?: unknown }).code ?? ''));
+    }
+    break;
+  }
+  return humanizePaymentError(parts.filter(Boolean).join(' ') || 'fetch failed');
+}
+
+async function zarinpalFetch(url: string, body: Record<string, unknown>): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    return await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+  } catch (error) {
+    throw new Error(networkFailureMessage(error));
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export type ZarinpalRequestResult = {
@@ -23,9 +82,10 @@ export type ZarinpalVerifyResult = {
 };
 
 function getApiBase(sandbox: boolean) {
+  // Official docs now use payment.zarinpal.com for production; sandbox stays on sandbox host.
   return sandbox
     ? 'https://sandbox.zarinpal.com/pg/v4/payment'
-    : 'https://api.zarinpal.com/pg/v4/payment';
+    : 'https://payment.zarinpal.com/pg/v4/payment';
 }
 
 export function zarinpalStartPayUrl(authority: string, sandbox: boolean): string {
@@ -44,31 +104,35 @@ export async function zarinpalRequestPayment(params: {
   email?: string;
   mobile?: string;
 }): Promise<ZarinpalRequestResult> {
-  const res = await fetch(`${getApiBase(params.sandbox)}/request.json`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      merchant_id: params.merchantId,
-      amount: params.amount,
-      callback_url: params.callbackUrl,
-      description: params.description.slice(0, 255),
-      metadata: {
-        email: params.email,
-        mobile: params.mobile,
-      },
-    }),
+  const merchantId = assertMerchantId(params.merchantId);
+  const metadata: Record<string, string> = {};
+  if (params.email?.trim()) metadata.email = params.email.trim();
+  if (params.mobile?.trim()) metadata.mobile = params.mobile.trim();
+
+  const res = await zarinpalFetch(`${getApiBase(params.sandbox)}/request.json`, {
+    merchant_id: merchantId,
+    amount: params.amount,
+    callback_url: params.callbackUrl,
+    description: params.description.slice(0, 255),
+    ...(Object.keys(metadata).length > 0 ? { metadata } : {}),
   });
 
-  const json = (await res.json()) as ZarinpalResponse<{
+  let json: ZarinpalResponse<{
     authority: string;
     fee: number;
     fee_type: string;
   }>;
+  try {
+    json = (await res.json()) as typeof json;
+  } catch {
+    throw new Error(humanizePaymentError(`HTTP ${res.status}`));
+  }
 
-  if (!res.ok || json.errors || json.data?.code !== 100 || !json.data.authority) {
+  const hasErrors = Array.isArray(json.errors)
+    ? json.errors.length > 0
+    : Boolean(json.errors && typeof json.errors === 'object');
+
+  if (!res.ok || hasErrors || json.data?.code !== 100 || !json.data.authority) {
     throw new Error(zarinpalErrorMessage('درخواست پرداخت زرین‌پال ناموفق بود', json));
   }
 
@@ -85,26 +149,29 @@ export async function zarinpalVerifyPayment(params: {
   authority: string;
   sandbox: boolean;
 }): Promise<ZarinpalVerifyResult> {
-  const res = await fetch(`${getApiBase(params.sandbox)}/verify.json`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      merchant_id: params.merchantId,
-      amount: params.amount,
-      authority: params.authority,
-    }),
+  const merchantId = assertMerchantId(params.merchantId);
+  const res = await zarinpalFetch(`${getApiBase(params.sandbox)}/verify.json`, {
+    merchant_id: merchantId,
+    amount: params.amount,
+    authority: params.authority,
   });
 
-  const json = (await res.json()) as ZarinpalResponse<{
+  let json: ZarinpalResponse<{
     ref_id: number;
     card_pan: string;
     card_hash: string;
   }>;
+  try {
+    json = (await res.json()) as typeof json;
+  } catch {
+    throw new Error(humanizePaymentError(`HTTP ${res.status}`));
+  }
 
-  if (!res.ok || json.errors || (json.data?.code !== 100 && json.data?.code !== 101)) {
+  const hasErrors = Array.isArray(json.errors)
+    ? json.errors.length > 0
+    : Boolean(json.errors && typeof json.errors === 'object');
+
+  if (!res.ok || hasErrors || (json.data?.code !== 100 && json.data?.code !== 101)) {
     throw new Error(zarinpalErrorMessage('تأیید پرداخت زرین‌پال ناموفق بود', json));
   }
 
@@ -124,14 +191,11 @@ export async function zarinpalTestConnection(params: {
   sandbox: boolean;
   callbackUrl: string;
 }): Promise<string> {
-  if (!params.merchantId.trim()) {
-    throw new Error('Merchant ID الزامی است');
-  }
-
+  const merchantId = assertMerchantId(params.merchantId);
   const callbackUrl = params.callbackUrl.trim() || 'http://localhost:3000/api/payments/callback';
 
   await zarinpalRequestPayment({
-    merchantId: params.merchantId.trim(),
+    merchantId,
     amount: 1000,
     callbackUrl,
     description: 'تست اتصال درگاه — وارگه',

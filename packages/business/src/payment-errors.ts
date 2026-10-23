@@ -9,7 +9,7 @@ const PAYMENT_ERROR_PATTERNS: Array<{ pattern: RegExp; message: string }> = [
     message: 'شناسه پذیرنده (Merchant ID) نامعتبر است — فرمت UUID را رعایت کنید.',
   },
   {
-    pattern: /merchant id is invalid/i,
+    pattern: /merchant id is invalid|invalid merchant/i,
     message: 'شناسه پذیرنده (Merchant ID) نامعتبر است.',
   },
   {
@@ -23,6 +23,12 @@ const PAYMENT_ERROR_PATTERNS: Array<{ pattern: RegExp; message: string }> = [
   {
     pattern: /invalid authority/i,
     message: 'شناسه تراکنش (Authority) نامعتبر است.',
+  },
+  {
+    pattern:
+      /fetch failed|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|ETIMEDOUT|UND_ERR_|CERT_|SSL|network|getaddrinfo|connect timeout|aborted/i,
+    message:
+      'اتصال به سرور زرین‌پال برقرار نشد. VPN را خاموش کنید، اینترنت را بررسی کنید و اگر حالت Sandbox روشن است دوباره تست کنید.',
   },
 ];
 

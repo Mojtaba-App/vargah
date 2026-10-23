@@ -1,13 +1,26 @@
+import path from 'node:path';
+import { env as nodeEnv } from 'node:process';
+import { loadEnvConfig } from '@next/env';
 import { prisma } from '@vargah/database';
 import {
   DEFAULT_PAYMENT_CONFIG,
   PAYMENT_CONFIG_KEY,
   mergePaymentConfig,
+  normalizeCallbackBaseUrl,
   type PaymentConfig,
 } from '@vargah/business/payment-config';
 import { decryptSecret, encryptSecret } from '@vargah/security/secrets';
 
+function ensureMonorepoEnv() {
+  if (nodeEnv.SECRETS_ENCRYPTION_KEY?.trim()) return;
+  loadEnvConfig(path.resolve(process.cwd(), '../..'));
+  if (!nodeEnv.SECRETS_ENCRYPTION_KEY?.trim()) {
+    loadEnvConfig(path.resolve(process.cwd()));
+  }
+}
+
 function decryptPaymentConfig(config: PaymentConfig): PaymentConfig {
+  ensureMonorepoEnv();
   return {
     ...config,
     zarinpal: {
@@ -18,8 +31,10 @@ function decryptPaymentConfig(config: PaymentConfig): PaymentConfig {
 }
 
 function encryptPaymentConfig(config: PaymentConfig): PaymentConfig {
+  ensureMonorepoEnv();
   return {
     ...config,
+    callbackBaseUrl: normalizeCallbackBaseUrl(config.callbackBaseUrl),
     zarinpal: {
       ...config.zarinpal,
       merchantId: encryptSecret(config.zarinpal.merchantId),

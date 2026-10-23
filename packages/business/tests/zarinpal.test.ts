@@ -37,6 +37,21 @@ describe('zarinpalTestConnection', () => {
     expect(message).toContain('Sandbox');
   });
 
+  it('rejects non-uuid merchant ids before calling the API', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(
+      zarinpalTestConnection({
+        merchantId: 'bad-id',
+        sandbox: true,
+        callbackUrl: 'http://localhost:3000/cb',
+      }),
+    ).rejects.toThrow(/UUID/);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('propagates API errors', async () => {
     vi.stubGlobal(
       'fetch',
@@ -48,10 +63,29 @@ describe('zarinpalTestConnection', () => {
 
     await expect(
       zarinpalTestConnection({
-        merchantId: 'bad-id',
+        merchantId: '00000000-0000-0000-0000-000000000000',
         sandbox: true,
         callbackUrl: 'http://localhost:3000/cb',
       }),
-    ).rejects.toThrow('Merchant invalid');
+    ).rejects.toThrow(/Merchant|شناسه پذیرنده/);
+  });
+
+  it('translates network failures', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockRejectedValue(
+          Object.assign(new TypeError('fetch failed'), { cause: { code: 'ETIMEDOUT' } }),
+        ),
+    );
+
+    await expect(
+      zarinpalTestConnection({
+        merchantId: '00000000-0000-0000-0000-000000000000',
+        sandbox: true,
+        callbackUrl: 'http://localhost:3000/cb',
+      }),
+    ).rejects.toThrow(/زرین‌پال|VPN|اتصال/);
   });
 });

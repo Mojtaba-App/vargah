@@ -3,7 +3,7 @@ import { Container } from '@vargah/ui/components/container';
 
 import { PageHeader } from '@/components/shared/page-header';
 import { SubscriptionWorkspace } from '@/components/subscription/subscription-workspace';
-import { getPaymentConfig } from '@/lib/payment-config';
+import { getPublicPaymentStatus } from '@/lib/payment-config';
 import { getSubscriptionPlans } from '@/lib/subscription-plans';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +19,7 @@ export default async function SubscriptionPage({
   const query = await searchParams;
   setRequestLocale(locale);
 
-  const [plans, paymentConfig] = await Promise.all([getSubscriptionPlans(), getPaymentConfig()]);
+  const [plans, payment] = await Promise.all([getSubscriptionPlans(), getPublicPaymentStatus()]);
 
   return (
     <>
@@ -30,8 +30,10 @@ export default async function SubscriptionPage({
       <Container className="py-12">
         <SubscriptionWorkspace
           plans={plans}
-          paymentConfig={paymentConfig}
+          paymentReady={payment.ready}
+          paymentBlockReason={payment.blockReason}
           paymentStatus={query.payment ?? null}
+          paymentRef={query.ref ?? null}
         />
       </Container>
     </>

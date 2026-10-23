@@ -2,13 +2,11 @@
 
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import Link from 'next/link';
-import type { PaymentConfig } from '@vargah/business/payment-config';
 import {
   PLAN_PERIOD_LABELS,
   PLAN_TYPE_LABELS,
   type SubscriptionPlanConfig,
 } from '@vargah/business/subscription-plans';
-import { isPaymentReady, resolvePaymentConfig } from '@vargah/business/payment-config';
 import { Input, Label, Textarea } from '@vargah/ui/components/input';
 import { Badge } from '@vargah/ui/components/badge';
 import { Button } from '@vargah/ui/components/button';
@@ -20,6 +18,10 @@ import {
 import { useCustomerAuth } from '@/components/auth/customer-auth-provider';
 import { ProvinceCityField } from '@/components/forms/province-city-field';
 import { PlanCard } from '@/components/subscription/plan-card';
+import {
+  isPaymentReturnStatus,
+  PaymentReturnBanner,
+} from '@/components/subscription/payment-return-banner';
 import { useSubscriptionCart } from '@/components/subscription/subscription-cart-provider';
 import { FormActionButton } from '@/components/shared/form-action-button';
 import { isPlaceholderCustomerEmail } from '@/lib/customer-auth/phone';
@@ -28,14 +30,18 @@ import { toPublicUserError } from '@/lib/forms/public-errors';
 
 type SubscriptionWorkspaceProps = {
   plans: SubscriptionPlanConfig[];
-  paymentConfig: PaymentConfig;
+  paymentReady: boolean;
+  paymentBlockReason: string | null;
   paymentStatus?: string | null;
+  paymentRef?: string | null;
 };
 
 export function SubscriptionWorkspace({
   plans,
-  paymentConfig,
+  paymentReady,
+  paymentBlockReason,
   paymentStatus,
+  paymentRef = null,
 }: SubscriptionWorkspaceProps) {
   const { customer, isAuthenticated, openLogin } = useCustomerAuth();
   const {
@@ -65,16 +71,9 @@ export function SubscriptionWorkspace({
   } | null>(null);
   const [discountError, setDiscountError] = useState<string | null>(null);
   const [isApplyingDiscount, startApplyDiscount] = useTransition();
-
-  const paymentReady = isPaymentReady(resolvePaymentConfig(paymentConfig));
-  const resolvedPayment = resolvePaymentConfig(paymentConfig);
-  const paymentBlockReason = !resolvedPayment.enabled
-    ? 'درگاه در پنل غیرفعال است'
-    : !resolvedPayment.zarinpal.merchantId
-      ? 'Merchant ID زرین‌پال در تنظیمات وارد نشده'
-      : !resolvedPayment.callbackBaseUrl
-        ? 'آدرس callback سایت تنظیم نشده'
-        : null;
+  const [returnBannerVisible, setReturnBannerVisible] = useState(() =>
+    isPaymentReturnStatus(paymentStatus),
+  );
 
   const groupedPlans = useMemo(() => {
     const groups: Record<string, SubscriptionPlanConfig[]> = {
@@ -200,24 +199,12 @@ export function SubscriptionWorkspace({
 
   return (
     <div className="space-y-16">
-      {paymentStatus === 'success' && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200">
-          پرداخت با موفقیت انجام شد. اشتراک شما فعال شد. جزئیات در{' '}
-          <Link href="/profile?tab=payments" className="font-medium underline">
-            پروفایل
-          </Link>{' '}
-          قابل مشاهده است.
-        </div>
-      )}
-      {paymentStatus === 'cancelled' && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-900">
-          پرداخت توسط شما لغو شد. می‌توانید دوباره تلاش کنید.
-        </div>
-      )}
-      {(paymentStatus === 'failed' || paymentStatus === 'error') && (
-        <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 text-sm text-rose-900">
-          پرداخت ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.
-        </div>
+      {returnBannerVisible && isPaymentReturnStatus(paymentStatus) && (
+        <PaymentReturnBanner
+          status={paymentStatus}
+          reference={paymentRef}
+          onDismiss={() => setReturnBannerVisible(false)}
+        />
       )}
 
       {!isAuthenticated && (
